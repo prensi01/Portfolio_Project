@@ -125,7 +125,7 @@ def contact():
             flash("Please complete the CAPTCHA.", "error")
             return redirect(url_for("home"))
         data = {
-            "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
+            "secret": os.getenv("RECAPTCHA_SECRET"),
             "response": captcha
         }
         response = requests.post(
