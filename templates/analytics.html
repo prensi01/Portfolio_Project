@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <style>
+    body{
+        font-family: Arial, sans-serif;
+        background: #081b29;
+        color: white;
+        margin: 0;
+        padding: 40px;
+        text-align: center;
+    }
+
+    h1{
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #00abf0;
+    }
+
+    h2{
+        background: #112e42;
+        display: inline-block;
+        padding: 15px 25px;
+        margin: 15px;
+        border-radius: 10px;
+        border: 1px solid #00abf0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    a{
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 20px;
+        background: #00abf0;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: 0.3s;
+    }
+
+    a:hover{
+        background: #008ac4;
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+    <h1>Portfolio Analytics</h1>
+
+    <h2>Total Website Visits: {{ total_visits }}</h2>
+    <h2>Unique Visitors: {{ unique_visitors }}</h2>
+    <h2>Total Contact Messages: {{ total_messages }}</h2>
+
+    <br>
+    <a href="/admin">Go to Admin Panel</a>
+</body>
+</html>

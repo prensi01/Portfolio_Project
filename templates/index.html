@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+name="description"
+content="Prensi - Aspiring Data Analyst skilled in Python, SQL, Excel, Power BI, Data Cleaning, Data Visualization and Dashboard Development.">
+    <meta name="keywords"
+content="Data Analyst, Python, SQL, Excel, Power BI, Dashboard, Data Cleaning, Data Visualization, EDA, Portfolio">
+
+<meta name="author" content="Prensi">
+    <title>Prensi | Data Analyst Portfolio</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="icon"
+href="{{ url_for('static', filename='favicon.png') }}">
+    <!-- Three.js -->
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+    ></script>
+    <!-- Particles -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
+    ></script>
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='js/particles-config.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <meta property="og:url"
+content="https://your-portfolio-url.onrender.com/">
+<meta property="og:title"
+      content="Prensi | Data Analyst Portfolio">
+
+<meta property="og:description"
+      content="Aspiring Data Analyst skilled in Python, SQL, Excel and Power BI.">
+
+<meta property="og:image"
+      content="{{ url_for('static', filename='profile.jpeg', _external=True) }}">
+
+<meta property="og:type"
+      content="website">
+    <link rel="canonical" href="https://your-portfolio-url.onrender.com/">
+  </head>
+  <body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    <!-- Loader / Progress -->
+    <div id="progress-bar"></div>
+    <!-- 3D Canvas (ONLY ONE - CLEANED) -->
+    <canvas id="bg"></canvas>
+    <div id="mySidebar" class="sidebar">
+      <button class="close-btn" onclick="closeMenu()">&times;</button>
+      <a href="#home">🏠Home</a>
+      <a href="#about">👤About</a>
+      <a href="#skills">💻Skills</a>
+      <a href="#projects">📂Projects</a>
+      <a href="#blog">📝Blog</a>
+      <a href="#contact">📩Contact</a>
+      <a href="/analytics">📈Analytics</a>
+    </div>
+    <!-- Header -->
+    <header class="header">
+      <a href="#" class="logo">Prensi</a>
+      <nav class="navbar">
+        <a href="#home" class="active">🏠Home</a>
+        <a href="#about">👤About</a>
+        <a href="#skills">💻Skills</a>
+        <a href="#projects">📂Projects</a>
+        <a href="#blog">📝Blog</a>
+        <a href="#contact">📩Contact</a>
+      </nav>
+      <button id="status-btn" class="status-btn">🟢 Open to Work</button>
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-btn">
+          <i class="fas fa-moon"></i>
+          <span>Dark</span>
+        </button>
+        <i class="fas fa-bars menu-btn" onclick="openMenu()"></i>
+      </div>
+      <a href="{{ url_for('static', filename='resume.pdf') }}"
+        download
+        class="btn">
+        Download Resume
+      </a>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="home" id="home">
+      <div class="home-content">
+        <h3>Hello, I'm</h3>
+        <h1>Prensi</h1>
+        <h3>And I'm a <span id="typing-text"></span></h3>
+        <p>
+          I'm a BCA student at MJPRU passionate about Data Analytics and
+          Business Intelligence. I specialize in Python, SQL, Excel, and Power
+          BI to clean, analyze, and visualize data, creating interactive
+          dashboards and actionable insights. I am actively seeking
+          opportunities to apply my analytical skills to solve real-world
+          business problems.
+        </p>
+
+        <!-- Social -->
+        <div class="social-links hero-social">
+          <a href="https://github.com/prensi01"
+            target="_blank"
+            rel="noopener noreferrer">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/prensi-6b0433383?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+            target="_blank"
+            rel="noopener noreferrer">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://www.instagram.com/prensi_saxena_01?igsh=d2puazg0MGM0cm9p"
+            target="_blank"
+            rel="noopener noreferrer">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        </div>
+        <!-- CTA -->
+        <div class="hero-btns">
+          <a href="#contact" class="btn">Hire Me</a>
+          <a href="#projects" class="btn">Projects</a>
+        </div>
+      </div>
+      <!-- 3D Profile -->
+      <div class="home-img profile-3d">
+        <img
+          src="{{ url_for('static', filename='profile.jpeg') }}"
+          alt="Prensi Saxena - Aspiring Data Analyst"
+        />
+      </div>
+      <!-- Video Background -->
+      <video autoplay muted loop id="bg-video">
+        <source
+          src="{{ url_for('static', filename='hero.mp4') }}"
+          type="video/mp4"
+        />
+      </video>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="about-content">
+        <h2 class="heading">About Me</h2>
+        <h3>Aspiring Data Analyst</h3>
+        <p>
+          I am a dedicated BCA student at MJPRU aspiring to become a Data
+          Analyst. I enjoy working with data to identify trends, solve business
+          problems, and support better decision-making. My technical skills include Python, SQL, Excel, Power BI, Data Cleaning, Data Visualization, and Exploratory Data Analysis (EDA). I continuously learn new tools and techniques to strengthen my analytical abilities.
+        </p>
+        <!-- INFO CARDS -->
+        <div class="info-cards">
+          <div class="card">
+            <h4><i class="fas fa-graduation-cap"></i> Education</h4>
+            <p>BCA (MJPRU)</p>
+          </div>
+          <div class="card">
+            <h4><i class="fas fa-briefcase"></i> Internship</h4>
+            <p>Open to Data Analyst Internship</p>
+          </div>
+          <div class="card">
+            <h4><i class="fas fa-map-marker-alt"></i> Location</h4>
+            <p>Baheri, UP</p>
+          </div>
+          <div class="card">
+            <h4><i class="fas fa-envelope"></i> Email</h4>
+            <p>prensi5646@gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="skills" id="skills">
+      <h2 class="heading">Skills & Technologies</h2>
+      <div class="skill-box">
+        <div class="skill">
+          <p>Python</p>
+          <div class="progress"><span style="width: 75%">75%</span></div>
+        </div>
+        <div class="skill">
+          <p>SQL</p>
+          <div class="progress"><span style="width: 80%">80%</span></div>
+        </div>
+        <div class="skill">
+          <p>Excel</p>
+          <div class="progress"><span style="width: 90%">90%</span></div>
+        </div>
+        <div class="skill">
+          <p>Power BI</p>
+          <div class="progress"><span style="width: 75%">75%</span></div>
+        </div>
+        <div class="skill">
+          <p>Data Cleaning</p>
+          <div class="progress"><span style="width: 80%">80%</span></div>
+        </div>
+        <div class="skill">
+          <p>Data Visualization</p>
+          <div class="progress"><span style="width: 75%">75%</span></div>
+        </div>
+        <div class="skill">
+          <p>Exploratory Data Analysis (EDA)</p>
+          <div class="progress"><span style="width:70%">70%</span></div>
+        </div>
+        <div class="skill">
+          <p>Dashboard Development</p>
+          <div class="progress"><span style="width:75%">75%</span></div>
+        </div>
+        <div class="skill">
+          <p>Business Intelligence</p>
+          <div class="progress"><span style="width:70%">70%</span></div>
+        </div>
+        <div class="skill">
+          <p>KPI Reporting</p>
+        <div class="progress"><span style="width:75%">75%</span></div>
+        </div>
+    </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="projects" id="projects">
+      <h1 class="heading">My Data Analytics Projects</h1>
+      <div class="project-container">
+        <!-- Project 1 -->
+        <div class="project-box">
+          <div class="project-content">
+            <div class="card-header">
+              <div class="icon">📊</div>
+              <div class="tag">POWER BI</div>
+            </div>
+            <h2>Sales Performance Dashboard</h2>
+            <p class="desc">
+              Designed an interactive dashboard to analyze sales, profit,
+              regional performance, and KPIs for better business
+              decision-making.
+            </p>
+            <div class="tech">
+              <span>Power BI</span>
+              <span>Excel</span>
+              <span>Data Cleaning</span>
+              <span>Data Visualization</span>
+              <span>KPI Analysis</span>
+              <span>DAX</span>
+            </div>
+            <div class="project-links">
+              <a href="#" target="_blank">Code</a>
+            </div>
+            <div class="project-links1">
+              <a href="#" target="_blank"
+                >Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="project-box">
+          <div class="project-content">
+            <div class="card-header">
+              <div class="icon">📈</div>
+              <div class="tag">PYTHON</div>
+            </div>
+            <h2>Customer Sales Analysis</h2>
+            <p class="desc">
+              Cleaned and analyzed customer sales data to identify trends,
+              top-selling products, and monthly sales performance.
+            </p>
+            <div class="tech">
+              <span>Excel</span>
+              <span>Python</span>
+              <span>Data Cleaning</span> 
+              <span>SQL</span>
+              <span>Data Visualization</span>
+            </div>
+            <div class="project-links">
+              <a href="#" target="_blank">Code</a>
+            </div>
+            <div class="project-links1">
+              <a href="#" target="_blank"
+                >Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="project-box">
+          <div class="project-content">
+            <div class="card-header">
+              <div class="icon">🗄️</div>
+              <div class="tag">SQL</div>
+            </div>
+            <h2>SQL Business Insights</h2>
+            <p class="desc">
+              Queried business databases to generate reports, analyze customer
+              behavior, and extract actionable business insights.
+            </p>
+            <div class="tech">
+              <span>SQL</span>
+              <span>Data Cleaning</span>
+              <span>Excel</span>
+              <span>Aggregate Functions</span>
+              <span>Database Querying</span>
+            </div>
+            <div class="project-links">
+              <a href="#" target="_blank">Code</a>
+            </div>
+            <div class="project-links1">
+              <a href="#" target="_blank"
+                >Details</a>
+            </div>
+          </div>
+        </div>
+        <!-- PROJECT CARD -->
+        <div class="project-box">
+          <div class="project-content">
+            <div class="card-header">
+              <div class="icon">📑</div>
+              <div class="tag">EXCEL</div>
+            </div>
+            <h2>Employee Performance Dashboard</h2>
+            <p class="desc">
+              Created an Excel dashboard with charts, KPIs, and reports to
+              monitor employee performance and productivity.
+            </p>
+            <div class="tech">
+              <span>Excel</span>
+              <span>Power BI</span>
+              <span>Data Visualization</span>
+            </div>
+            <div class="project-links">
+              <a href="#" target="_blank">Code</a>
+            </div>
+            <div class="project-links1">
+              <a href="#" target="_blank"
+                >Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG SECTION -->
+    <section class="blog" id="blog">
+      <h2 class="heading">My Blog</h2>
+      <div class="blog-container">
+        <!-- Blog 1 -->
+        <div class="blog-card">
+          <h3>Why Learn Python for Data Analytics?</h3>
+          <span>August 2026</span>
+          <p>
+            Discover how Python helps in data cleaning, analysis, automation,
+            and visualization for data-driven decision making.
+          </p>
+          <a href="/blog1">Read More</a>
+        </div>
+        <!-- Blog 2 -->
+        <div class="blog-card">
+          <h3>Power BI Dashboard for Beginners</h3>
+          <span>August 2026</span>
+          <p>
+            Learn how to build interactive dashboards, create KPIs, and
+            visualize business data using Power BI.
+          </p>
+          <a href="/blog2">Read More</a>
+        </div>
+        <!-- Blog 3 -->
+        <div class="blog-card">
+          <h3>SQL Queries Every Data Analyst Should Know</h3>
+          <span>August 2026</span>
+          <p>
+            Explore essential SQL concepts including SELECT, JOIN, GROUP BY,
+            ORDER BY, and aggregate functions.
+          </p>
+          <a href="/blog3">Read More</a>
+        </div>
+      </div>
+    </section>
+    <section class="contact-card">
+      <div class="card">
+        <div class="rocket">📊</div>
+        <h1>
+        Let's Turn Data Into Insights
+        </h1>
+        <p>
+          Aspiring Data Analyst skilled in Python, SQL, Excel, and Power BI, passionate about turning
+        <br>data into actionable insights. Seeking internship and entry-level opportunities to solve
+        <br>real-world business challenges.
+        </p>
+        <div class="card-buttons">
+          <a href="#contact" class="message-btn">
+            <i class="fas fa-paper-plane"></i>
+            Send Message
+          </a>
+          <a href="mailto:prensi5646@gmail.com" class="email-btn">
+            <i class="fas fa-envelope"></i>
+            prensi5646@gmail.com
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <!-- FLASH MESSAGES -->
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %}
+      <h2 class="heading">Contact Me</h2>
+      <form action="/contact" method="POST">
+        <!-- CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="input-box">
+          <input type="text" name="fullname" placeholder="Full Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+        </div>
+        <div class="input-box">
+          <input type="text" name="mobile" placeholder="Mobile" />
+          <input
+            type="text"
+            name="subject"
+            placeholder="Job Opportunity / Project / Inquiry"/>
+        </div>
+        <textarea
+          class="textarea"
+          name="message"
+          placeholder="Tell me about your project, internship, or job opportunity..."
+          required
+        ></textarea>
+        <!-- HONEYPOT FIELD (hidden from users) -->
+        <input type="text" name="website" style="display: none" />
+        <div
+          class="g-recaptcha"
+          data-sitekey="6Le3FRstAAAAAGPOO1ZcvDqZQJgNVhl-pXFHluuU"
+          data-size="compact"></div>
+        <input type="submit" value="Let's Connect" class="btn" />
+      </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-container">
+        <!-- Left Side -->
+        <div class="footer-box">
+          <div class="logo-box">
+            <span class="footer-logo">Prensi</span>
+          </div>
+          <p>
+            Aspiring Data Analyst skilled in Python, SQL, Excel, and Power BI. Passionate about transforming raw data into actionable business insights.
+          </p>
+        </div>
+        <!-- Quick Links -->
+        <div class="footer-box">
+          <h3>Quick Links</h3>
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <!-- Contact -->
+        <div class="footer-box">
+          <h3>Connect</h3>
+          <div class="social-links footer-social">
+            <a
+              href="https://github.com/prensi01"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/prensi-6b0433383?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/prensi_saxena_01?igsh=d2puazg0MGM0cm9p"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+          </div>
+          <p>
+            <a href="mailto:prensi5646@gmail.com"> prensi5646@gmail.com </a>
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="footer-bottom">
+        <p>© 2026 Prensi Saxena. All Rights Reserved.</p>
+        <p>Baheri, Uttar Pradesh, India</p>
+      </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="project-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+      </div>
+    </div>
+  </body>
+</html>

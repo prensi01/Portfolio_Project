@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            background: #081b29;
+            color: white;
+            padding: 30px;
+        }
+
+        h1, h2, h3{
+            text-align: center;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        th, td{
+            border: 1px solid #00abf0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th{
+            background: #00abf0;
+            color: white;
+        }
+
+        tr:nth-child(even){
+            background: #112e42;
+        }
+
+        a{
+            color: #00d9ff;
+            text-decoration: none;
+        }
+
+        a:hover{
+            text-decoration: underline;
+        }
+
+        .analytics-link{
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #00abf0;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .analytics-link:hover{
+            background: #008ac4;
+            text-decoration: none;
+        }
+
+        .logout-btn{
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #e63946;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover{
+            background: #c1121f;
+            text-decoration: none;
+        }
+
+        hr{
+            margin: 50px 0;
+            border: 1px solid #00abf0;
+        }
+        /* ===== DELETE BUTTON STYLE ===== */
+.delete-btn{
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.delete-btn:hover{
+    background: #c1121f;
+    transform: scale(1.05);
+}
+
+.delete-btn:active{
+    transform: scale(0.95);
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- CONTACT MESSAGES -->
+    <h1>Contact Messages</h1>
+
+    <!-- Logout Button -->
+    <a href="/logout" class="logout-btn">
+        🚪 Logout
+    </a>
+
+    <!-- Analytics Button -->
+    <a href="/analytics" class="analytics-link">
+        📊 View Analytics
+    </a>
+    <table>
+        <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Mobile</th>
+    <th>Subject</th>
+    <th>Message</th>
+    <th>Date & Time</th>
+    <th>Action</th>
+</tr>
+
+{% for contact in messages %}
+<tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ contact[1] }}</td>
+    <td>{{ contact[2] }}</td>
+    <td>{{ contact[3] }}</td>
+    <td>{{ contact[4] }}</td>
+    <td>{{ contact[5] }}</td>
+
+    <!-- ✅ Date & Time (FIXED POSITION) -->
+    <td>{{ contact[6] }}</td>
+
+    <!-- ✅ Action (Delete Button LAST) -->
+    <td>
+        <form action="/delete-id/{{ contact[0] }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <button type="submit" class="delete-btn"
+                onclick="return confirm('Delete this message?')">
+                Delete
+            </button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+Flask==3.1.0
+Flask-WTF
+Flask-Limiter
+Werkzeug
+gunicorn
+python-dotenv
+requests
