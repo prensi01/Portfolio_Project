@@ -2,6 +2,7 @@ import os
 import re
 import sqlite3
 import smtplib
+import requests
 import threading
 from dotenv import load_dotenv
 load_dotenv()
@@ -42,6 +43,7 @@ app.config.update(
     SESSION_COOKIE_SAMESITE="Lax",
     SESSION_COOKIE_SECURE=True
 )
+
 
 # ================= DATABASE INIT =================
 def init_db():
@@ -118,6 +120,23 @@ def contact():
         if not re.match(email_pattern, email):
             flash("Invalid email address", "error")
             return redirect(url_for('home'))
+        captcha = request.form.get("g-recaptcha-response")
+        if not captcha:
+            flash("Please complete the CAPTCHA.", "error")
+            return redirect(url_for("home"))
+        data = {
+            "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
+            "response": captcha
+        }
+        response = requests.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+             data=data
+        )
+        result = response.json()
+
+        if not result.get("success"):
+            flash("Captcha verification failed.", "error")
+            return redirect(url_for("home"))
 
         # ---------- DATABASE ----------
         try:
