@@ -1,9 +1,11 @@
 import os
 import re
+import uuid
 import sqlite3
 import smtplib
 import requests
 import threading
+from flask import session
 from dotenv import load_dotenv
 load_dotenv()
 from email.mime.text import MIMEText
@@ -63,7 +65,9 @@ def init_db():
     cursor.execute("""
 CREATE TABLE IF NOT EXISTS analytics(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    visitor_id TEXT,
     ip TEXT,
+    user_agent TEXT,
     page TEXT,
     visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
@@ -73,24 +77,44 @@ CREATE TABLE IF NOT EXISTS analytics(
     conn.close()
 # Function ko sirf ek baar call karo
 init_db()
-# ================= HOME PAGE =================
-@app.route('/')
+@app.route("/")
 def home():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
 
-    ip = request.remote_addr
+    if "visitor_id" not in session:
+        session["visitor_id"] = str(uuid.uuid4())
 
-    cursor.execute("""
-    INSERT INTO analytics (ip, page)
-    VALUES (?, ?)
-""", (ip, "Home"))
+    if not session.get("visited"):
 
-    conn.commit()
-    conn.close()
+        ip = request.headers.get(
+            "X-Forwarded-For",
+            request.remote_addr
+        ).split(",")[0].strip()
+
+        user_agent = request.headers.get("User-Agent")
+
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO analytics
+            (visitor_id, ip, user_agent, page)
+            VALUES (?, ?, ?, ?)
+            """,
+            (
+                session["visitor_id"],
+                ip,
+                user_agent,
+                "Home"
+            )
+        )
+
+        conn.commit()
+        conn.close()
+
+        session["visited"] = True
 
     return render_template("index.html")
-
 
 # ================= CONTACT FORM =================
 @app.route('/contact', methods=['POST'])
@@ -313,8 +337,10 @@ def analytics():
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM analytics")
     total_visits = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(DISTINCT ip) FROM analytics")
+    cursor.execute("""
+SELECT COUNT(DISTINCT visitor_id)
+FROM analytics
+""")
     unique_visitors = cursor.fetchone()[0]
 
     cursor.execute("SELECT COUNT(*) FROM contacts")
