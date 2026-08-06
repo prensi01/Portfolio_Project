@@ -337,13 +337,24 @@ if (canvas && typeof THREE !== "undefined") {
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 }
-function openMenu() {
-    document.getElementById("mySidebar").style.width = "250px";
+function openMenu(){
+
+    const sidebar = document.getElementById("mySidebar");
+
+    sidebar.style.width = "260px";
+    sidebar.style.left = "0";
+
 }
 
-function closeMenu() {
-    document.getElementById("mySidebar").style.width = "0";
+
+function closeMenu(){
+
+    const sidebar = document.getElementById("mySidebar");
+
+    sidebar.style.width = "0";
+
 }
+
 const sidebarLinks = document.querySelectorAll(".sidebar a");
 sidebarLinks.forEach(link => {
     link.addEventListener("click", function() {
