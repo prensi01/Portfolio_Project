@@ -51,7 +51,7 @@ body.light-mode #particles-js {
 }
 
 .logo{
-    font-size:1.4rem;
+    font-size:1.5rem;
     margin:0;
     flex-shrink:0;
 }
@@ -730,7 +730,8 @@ html,body{
     top:15px;
     right:20px;
     color:white;
-    font-size:32px;
+    font-size:40px;
+    background-color: #111827;
 }
 
 .menu-btn {
