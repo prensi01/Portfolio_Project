@@ -2,17 +2,14 @@ import os
 import re
 import uuid
 import sqlite3
-import smtplib
 import requests
-import threading
+import threading 
 from flask import session
 from dotenv import load_dotenv
 load_dotenv()
 from email.mime.text import MIMEText
 from flask import Flask, render_template, request, redirect, session, url_for, flash
-
 from werkzeug.security import check_password_hash
-
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -80,29 +77,36 @@ init_db()
 @app.route("/")
 def home():
 
-    if "visitor_id" not in session:
-        session["visitor_id"] = str(uuid.uuid4())
+    visitor_id = session.get("visitor_id")
 
-    if not session.get("visited"):
+    if not visitor_id:
+        visitor_id = str(uuid.uuid4())
+        session["visitor_id"] = visitor_id
 
-        ip = request.headers.get(
-            "X-Forwarded-For",
-            request.remote_addr
-        ).split(",")[0].strip()
+    ip = request.headers.get(
+        "X-Forwarded-For",
+        request.remote_addr
+    ).split(",")[0].strip()
 
-        user_agent = request.headers.get("User-Agent")
+    user_agent = request.headers.get("User-Agent")
 
+    try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         cursor.execute(
             """
             INSERT INTO analytics
-            (visitor_id, ip, user_agent, page)
+            (
+                visitor_id,
+                ip,
+                user_agent,
+                page
+            )
             VALUES (?, ?, ?, ?)
             """,
             (
-                session["visitor_id"],
+                visitor_id,
                 ip,
                 user_agent,
                 "Home"
@@ -112,10 +116,16 @@ def home():
         conn.commit()
         conn.close()
 
-        session["visited"] = True
+        print("ANALYTICS: VISIT SAVED")
+
+    except Exception as analytics_error:
+
+        print(
+            "ANALYTICS ERROR:",
+            analytics_error
+        )
 
     return render_template("index.html")
-# ================= CONTACT FORM =================
 # ================= CONTACT FORM =================
 
 @app.route('/contact', methods=['POST'])
@@ -124,14 +134,13 @@ def contact():
 
     try:
         # ---------- FORM DATA ----------
-
         fullname = request.form.get('fullname', '').strip()
         email = request.form.get('email', '').strip()
         mobile = request.form.get('mobile', '').strip()
         subject = request.form.get('subject', '').strip()
         message = request.form.get('message', '').strip()
 
-        # Honeypot
+        # ---------- HONEYPOT ----------
         website = request.form.get('website', '').strip()
 
         print("========================================")
@@ -143,47 +152,77 @@ def contact():
         print("========================================")
 
         # ---------- BOT CHECK ----------
-
         if website:
             print("BOT DETECTED")
             return redirect(url_for('home'))
 
         # ---------- VALIDATION ----------
-
         if not fullname or not email or not message:
-            flash("Please fill all required fields.", "error")
+            print("VALIDATION ERROR: Required fields missing")
+
+            flash(
+                "Please fill all required fields.",
+                "error"
+            )
+
             return redirect(url_for('home'))
 
         email_pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 
         if not re.match(email_pattern, email):
-            flash("Invalid email address.", "error")
+
+            print("VALIDATION ERROR: Invalid email")
+
+            flash(
+                "Invalid email address.",
+                "error"
+            )
+
             return redirect(url_for('home'))
 
-        # ---------- CAPTCHA ----------
+        # =================================================
+        # CAPTCHA
+        # =================================================
 
         captcha = request.form.get("g-recaptcha-response")
 
         if not captcha:
-            flash("Please complete the CAPTCHA.", "error")
+
+            print("CAPTCHA ERROR: No CAPTCHA response")
+
+            flash(
+                "Please complete the CAPTCHA.",
+                "error"
+            )
+
             return redirect(url_for("home"))
 
         captcha_secret = os.getenv("RECAPTCHA_SECRET")
 
         if not captcha_secret:
-            print("ERROR: RECAPTCHA_SECRET is not configured")
-            flash("CAPTCHA configuration error.", "error")
+
+            print("CAPTCHA ERROR: RECAPTCHA_SECRET missing")
+
+            flash(
+                "CAPTCHA configuration error.",
+                "error"
+            )
+
             return redirect(url_for("home"))
 
         try:
 
+            print("CAPTCHA: VERIFYING...")
+
             captcha_response = requests.post(
                 "https://www.google.com/recaptcha/api/siteverify",
+
                 data={
                     "secret": captcha_secret,
                     "response": captcha
                 },
-                timeout=5
+
+                timeout=10
             )
 
             captcha_result = captcha_response.json()
@@ -201,12 +240,14 @@ def contact():
 
                 return redirect(url_for("home"))
 
+            print("CAPTCHA: VERIFIED SUCCESSFULLY")
+
         except requests.RequestException as captcha_error:
 
-            print("CAPTCHA ERROR:", captcha_error)
+            print("CAPTCHA REQUEST ERROR:", captcha_error)
 
             flash(
-                "CAPTCHA service is temporarily unavailable. Please try again.",
+                "CAPTCHA service is temporarily unavailable.",
                 "error"
             )
 
@@ -217,6 +258,8 @@ def contact():
         # =================================================
 
         try:
+
+            print("DATABASE: SAVING MESSAGE...")
 
             conn = sqlite3.connect(DB_PATH)
 
@@ -244,6 +287,7 @@ def contact():
             )
 
             conn.commit()
+
             conn.close()
 
             print("DATABASE: MESSAGE SAVED SUCCESSFULLY")
@@ -253,7 +297,7 @@ def contact():
             print("DATABASE ERROR:", db_error)
 
             flash(
-                "Unable to save your message. Please try again.",
+                "Unable to save your message.",
                 "error"
             )
 
@@ -279,11 +323,15 @@ def contact():
 
                 if success:
 
-                    print("EMAIL THREAD: EMAIL SENT SUCCESSFULLY")
+                    print(
+                        "EMAIL THREAD: SENT SUCCESSFULLY"
+                    )
 
                 else:
 
-                    print("EMAIL THREAD: EMAIL FAILED")
+                    print(
+                        "EMAIL THREAD: FAILED"
+                    )
 
             except Exception as email_error:
 
@@ -292,11 +340,12 @@ def contact():
                     email_error
                 )
 
-        # Start email in background
         threading.Thread(
             target=email_task,
             daemon=True
         ).start()
+
+        print("EMAIL THREAD: STARTED")
 
         # =================================================
         # IMMEDIATE RESPONSE
@@ -324,7 +373,7 @@ def contact():
 
 
 # =====================================================
-# EMAIL SEND
+# RESEND EMAIL
 # =====================================================
 
 def send_email(
@@ -337,131 +386,127 @@ def send_email(
 
     try:
 
-        # ---------- ENV VARIABLES ----------
+        resend_api_key = os.getenv("RESEND_API_KEY")
+        receiver_email = os.getenv("EMAIL_USER")
 
-        sender_email = os.getenv("EMAIL_USER")
-        password = os.getenv("EMAIL_PASS")
+        # ---------- CHECK ENV ----------
 
-        if not sender_email:
+        if not resend_api_key:
+
+            print("EMAIL ERROR: RESEND_API_KEY is missing")
+
+            return False
+
+        if not receiver_email:
 
             print("EMAIL ERROR: EMAIL_USER is missing")
 
             return False
 
-        if not password:
+        # ---------- EMAIL HTML ----------
 
-            print("EMAIL ERROR: EMAIL_PASS is missing")
+        html_body = f"""
+        <html>
 
-            return False
+        <body style="font-family: Arial, sans-serif; line-height: 1.6;">
 
-        # ---------- EMAIL BODY ----------
+            <h2>New Portfolio Contact Form Submission</h2>
 
-        body = f"""
-New Portfolio Contact Form Submission
-======================================
+            <hr>
 
-Name:
-{fullname}
+            <p>
+                <strong>Name:</strong><br>
+                {fullname}
+            </p>
 
-Email:
-{email}
+            <p>
+                <strong>Email:</strong><br>
+                {email}
+            </p>
 
-Mobile:
-{mobile}
+            <p>
+                <strong>Mobile:</strong><br>
+                {mobile}
+            </p>
 
-Subject:
-{subject}
+            <p>
+                <strong>Subject:</strong><br>
+                {subject}
+            </p>
 
-Message:
-{message}
+            <p>
+                <strong>Message:</strong><br>
+                {message}
+            </p>
 
-======================================
-This message was sent from your portfolio.
-"""
+            <hr>
 
-        # ---------- EMAIL MESSAGE ----------
+            <p>
+                This message was sent from your portfolio contact form.
+            </p>
 
-        msg = MIMEText(
-            body,
-            "plain",
-            "utf-8"
-        )
+        </body>
 
-        msg["Subject"] = (
-            f"New Portfolio Contact: {subject}"
-        )
+        </html>
+        """
 
-        msg["From"] = sender_email
+        # ---------- RESEND API ----------
 
-        msg["To"] = sender_email
+        print("EMAIL: CONNECTING TO RESEND...")
 
-        msg["Reply-To"] = email
+        response = requests.post(
 
-        # ---------- SMTP ----------
+            "https://api.resend.com/emails",
 
-        print("EMAIL: Connecting to Gmail SMTP...")
+            headers={
+                "Authorization": f"Bearer {resend_api_key}",
+                "Content-Type": "application/json"
+            },
 
-        with smtplib.SMTP(
-            "smtp.gmail.com",
-            587,
+            json={
+
+                "from": "Portfolio <onboarding@resend.dev>",
+
+                "to": [receiver_email],
+
+                "subject": f"New Portfolio Contact: {subject}",
+
+                "html": html_body,
+
+                "reply_to": email
+
+            },
+
             timeout=10
-        ) as server:
-
-            server.ehlo()
-
-            print("EMAIL: Starting TLS...")
-
-            server.starttls()
-
-            server.ehlo()
-
-            print("EMAIL: Logging into Gmail...")
-
-            server.login(
-                sender_email,
-                password
-            )
-
-            print("EMAIL: Sending email...")
-
-            server.sendmail(
-                sender_email,
-                sender_email,
-                msg.as_string()
-            )
-
-        print("EMAIL: SENT SUCCESSFULLY")
-
-        return True
-
-    except smtplib.SMTPAuthenticationError as e:
-
-        print(
-            "EMAIL AUTHENTICATION ERROR:",
-            e
         )
 
-        print(
-            "CHECK: EMAIL_USER and EMAIL_PASS / Gmail App Password"
-        )
+        print("RESEND STATUS:", response.status_code)
+
+        print("RESEND RESPONSE:", response.text)
+
+        # ---------- SUCCESS ----------
+
+        if response.status_code in (200, 201):
+
+            print("EMAIL: RESEND SENT SUCCESSFULLY")
+
+            return True
+
+        # ---------- FAILED ----------
+
+        print("EMAIL: RESEND FAILED")
 
         return False
 
-    except smtplib.SMTPException as e:
+    except requests.RequestException as e:
 
-        print(
-            "SMTP ERROR:",
-            e
-        )
+        print("RESEND NETWORK ERROR:", e)
 
         return False
 
     except Exception as e:
 
-        print(
-            "EMAIL ERROR:",
-            e
-        )
+        print("RESEND EMAIL ERROR:", e)
 
         return False
 
