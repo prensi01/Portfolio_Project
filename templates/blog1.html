@@ -17,9 +17,12 @@
     />
 
     <meta name="author" content="Prensi" />
-
     <style>
-      * {
+      /* ================= RESET ================= */
+
+      *,
+      *::before,
+      *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -27,9 +30,15 @@
 
       html {
         scroll-behavior: smooth;
+        width: 100%;
+        overflow-x: hidden;
       }
 
       body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+
         font-family:
           Inter,
           -apple-system,
@@ -39,27 +48,46 @@
           sans-serif;
 
         background: #f5f7fb;
-
         color: #1f2937;
-
         line-height: 1.8;
+      }
+
+      img,
+      video,
+      iframe {
+        max-width: 100%;
+        height: auto;
       }
 
       a {
         text-decoration: none;
       }
 
+      /* Prevent long words/URLs from breaking mobile layout */
+
+      p,
+      li,
+      h1,
+      h2,
+      h3,
+      h4,
+      a,
+      span,
+      strong {
+        overflow-wrap: anywhere;
+        word-wrap: break-word;
+      }
+
       /* ================= NAVBAR ================= */
 
       .navbar {
         position: sticky;
-
         top: 0;
-
         z-index: 1000;
 
-        background: rgba(255, 255, 255, 0.94);
+        width: 100%;
 
+        background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(12px);
 
         border-bottom: 1px solid #e5e7eb;
@@ -68,23 +96,24 @@
       }
 
       .nav-container {
+        width: 100%;
         max-width: 1200px;
 
         margin: auto;
 
         display: flex;
-
         align-items: center;
-
         justify-content: space-between;
+
+        gap: 15px;
       }
 
       .logo {
         font-size: 22px;
-
         font-weight: 800;
-
         color: #111827;
+
+        white-space: nowrap;
       }
 
       .logo span {
@@ -93,17 +122,18 @@
 
       .nav-links {
         display: flex;
-
         align-items: center;
+        justify-content: flex-end;
 
         gap: 25px;
+
+        min-width: 0;
       }
 
       .nav-links a {
         color: #4b5563;
 
         font-size: 14px;
-
         font-weight: 600;
 
         transition: 0.3s;
@@ -115,12 +145,13 @@
 
       .nav-cta {
         background: #111827;
-
         color: white !important;
 
         padding: 8px 16px;
 
         border-radius: 8px;
+
+        white-space: nowrap;
       }
 
       .nav-cta:hover {
@@ -130,6 +161,7 @@
       /* ================= HERO ================= */
 
       .hero {
+        width: 100%;
         max-width: 1200px;
 
         margin: 55px auto 30px;
@@ -139,6 +171,8 @@
 
       .hero-card {
         position: relative;
+
+        width: 100%;
 
         overflow: hidden;
 
@@ -164,7 +198,6 @@
         position: absolute;
 
         width: 280px;
-
         height: 280px;
 
         border-radius: 50%;
@@ -172,7 +205,6 @@
         border: 1px solid rgba(255, 255, 255, 0.12);
 
         right: -90px;
-
         top: -90px;
       }
 
@@ -182,7 +214,6 @@
         position: absolute;
 
         width: 180px;
-
         height: 180px;
 
         border-radius: 50%;
@@ -190,15 +221,14 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
 
         right: 80px;
-
         bottom: -90px;
       }
 
       .hero-content {
         position: relative;
-
         z-index: 2;
 
+        width: 100%;
         max-width: 900px;
       }
 
@@ -214,14 +244,13 @@
         border-radius: 30px;
 
         font-size: 13px;
-
         font-weight: 600;
 
         margin-bottom: 20px;
       }
 
       .hero h1 {
-        font-size: clamp(36px, 5vw, 58px);
+        font-size: clamp(34px, 5vw, 58px);
 
         line-height: 1.12;
 
@@ -231,11 +260,12 @@
       }
 
       .hero-description {
+        width: 100%;
+        max-width: 800px;
+
         color: #dcfce7;
 
         font-size: 18px;
-
-        max-width: 800px;
 
         margin-bottom: 28px;
       }
@@ -255,6 +285,7 @@
       /* ================= PAGE ================= */
 
       .page-layout {
+        width: 100%;
         max-width: 1200px;
 
         margin: 30px auto 80px;
@@ -274,8 +305,9 @@
 
       .sidebar {
         position: sticky;
-
         top: 90px;
+
+        min-width: 0;
       }
 
       .sidebar-card {
@@ -292,7 +324,6 @@
 
       .sidebar-title {
         font-size: 14px;
-
         font-weight: 800;
 
         color: #111827;
@@ -334,11 +365,14 @@
         gap: 12px;
 
         align-items: center;
+
+        min-width: 0;
       }
 
       .profile-avatar {
-        width: 42px;
+        flex: 0 0 auto;
 
+        width: 42px;
         height: 42px;
 
         border-radius: 50%;
@@ -348,7 +382,6 @@
         display: flex;
 
         align-items: center;
-
         justify-content: center;
 
         color: #15803d;
@@ -373,6 +406,9 @@
       /* ================= ARTICLE ================= */
 
       .article {
+        width: 100%;
+        min-width: 0;
+
         background: white;
 
         border: 1px solid #e5e7eb;
@@ -382,9 +418,13 @@
         padding: 55px;
 
         box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+
+        overflow: hidden;
       }
 
       .article p {
+        width: 100%;
+
         color: #4b5563;
 
         font-size: 16px;
@@ -432,6 +472,8 @@
       /* ================= TAKEAWAYS ================= */
 
       .takeaways {
+        width: 100%;
+
         background: #f0fdf4;
 
         border: 1px solid #dcfce7;
@@ -443,6 +485,8 @@
         padding: 25px;
 
         margin: 30px 0 40px;
+
+        overflow-wrap: anywhere;
       }
 
       .takeaways h3 {
@@ -458,6 +502,8 @@
       /* ================= HIGHLIGHT ================= */
 
       .highlight {
+        width: 100%;
+
         background: #f8fafc;
 
         border: 1px solid #e5e7eb;
@@ -467,6 +513,8 @@
         padding: 24px;
 
         margin: 25px 0;
+
+        overflow-wrap: anywhere;
       }
 
       /* ================= EXCEL FORMULA ================= */
@@ -483,7 +531,14 @@
         margin-bottom: 7px;
       }
 
+      /* ================= CODE ================= */
+
       pre {
+        display: block;
+
+        width: 100%;
+        max-width: 100%;
+
         background: #0f172a;
 
         color: #e2e8f0;
@@ -501,15 +556,25 @@
         margin-bottom: 25px;
 
         border: 1px solid #1e293b;
+
+        white-space: pre-wrap;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
       }
 
       code {
         font-family: Consolas, "Courier New", monospace;
+
+        overflow-wrap: anywhere;
       }
 
       /* ================= QUOTE ================= */
 
       blockquote {
+        width: 100%;
+
         background: #f8fafc;
 
         border-left: 5px solid #16a34a;
@@ -525,14 +590,21 @@
         font-style: italic;
 
         font-size: 17px;
+
+        overflow-wrap: anywhere;
       }
 
       /* ================= TABLE ================= */
 
       .table-wrapper {
+        width: 100%;
+        max-width: 100%;
+
         overflow-x: auto;
 
         margin: 25px 0;
+
+        -webkit-overflow-scrolling: touch;
       }
 
       table {
@@ -573,9 +645,11 @@
       /* ================= SKILL GRID ================= */
 
       .excel-grid {
+        width: 100%;
+
         display: grid;
 
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
         gap: 14px;
 
@@ -583,6 +657,9 @@
       }
 
       .excel-item {
+        width: 100%;
+        min-width: 0;
+
         background: #f8fafc;
 
         border: 1px solid #e5e7eb;
@@ -592,6 +669,8 @@
         border-radius: 12px;
 
         transition: 0.25s;
+
+        overflow-wrap: anywhere;
       }
 
       .excel-item:hover {
@@ -619,11 +698,15 @@
       /* ================= TAGS ================= */
 
       .tags {
+        width: 100%;
+
         border-top: 1px solid #e5e7eb;
 
         margin-top: 50px;
 
         padding-top: 25px;
+
+        overflow-wrap: anywhere;
       }
 
       .tag {
@@ -647,6 +730,8 @@
       /* ================= AUTHOR ================= */
 
       .author-card {
+        width: 100%;
+
         margin-top: 45px;
 
         padding: 28px;
@@ -656,6 +741,8 @@
         border-radius: 16px;
 
         color: white;
+
+        overflow-wrap: anywhere;
       }
 
       .author-card h3 {
@@ -737,6 +824,8 @@
       /* ================= FOOTER ================= */
 
       footer {
+        width: 100%;
+
         background: #111827;
 
         color: #9ca3af;
@@ -748,11 +837,15 @@
         font-size: 13px;
       }
 
-      /* ================= RESPONSIVE ================= */
+      /* =========================================================
+     TABLET
+     ========================================================= */
 
       @media (max-width: 950px) {
         .page-layout {
           grid-template-columns: 1fr;
+
+          width: 100%;
         }
 
         .sidebar {
@@ -770,55 +863,79 @@
         .nav-links a:not(.nav-cta) {
           display: none;
         }
+
+        .article {
+          width: 100%;
+          min-width: 0;
+        }
       }
 
+      /* =========================================================
+     MOBILE
+     ========================================================= */
+
       @media (max-width: 700px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        /* ---------- Navbar ---------- */
+
+        .navbar {
+          padding: 13px 15px;
+        }
+
+        .nav-container {
+          width: 100%;
+        }
+
+        .logo {
+          font-size: 20px;
+        }
+
+        .nav-links {
+          gap: 8px;
+        }
+
+        .nav-cta {
+          padding: 7px 11px;
+
+          font-size: 12px;
+        }
+
+        /* ---------- Hero ---------- */
+
         .hero {
-          margin-top: 25px;
+          width: 100%;
+
+          margin: 25px auto 20px;
+
+          padding: 0 15px;
         }
 
         .hero-card {
-          padding: 42px 28px;
+          width: 100%;
+
+          padding: 40px 22px;
 
           border-radius: 18px;
         }
 
-        .hero-description {
-          font-size: 16px;
-        }
-
-        .article {
-          padding: 30px 22px;
-
-          border-radius: 16px;
-        }
-
-        .article h2 {
-          font-size: 26px;
-
-          margin-top: 42px;
-        }
-
-        .excel-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .page-layout {
-          padding: 0 15px;
-        }
-
-        .hero {
-          padding: 0 15px;
-        }
-      }
-
-      @media (max-width: 450px) {
-        .navbar {
-          padding: 13px 18px;
-        }
-
         .hero h1 {
           font-size: 34px;
+
+          line-height: 1.15;
+
+          letter-spacing: -0.8px;
+        }
+
+        .hero-description {
+          font-size: 15px;
+
+          line-height: 1.75;
         }
 
         .hero-meta {
@@ -827,12 +944,259 @@
           gap: 6px;
         }
 
+        /* ---------- Main layout ---------- */
+
+        .page-layout {
+          display: block;
+
+          width: 100%;
+
+          max-width: 100%;
+
+          margin: 20px auto 50px;
+
+          padding: 0 15px;
+        }
+
+        /* ---------- Article ---------- */
+
         .article {
-          padding: 25px 18px;
+          width: 100%;
+          min-width: 0;
+
+          padding: 28px 20px;
+
+          border-radius: 16px;
+
+          overflow: hidden;
         }
 
         .article p {
+          width: 100%;
+
           font-size: 15px;
+
+          line-height: 1.8;
+
+          margin-bottom: 18px;
+        }
+
+        .article h2 {
+          font-size: 25px;
+
+          line-height: 1.3;
+
+          margin-top: 40px;
+
+          margin-bottom: 16px;
+        }
+
+        .article h3 {
+          font-size: 19px;
+
+          line-height: 1.4;
+
+          margin-top: 28px;
+        }
+
+        .article ul,
+        .article ol {
+          margin-left: 18px;
+
+          padding-left: 5px;
+        }
+
+        .article li {
+          font-size: 15px;
+
+          line-height: 1.7;
+        }
+
+        /* ---------- Boxes ---------- */
+
+        .takeaways,
+        .highlight,
+        blockquote {
+          width: 100%;
+          max-width: 100%;
+
+          padding: 18px;
+
+          overflow-wrap: anywhere;
+        }
+
+        /* ---------- Excel grid ---------- */
+
+        .excel-grid {
+          width: 100%;
+
+          grid-template-columns: 1fr;
+
+          gap: 12px;
+        }
+
+        .excel-item {
+          width: 100%;
+        }
+
+        /* ---------- Code ---------- */
+
+        pre {
+          width: 100%;
+          max-width: 100%;
+
+          padding: 15px;
+
+          font-size: 12px;
+
+          line-height: 1.6;
+
+          white-space: pre-wrap;
+
+          word-break: break-word;
+
+          overflow-x: auto;
+        }
+
+        /* ---------- Tables ---------- */
+
+        .table-wrapper {
+          width: 100%;
+          max-width: 100%;
+
+          overflow-x: auto;
+
+          -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+          min-width: 520px;
+        }
+
+        /* ---------- Author ---------- */
+
+        .author-card {
+          width: 100%;
+
+          padding: 22px;
+        }
+
+        .author-buttons {
+          flex-direction: column;
+
+          width: 100%;
+        }
+
+        .author-button {
+          width: 100%;
+
+          text-align: center;
+        }
+
+        /* ---------- Tags ---------- */
+
+        .tags {
+          width: 100%;
+        }
+
+        /* ---------- Footer ---------- */
+
+        footer {
+          width: 100%;
+
+          padding: 25px 15px;
+        }
+      }
+
+      /* =========================================================
+     SMALL MOBILE
+     ========================================================= */
+
+      @media (max-width: 450px) {
+        .navbar {
+          padding: 12px 14px;
+        }
+
+        .logo {
+          font-size: 19px;
+        }
+
+        .nav-cta {
+          padding: 7px 10px;
+
+          font-size: 11px;
+        }
+
+        .hero {
+          padding: 0 12px;
+        }
+
+        .hero-card {
+          padding: 34px 18px;
+
+          border-radius: 16px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+
+          line-height: 1.15;
+        }
+
+        .hero-description {
+          font-size: 14px;
+
+          line-height: 1.7;
+        }
+
+        .page-layout {
+          padding: 0 12px;
+        }
+
+        .article {
+          padding: 23px 16px;
+
+          border-radius: 14px;
+        }
+
+        .article p {
+          font-size: 14.5px;
+
+          line-height: 1.8;
+        }
+
+        .article h2 {
+          font-size: 23px;
+        }
+
+        .article h3 {
+          font-size: 18px;
+        }
+
+        .article ul,
+        .article ol {
+          margin-left: 16px;
+        }
+
+        pre {
+          padding: 13px;
+
+          font-size: 11.5px;
+        }
+
+        blockquote {
+          padding: 16px;
+
+          font-size: 15px;
+        }
+
+        .takeaways,
+        .highlight {
+          padding: 16px;
+        }
+
+        table {
+          min-width: 480px;
         }
       }
     </style>
