@@ -4,7 +4,6 @@ import uuid
 import sqlite3
 import smtplib
 import requests
-import threading
 from flask import session
 from dotenv import load_dotenv
 load_dotenv()
@@ -115,7 +114,6 @@ def home():
         session["visited"] = True
 
     return render_template("index.html")
-
 # ================= CONTACT FORM =================
 @app.route('/contact', methods=['POST'])
 @limiter.limit("2 per minute")
@@ -130,7 +128,7 @@ def contact():
 
         print("FORM DATA:", fullname, email, mobile, subject, message)
 
-        # 🚨 BOT CHECK (honeypot)
+        # ---------- BOT CHECK ----------
         if website:
             print("BOT DETECTED")
             return redirect(url_for('home'))
@@ -141,21 +139,29 @@ def contact():
             return redirect(url_for('home'))
 
         email_pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+
         if not re.match(email_pattern, email):
             flash("Invalid email address", "error")
             return redirect(url_for('home'))
+
+        # ---------- CAPTCHA ----------
         captcha = request.form.get("g-recaptcha-response")
+
         if not captcha:
             flash("Please complete the CAPTCHA.", "error")
             return redirect(url_for("home"))
+
         data = {
             "secret": os.getenv("RECAPTCHA_SECRET"),
             "response": captcha
         }
+
         response = requests.post(
             "https://www.google.com/recaptcha/api/siteverify",
-             data=data
+            data=data,
+            timeout=10
         )
+
         result = response.json()
 
         if not result.get("success"):
@@ -168,9 +174,16 @@ def contact():
             cursor = conn.cursor()
 
             cursor.execute("""
-                INSERT INTO contacts(fullname,email,mobile,subject,message)
-                VALUES(?,?,?,?,?)
-            """, (fullname, email, mobile, subject, message))
+                INSERT INTO contacts
+                (fullname, email, mobile, subject, message)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                fullname,
+                email,
+                mobile,
+                subject,
+                message
+            ))
 
             conn.commit()
             conn.close()
@@ -180,24 +193,37 @@ def contact():
         except Exception as db_error:
             print("DB ERROR:", db_error)
 
-        # ---------- EMAIL (THREAD SAFE FIX) ----------
-        def email_task():
-            try:
-                send_email(fullname, email, mobile, subject, message)
-            except Exception as e:
-                print("EMAIL THREAD ERROR:", e)
+            flash("Unable to save your message.", "error")
+            return redirect(url_for('home'))
 
-        threading.Thread(target=email_task, daemon=True).start()
+        # ---------- EMAIL ----------
+        email_sent = send_email(
+            fullname,
+            email,
+            mobile,
+            subject,
+            message
+        )
 
-        flash("Message sent successfully!", "success")
+        if email_sent:
+            print("EMAIL SENT SUCCESSFULLY")
+            flash("Message sent successfully!", "success")
+        else:
+            print("EMAIL COULD NOT BE SENT")
+            flash(
+                "Your message was saved, but email notification could not be sent.",
+                "error"
+            )
+
         return redirect(url_for('home'))
 
     except Exception as e:
         print("CONTACT ERROR:", e)
+
         flash("Something went wrong", "error")
         return redirect(url_for('home'))
 
-# ---------- EMAIL SEND (CLEAN VERSION) ----------
+ # ---------- EMAIL SEND ----------
 def send_email(fullname, email, mobile, subject, message):
     try:
         sender_email = os.getenv("EMAIL_USER")
@@ -205,10 +231,11 @@ def send_email(fullname, email, mobile, subject, message):
 
         if not sender_email or not password:
             print("EMAIL ENV NOT SET")
-            return
+            return False
 
         body = f"""
-New Contact Form Submission:
+New Contact Form Submission
+============================
 
 Name: {fullname}
 Email: {email}
@@ -217,27 +244,37 @@ Subject: {subject}
 
 Message:
 {message}
+
+============================
+This message was sent from your portfolio contact form.
 """
 
-        msg = MIMEText(body)
-        msg["Subject"] = f"New Contact: {subject}"
+        msg = MIMEText(body, "plain", "utf-8")
+
+        msg["Subject"] = f"New Portfolio Contact: {subject}"
         msg["From"] = sender_email
         msg["To"] = sender_email
         msg["Reply-To"] = email
 
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=20) as server:
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
 
-        server.login(sender_email, password)
-        server.sendmail(sender_email, sender_email, msg.as_string())
-        server.quit()
+            server.login(sender_email, password)
+
+            server.sendmail(
+                sender_email,
+                sender_email,
+                msg.as_string()
+            )
 
         print("EMAIL SENT SUCCESSFULLY")
+        return True
 
     except Exception as e:
         print("EMAIL ERROR:", str(e))
+        return False
 
 
 # ================= ADMIN LOGIN =================
@@ -318,10 +355,22 @@ def admin():
     if not session.get('admin_logged_in'):
         return redirect(url_for('login'))
 
-    conn =sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM contacts ORDER BY id DESC")
+    cursor.execute("""
+        SELECT
+            id,
+            fullname,
+            email,
+            mobile,
+            subject,
+            message,
+            datetime(created_at, '+5 hours', '+30 minutes') AS created_at
+        FROM contacts
+        ORDER BY id DESC
+    """)
+
     data = cursor.fetchall()
 
     conn.close()
