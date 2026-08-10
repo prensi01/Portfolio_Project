@@ -4,6 +4,7 @@ import uuid
 import sqlite3
 import smtplib
 import requests
+import threading
 from flask import session
 from dotenv import load_dotenv
 load_dotenv()
@@ -115,153 +116,313 @@ def home():
 
     return render_template("index.html")
 # ================= CONTACT FORM =================
+# ================= CONTACT FORM =================
+
 @app.route('/contact', methods=['POST'])
 @limiter.limit("2 per minute")
 def contact():
+
     try:
+        # ---------- FORM DATA ----------
+
         fullname = request.form.get('fullname', '').strip()
         email = request.form.get('email', '').strip()
         mobile = request.form.get('mobile', '').strip()
         subject = request.form.get('subject', '').strip()
         message = request.form.get('message', '').strip()
-        website = request.form.get('website', '').strip()  # honeypot
 
-        print("FORM DATA:", fullname, email, mobile, subject, message)
+        # Honeypot
+        website = request.form.get('website', '').strip()
+
+        print("========================================")
+        print("CONTACT FORM RECEIVED")
+        print("Name:", fullname)
+        print("Email:", email)
+        print("Mobile:", mobile)
+        print("Subject:", subject)
+        print("========================================")
 
         # ---------- BOT CHECK ----------
+
         if website:
             print("BOT DETECTED")
             return redirect(url_for('home'))
 
         # ---------- VALIDATION ----------
+
         if not fullname or not email or not message:
-            flash("Required fields missing", "error")
+            flash("Please fill all required fields.", "error")
             return redirect(url_for('home'))
 
         email_pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 
         if not re.match(email_pattern, email):
-            flash("Invalid email address", "error")
+            flash("Invalid email address.", "error")
             return redirect(url_for('home'))
 
         # ---------- CAPTCHA ----------
+
         captcha = request.form.get("g-recaptcha-response")
 
         if not captcha:
             flash("Please complete the CAPTCHA.", "error")
             return redirect(url_for("home"))
 
-        data = {
-            "secret": os.getenv("RECAPTCHA_SECRET"),
-            "response": captcha
-        }
+        captcha_secret = os.getenv("RECAPTCHA_SECRET")
 
-        response = requests.post(
-            "https://www.google.com/recaptcha/api/siteverify",
-            data=data,
-            timeout=10
-        )
-
-        result = response.json()
-
-        if not result.get("success"):
-            flash("Captcha verification failed.", "error")
+        if not captcha_secret:
+            print("ERROR: RECAPTCHA_SECRET is not configured")
+            flash("CAPTCHA configuration error.", "error")
             return redirect(url_for("home"))
 
-        # ---------- DATABASE ----------
         try:
+
+            captcha_response = requests.post(
+                "https://www.google.com/recaptcha/api/siteverify",
+                data={
+                    "secret": captcha_secret,
+                    "response": captcha
+                },
+                timeout=5
+            )
+
+            captcha_result = captcha_response.json()
+
+            print("CAPTCHA RESULT:", captcha_result)
+
+            if not captcha_result.get("success"):
+
+                print("CAPTCHA VERIFICATION FAILED")
+
+                flash(
+                    "CAPTCHA verification failed. Please try again.",
+                    "error"
+                )
+
+                return redirect(url_for("home"))
+
+        except requests.RequestException as captcha_error:
+
+            print("CAPTCHA ERROR:", captcha_error)
+
+            flash(
+                "CAPTCHA service is temporarily unavailable. Please try again.",
+                "error"
+            )
+
+            return redirect(url_for("home"))
+
+        # =================================================
+        # DATABASE SAVE
+        # =================================================
+
+        try:
+
             conn = sqlite3.connect(DB_PATH)
+
             cursor = conn.cursor()
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO contacts
-                (fullname, email, mobile, subject, message)
+                (
+                    fullname,
+                    email,
+                    mobile,
+                    subject,
+                    message
+                )
                 VALUES (?, ?, ?, ?, ?)
-            """, (
-                fullname,
-                email,
-                mobile,
-                subject,
-                message
-            ))
+                """,
+                (
+                    fullname,
+                    email,
+                    mobile,
+                    subject,
+                    message
+                )
+            )
 
             conn.commit()
             conn.close()
 
-            print("DATA SAVED SUCCESSFULLY")
+            print("DATABASE: MESSAGE SAVED SUCCESSFULLY")
 
         except Exception as db_error:
-            print("DB ERROR:", db_error)
 
-            flash("Unable to save your message.", "error")
-            return redirect(url_for('home'))
+            print("DATABASE ERROR:", db_error)
 
-        # ---------- EMAIL ----------
-        email_sent = send_email(
-            fullname,
-            email,
-            mobile,
-            subject,
-            message
-        )
-
-        if email_sent:
-            print("EMAIL SENT SUCCESSFULLY")
-            flash("Message sent successfully!", "success")
-        else:
-            print("EMAIL COULD NOT BE SENT")
             flash(
-                "Your message was saved, but email notification could not be sent.",
+                "Unable to save your message. Please try again.",
                 "error"
             )
 
-        return redirect(url_for('home'))
+            return redirect(url_for("home"))
+
+        # =================================================
+        # EMAIL BACKGROUND THREAD
+        # =================================================
+
+        def email_task():
+
+            print("EMAIL THREAD: STARTED")
+
+            try:
+
+                success = send_email(
+                    fullname,
+                    email,
+                    mobile,
+                    subject,
+                    message
+                )
+
+                if success:
+
+                    print("EMAIL THREAD: EMAIL SENT SUCCESSFULLY")
+
+                else:
+
+                    print("EMAIL THREAD: EMAIL FAILED")
+
+            except Exception as email_error:
+
+                print(
+                    "EMAIL THREAD ERROR:",
+                    email_error
+                )
+
+        # Start email in background
+        threading.Thread(
+            target=email_task,
+            daemon=True
+        ).start()
+
+        # =================================================
+        # IMMEDIATE RESPONSE
+        # =================================================
+
+        flash(
+            "Message sent successfully!",
+            "success"
+        )
+
+        print("CONTACT: REDIRECTING TO HOME")
+
+        return redirect(url_for("home"))
 
     except Exception as e:
+
         print("CONTACT ERROR:", e)
 
-        flash("Something went wrong", "error")
-        return redirect(url_for('home'))
+        flash(
+            "Something went wrong. Please try again.",
+            "error"
+        )
 
- # ---------- EMAIL SEND ----------
-def send_email(fullname, email, mobile, subject, message):
+        return redirect(url_for("home"))
+
+
+# =====================================================
+# EMAIL SEND
+# =====================================================
+
+def send_email(
+    fullname,
+    email,
+    mobile,
+    subject,
+    message
+):
+
     try:
+
+        # ---------- ENV VARIABLES ----------
+
         sender_email = os.getenv("EMAIL_USER")
         password = os.getenv("EMAIL_PASS")
 
-        if not sender_email or not password:
-            print("EMAIL ENV NOT SET")
+        if not sender_email:
+
+            print("EMAIL ERROR: EMAIL_USER is missing")
+
             return False
 
-        body = f"""
-New Contact Form Submission
-============================
+        if not password:
 
-Name: {fullname}
-Email: {email}
-Mobile: {mobile}
-Subject: {subject}
+            print("EMAIL ERROR: EMAIL_PASS is missing")
+
+            return False
+
+        # ---------- EMAIL BODY ----------
+
+        body = f"""
+New Portfolio Contact Form Submission
+======================================
+
+Name:
+{fullname}
+
+Email:
+{email}
+
+Mobile:
+{mobile}
+
+Subject:
+{subject}
 
 Message:
 {message}
 
-============================
-This message was sent from your portfolio contact form.
+======================================
+This message was sent from your portfolio.
 """
 
-        msg = MIMEText(body, "plain", "utf-8")
+        # ---------- EMAIL MESSAGE ----------
 
-        msg["Subject"] = f"New Portfolio Contact: {subject}"
+        msg = MIMEText(
+            body,
+            "plain",
+            "utf-8"
+        )
+
+        msg["Subject"] = (
+            f"New Portfolio Contact: {subject}"
+        )
+
         msg["From"] = sender_email
+
         msg["To"] = sender_email
+
         msg["Reply-To"] = email
 
-        with smtplib.SMTP("smtp.gmail.com", 587, timeout=20) as server:
-            server.ehlo()
-            server.starttls()
+        # ---------- SMTP ----------
+
+        print("EMAIL: Connecting to Gmail SMTP...")
+
+        with smtplib.SMTP(
+            "smtp.gmail.com",
+            587,
+            timeout=10
+        ) as server:
+
             server.ehlo()
 
-            server.login(sender_email, password)
+            print("EMAIL: Starting TLS...")
+
+            server.starttls()
+
+            server.ehlo()
+
+            print("EMAIL: Logging into Gmail...")
+
+            server.login(
+                sender_email,
+                password
+            )
+
+            print("EMAIL: Sending email...")
 
             server.sendmail(
                 sender_email,
@@ -269,11 +430,39 @@ This message was sent from your portfolio contact form.
                 msg.as_string()
             )
 
-        print("EMAIL SENT SUCCESSFULLY")
+        print("EMAIL: SENT SUCCESSFULLY")
+
         return True
 
+    except smtplib.SMTPAuthenticationError as e:
+
+        print(
+            "EMAIL AUTHENTICATION ERROR:",
+            e
+        )
+
+        print(
+            "CHECK: EMAIL_USER and EMAIL_PASS / Gmail App Password"
+        )
+
+        return False
+
+    except smtplib.SMTPException as e:
+
+        print(
+            "SMTP ERROR:",
+            e
+        )
+
+        return False
+
     except Exception as e:
-        print("EMAIL ERROR:", str(e))
+
+        print(
+            "EMAIL ERROR:",
+            e
+        )
+
         return False
 
 
