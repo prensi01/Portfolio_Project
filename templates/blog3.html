@@ -17,7 +17,6 @@
     />
 
     <meta name="author" content="Prensi" />
-
     <style>
       * {
         margin: 0;
@@ -27,9 +26,15 @@
 
       html {
         scroll-behavior: smooth;
+        width: 100%;
+        overflow-x: hidden;
       }
 
       body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+
         font-family:
           Inter,
           -apple-system,
@@ -47,12 +52,19 @@
         text-decoration: none;
       }
 
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
       /* ================= NAVBAR ================= */
 
       .navbar {
         position: sticky;
         top: 0;
         z-index: 1000;
+
+        width: 100%;
 
         background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(12px);
@@ -63,18 +75,24 @@
       }
 
       .nav-container {
+        width: 100%;
         max-width: 1200px;
+
         margin: auto;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        min-width: 0;
       }
 
       .logo {
         font-size: 22px;
         font-weight: 800;
         color: #111827;
+
+        white-space: nowrap;
       }
 
       .logo span {
@@ -85,6 +103,8 @@
         display: flex;
         align-items: center;
         gap: 25px;
+
+        min-width: 0;
       }
 
       .nav-links a {
@@ -92,6 +112,8 @@
         font-size: 14px;
         font-weight: 600;
         transition: 0.3s;
+
+        white-space: nowrap;
       }
 
       .nav-links a:hover {
@@ -101,6 +123,7 @@
       .nav-cta {
         background: #111827;
         color: white !important;
+
         padding: 8px 16px;
         border-radius: 8px;
       }
@@ -112,14 +135,20 @@
       /* ================= HERO ================= */
 
       .hero {
+        width: 100%;
         max-width: 1200px;
+
         margin: 55px auto 30px;
+
         padding: 0 25px;
       }
 
       .hero-card {
         position: relative;
         overflow: hidden;
+
+        width: 100%;
+        max-width: 100%;
 
         background: linear-gradient(
           135deg,
@@ -131,6 +160,7 @@
         color: white;
 
         border-radius: 24px;
+
         padding: 65px 60px;
 
         box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
@@ -150,6 +180,8 @@
 
         right: -90px;
         top: -90px;
+
+        pointer-events: none;
       }
 
       .hero-card::before {
@@ -166,13 +198,17 @@
 
         right: 80px;
         bottom: -90px;
+
+        pointer-events: none;
       }
 
       .hero-content {
         position: relative;
         z-index: 2;
 
+        width: 100%;
         max-width: 900px;
+        min-width: 0;
       }
 
       .category {
@@ -193,6 +229,8 @@
       }
 
       .hero h1 {
+        max-width: 100%;
+
         font-size: clamp(36px, 5vw, 58px);
 
         line-height: 1.12;
@@ -200,6 +238,8 @@
         letter-spacing: -1.5px;
 
         margin-bottom: 22px;
+
+        overflow-wrap: anywhere;
       }
 
       .hero-description {
@@ -210,6 +250,8 @@
         max-width: 800px;
 
         margin-bottom: 28px;
+
+        overflow-wrap: anywhere;
       }
 
       .hero-meta {
@@ -227,6 +269,7 @@
       /* ================= PAGE ================= */
 
       .page-layout {
+        width: 100%;
         max-width: 1200px;
 
         margin: 30px auto 80px;
@@ -247,6 +290,8 @@
       .sidebar {
         position: sticky;
         top: 90px;
+
+        min-width: 0;
       }
 
       .sidebar-card {
@@ -285,6 +330,8 @@
         font-size: 13px;
 
         transition: 0.25s;
+
+        overflow-wrap: anywhere;
       }
 
       .toc a:hover {
@@ -305,11 +352,15 @@
         gap: 12px;
 
         align-items: center;
+
+        min-width: 0;
       }
 
       .profile-avatar {
         width: 42px;
         height: 42px;
+
+        flex: 0 0 42px;
 
         border-radius: 50%;
 
@@ -342,6 +393,9 @@
       /* ================= ARTICLE ================= */
 
       .article {
+        width: 100%;
+        min-width: 0;
+
         background: white;
 
         border: 1px solid #e5e7eb;
@@ -359,6 +413,9 @@
         font-size: 16px;
 
         margin-bottom: 20px;
+
+        overflow-wrap: anywhere;
+        word-break: normal;
       }
 
       .article h2 {
@@ -371,6 +428,8 @@
         margin-top: 55px;
 
         margin-bottom: 18px;
+
+        overflow-wrap: anywhere;
       }
 
       .article h3 {
@@ -381,6 +440,8 @@
         margin-top: 30px;
 
         margin-bottom: 10px;
+
+        overflow-wrap: anywhere;
       }
 
       .article ul,
@@ -388,19 +449,28 @@
         margin: 15px 0 25px 25px;
 
         color: #4b5563;
+
+        max-width: 100%;
       }
 
       .article li {
         margin-bottom: 7px;
+
+        overflow-wrap: anywhere;
       }
 
       strong {
         color: #111827;
+
+        overflow-wrap: anywhere;
       }
 
       /* ================= TAKEAWAYS ================= */
 
       .takeaways {
+        width: 100%;
+        max-width: 100%;
+
         background: #eff6ff;
 
         border: 1px solid #dbeafe;
@@ -412,6 +482,8 @@
         padding: 25px;
 
         margin: 30px 0 40px;
+
+        overflow: hidden;
       }
 
       .takeaways h3 {
@@ -427,6 +499,9 @@
       /* ================= HIGHLIGHT ================= */
 
       .highlight {
+        width: 100%;
+        max-width: 100%;
+
         background: #f8fafc;
 
         border: 1px solid #e5e7eb;
@@ -436,6 +511,8 @@
         padding: 24px;
 
         margin: 25px 0;
+
+        overflow: hidden;
       }
 
       /* ================= SQL CODE ================= */
@@ -453,6 +530,9 @@
       }
 
       pre {
+        width: 100%;
+        max-width: 100%;
+
         background: #0f172a;
 
         color: #e2e8f0;
@@ -462,6 +542,7 @@
         padding: 22px;
 
         overflow-x: auto;
+        overflow-y: hidden;
 
         font-size: 14px;
 
@@ -470,15 +551,22 @@
         margin-bottom: 25px;
 
         border: 1px solid #1e293b;
+
+        white-space: pre;
       }
 
       code {
         font-family: Consolas, "Courier New", monospace;
+
+        overflow-wrap: normal;
       }
 
       /* ================= QUOTE ================= */
 
       blockquote {
+        width: 100%;
+        max-width: 100%;
+
         background: #f8fafc;
 
         border-left: 5px solid #2563eb;
@@ -494,12 +582,20 @@
         font-style: italic;
 
         font-size: 17px;
+
+        overflow-wrap: anywhere;
       }
 
       /* ================= TABLE ================= */
 
       .table-wrapper {
+        width: 100%;
+        max-width: 100%;
+
         overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
 
         margin: 25px 0;
       }
@@ -519,6 +615,8 @@
         text-align: left;
 
         border-bottom: 1px solid #e5e7eb;
+
+        white-space: nowrap;
       }
 
       th {
@@ -542,9 +640,12 @@
       /* ================= SQL FLOW ================= */
 
       .sql-flow {
+        width: 100%;
+        max-width: 100%;
+
         display: grid;
 
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
         gap: 14px;
 
@@ -552,6 +653,8 @@
       }
 
       .sql-item {
+        min-width: 0;
+
         background: #f8fafc;
 
         border: 1px solid #e5e7eb;
@@ -561,6 +664,8 @@
         border-radius: 12px;
 
         transition: 0.25s;
+
+        overflow-wrap: anywhere;
       }
 
       .sql-item:hover {
@@ -593,6 +698,8 @@
         margin-top: 50px;
 
         padding-top: 25px;
+
+        max-width: 100%;
       }
 
       .tag {
@@ -611,11 +718,18 @@
         font-weight: 600;
 
         margin: 4px 3px 4px 0;
+
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
       }
 
       /* ================= AUTHOR ================= */
 
       .author-card {
+        width: 100%;
+        max-width: 100%;
+
         margin-top: 45px;
 
         padding: 28px;
@@ -625,6 +739,8 @@
         border-radius: 16px;
 
         color: white;
+
+        overflow: hidden;
       }
 
       .author-card h3 {
@@ -663,6 +779,8 @@
         font-size: 13px;
 
         transition: 0.25s;
+
+        max-width: 100%;
       }
 
       .author-button:hover {
@@ -706,6 +824,8 @@
       /* ================= FOOTER ================= */
 
       footer {
+        width: 100%;
+
         background: #111827;
 
         color: #9ca3af;
@@ -715,13 +835,17 @@
         padding: 30px 20px;
 
         font-size: 13px;
+
+        overflow-wrap: anywhere;
       }
 
-      /* ================= RESPONSIVE ================= */
+      /* ================= TABLET ================= */
 
       @media (max-width: 950px) {
         .page-layout {
           grid-template-columns: 1fr;
+
+          padding: 0 20px;
         }
 
         .sidebar {
@@ -739,69 +863,347 @@
         .nav-links a:not(.nav-cta) {
           display: none;
         }
-      }
 
-      @media (max-width: 700px) {
-        .hero {
-          margin-top: 25px;
+        .article {
+          padding: 42px;
         }
 
         .hero-card {
-          padding: 42px 28px;
+          padding: 50px 42px;
+        }
+      }
+
+      /* ================= MOBILE ================= */
+
+      @media (max-width: 700px) {
+        .navbar {
+          padding: 13px 16px;
+        }
+
+        .nav-container {
+          gap: 10px;
+        }
+
+        .logo {
+          font-size: 20px;
+        }
+
+        .nav-links {
+          gap: 8px;
+        }
+
+        .nav-cta {
+          padding: 7px 12px;
+          font-size: 12px !important;
+        }
+
+        /* HERO */
+
+        .hero {
+          width: 100%;
+
+          margin: 25px auto 20px;
+
+          padding: 0 12px;
+        }
+
+        .hero-card {
+          width: 100%;
+
+          padding: 38px 24px;
 
           border-radius: 18px;
         }
 
-        .hero-description {
-          font-size: 16px;
-        }
-
-        .article {
-          padding: 30px 22px;
-
-          border-radius: 16px;
-        }
-
-        .article h2 {
-          font-size: 26px;
-
-          margin-top: 42px;
-        }
-
-        .sql-flow {
-          grid-template-columns: 1fr;
-        }
-
-        .page-layout {
-          padding: 0 15px;
-        }
-
-        .hero {
-          padding: 0 15px;
-        }
-      }
-
-      @media (max-width: 450px) {
-        .navbar {
-          padding: 13px 18px;
-        }
-
         .hero h1 {
-          font-size: 34px;
+          font-size: clamp(30px, 9vw, 42px);
+
+          letter-spacing: -0.8px;
+
+          line-height: 1.15;
+        }
+
+        .hero-description {
+          font-size: 15px;
+
+          line-height: 1.7;
         }
 
         .hero-meta {
           flex-direction: column;
 
+          align-items: flex-start;
+
           gap: 6px;
+
+          font-size: 13px;
         }
 
+        /* PAGE */
+
+        .page-layout {
+          width: 100%;
+
+          display: block;
+
+          margin: 20px auto 50px;
+
+          padding: 0 12px;
+        }
+
+        /* ARTICLE */
+
         .article {
-          padding: 25px 18px;
+          width: 100%;
+
+          padding: 28px 20px;
+
+          border-radius: 16px;
         }
 
         .article p {
           font-size: 15px;
+
+          line-height: 1.75;
+        }
+
+        .article h2 {
+          font-size: 25px;
+
+          line-height: 1.3;
+
+          margin-top: 40px;
+
+          margin-bottom: 16px;
+        }
+
+        .article h3 {
+          font-size: 19px;
+
+          line-height: 1.4;
+        }
+
+        .article ul,
+        .article ol {
+          margin-left: 20px;
+
+          padding-right: 2px;
+        }
+
+        /* TAKEAWAYS */
+
+        .takeaways {
+          padding: 20px;
+
+          margin: 25px 0 30px;
+        }
+
+        /* HIGHLIGHT */
+
+        .highlight {
+          padding: 20px;
+        }
+
+        /* SQL FLOW */
+
+        .sql-flow {
+          grid-template-columns: 1fr;
+
+          gap: 12px;
+        }
+
+        .sql-item {
+          padding: 16px;
+        }
+
+        /* CODE */
+
+        pre {
+          padding: 16px;
+
+          font-size: 12px;
+
+          line-height: 1.6;
+
+          border-radius: 10px;
+
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+          margin-left: 0;
+          margin-right: 0;
+
+          width: 100%;
+        }
+
+        table {
+          min-width: 550px;
+        }
+
+        /* QUOTE */
+
+        blockquote {
+          padding: 16px 18px;
+
+          font-size: 15px;
+        }
+
+        /* AUTHOR */
+
+        .author-card {
+          padding: 22px;
+
+          margin-top: 35px;
+        }
+
+        .author-buttons {
+          flex-direction: column;
+
+          align-items: stretch;
+        }
+
+        .author-button {
+          text-align: center;
+        }
+
+        /* TAGS */
+
+        .tags {
+          margin-top: 35px;
+        }
+      }
+
+      /* ================= SMALL MOBILE ================= */
+
+      @media (max-width: 450px) {
+        .navbar {
+          padding: 12px 14px;
+        }
+
+        .logo {
+          font-size: 18px;
+        }
+
+        .nav-cta {
+          padding: 7px 10px;
+        }
+
+        .hero {
+          padding: 0 10px;
+
+          margin-top: 18px;
+        }
+
+        .hero-card {
+          padding: 32px 20px;
+
+          border-radius: 16px;
+        }
+
+        .hero h1 {
+          font-size: 31px;
+
+          line-height: 1.15;
+        }
+
+        .hero-description {
+          font-size: 14px;
+
+          line-height: 1.7;
+        }
+
+        .page-layout {
+          padding: 0 10px;
+        }
+
+        .article {
+          padding: 24px 16px;
+
+          border-radius: 14px;
+        }
+
+        .article p {
+          font-size: 14.5px;
+
+          line-height: 1.75;
+        }
+
+        .article h2 {
+          font-size: 23px;
+
+          margin-top: 36px;
+        }
+
+        .article h3 {
+          font-size: 18px;
+        }
+
+        .article ul,
+        .article ol {
+          margin-left: 18px;
+        }
+
+        .takeaways {
+          padding: 17px;
+
+          border-left-width: 4px;
+        }
+
+        .highlight {
+          padding: 17px;
+        }
+
+        pre {
+          padding: 14px;
+
+          font-size: 11.5px;
+        }
+
+        .author-card {
+          padding: 20px;
+        }
+
+        .back-button {
+          width: 100%;
+
+          max-width: 250px;
+        }
+      }
+
+      /* ================= VERY SMALL DEVICES ================= */
+
+      @media (max-width: 360px) {
+        .logo {
+          font-size: 17px;
+        }
+
+        .nav-cta {
+          font-size: 11px !important;
+
+          padding: 6px 9px;
+        }
+
+        .hero-card {
+          padding: 28px 17px;
+        }
+
+        .hero h1 {
+          font-size: 28px;
+        }
+
+        .article {
+          padding: 21px 14px;
+        }
+
+        .article h2 {
+          font-size: 21px;
+        }
+
+        .article p {
+          font-size: 14px;
         }
       }
     </style>

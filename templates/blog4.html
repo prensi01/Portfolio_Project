@@ -17,13 +17,14 @@
     />
 
     <meta name="author" content="Prensi" />
-
     <style>
       /* =====================================================
-           GLOBAL
-        ===================================================== */
+     GLOBAL RESET
+  ===================================================== */
 
-      * {
+      *,
+      *::before,
+      *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -31,6 +32,9 @@
 
       html {
         scroll-behavior: smooth;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
       }
 
       body {
@@ -45,20 +49,48 @@
         background: #f5f7fb;
         color: #1f2937;
         line-height: 1.8;
+
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      img,
+      video,
+      iframe,
+      svg {
+        max-width: 100%;
+        height: auto;
       }
 
       a {
         text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+
+      p,
+      li,
+      h1,
+      h2,
+      h3,
+      h4,
+      td,
+      th {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
       }
 
       /* =====================================================
-           NAVBAR
-        ===================================================== */
+     NAVBAR
+  ===================================================== */
 
       .navbar {
         position: sticky;
         top: 0;
         z-index: 1000;
+
+        width: 100%;
+        max-width: 100%;
 
         background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(12px);
@@ -69,18 +101,23 @@
       }
 
       .nav-container {
+        width: 100%;
         max-width: 1200px;
         margin: auto;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        min-width: 0;
       }
 
       .logo {
         font-size: 22px;
         font-weight: 800;
         color: #111827;
+
+        flex-shrink: 0;
       }
 
       .logo span {
@@ -90,7 +127,10 @@
       .nav-links {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 25px;
+
+        min-width: 0;
       }
 
       .nav-links a {
@@ -107,8 +147,11 @@
       .nav-cta {
         background: #111827;
         color: white !important;
+
         padding: 8px 16px;
         border-radius: 8px;
+
+        white-space: nowrap;
       }
 
       .nav-cta:hover {
@@ -116,18 +159,24 @@
       }
 
       /* =====================================================
-           HERO
-        ===================================================== */
+     HERO
+  ===================================================== */
 
       .hero {
+        width: 100%;
         max-width: 1200px;
+
         margin: 55px auto 30px;
+
         padding: 0 25px;
       }
 
       .hero-card {
         position: relative;
         overflow: hidden;
+
+        width: 100%;
+        max-width: 100%;
 
         background: linear-gradient(
           135deg,
@@ -146,6 +195,7 @@
 
       .hero-card::after {
         content: "";
+
         position: absolute;
 
         width: 260px;
@@ -157,10 +207,13 @@
 
         right: -80px;
         top: -80px;
+
+        pointer-events: none;
       }
 
       .hero-card::before {
         content: "";
+
         position: absolute;
 
         width: 180px;
@@ -172,16 +225,22 @@
 
         right: 80px;
         bottom: -90px;
+
+        pointer-events: none;
       }
 
       .hero-content {
         position: relative;
         z-index: 2;
+
+        width: 100%;
         max-width: 850px;
       }
 
       .category {
         display: inline-block;
+
+        max-width: 100%;
 
         background: rgba(255, 255, 255, 0.12);
         border: 1px solid rgba(255, 255, 255, 0.18);
@@ -197,6 +256,8 @@
       }
 
       .hero h1 {
+        max-width: 100%;
+
         font-size: clamp(36px, 5vw, 60px);
         line-height: 1.12;
 
@@ -207,8 +268,10 @@
 
       .hero-description {
         color: #dbeafe;
+
         font-size: 18px;
 
+        width: 100%;
         max-width: 760px;
 
         margin-bottom: 28px;
@@ -217,17 +280,22 @@
       .hero-meta {
         display: flex;
         flex-wrap: wrap;
+
         gap: 20px;
 
         color: #cbd5e1;
+
         font-size: 14px;
+
+        max-width: 100%;
       }
 
       /* =====================================================
-           PAGE LAYOUT
-        ===================================================== */
+     PAGE LAYOUT
+  ===================================================== */
 
       .page-layout {
+        width: 100%;
         max-width: 1200px;
 
         margin: 30px auto 80px;
@@ -244,12 +312,14 @@
       }
 
       /* =====================================================
-           SIDEBAR
-        ===================================================== */
+     SIDEBAR
+  ===================================================== */
 
       .sidebar {
         position: sticky;
         top: 90px;
+
+        min-width: 0;
       }
 
       .sidebar-card {
@@ -262,6 +332,8 @@
         padding: 22px;
 
         box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+
+        max-width: 100%;
       }
 
       .sidebar-title {
@@ -275,6 +347,8 @@
 
       .toc {
         list-style: none;
+
+        max-width: 100%;
       }
 
       .toc li {
@@ -303,13 +377,19 @@
 
       .profile-mini {
         display: flex;
+
         gap: 12px;
+
         align-items: center;
+
+        min-width: 0;
       }
 
       .profile-avatar {
         width: 42px;
         height: 42px;
+
+        min-width: 42px;
 
         border-radius: 50%;
 
@@ -339,10 +419,14 @@
       }
 
       /* =====================================================
-           ARTICLE
-        ===================================================== */
+     ARTICLE
+  ===================================================== */
 
       .article {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+
         background: white;
 
         border: 1px solid #e5e7eb;
@@ -360,6 +444,8 @@
         font-size: 16px;
 
         margin-bottom: 20px;
+
+        max-width: 100%;
       }
 
       .article h2 {
@@ -371,6 +457,8 @@
 
         margin-top: 55px;
         margin-bottom: 18px;
+
+        max-width: 100%;
       }
 
       .article h3 {
@@ -380,6 +468,8 @@
 
         margin-top: 30px;
         margin-bottom: 10px;
+
+        max-width: 100%;
       }
 
       .article ul,
@@ -387,6 +477,8 @@
         margin: 15px 0 25px 25px;
 
         color: #4b5563;
+
+        max-width: calc(100% - 25px);
       }
 
       .article li {
@@ -398,10 +490,13 @@
       }
 
       /* =====================================================
-           KEY TAKEAWAYS
-        ===================================================== */
+     KEY TAKEAWAYS
+  ===================================================== */
 
       .takeaways {
+        width: 100%;
+        max-width: 100%;
+
         background: #eff6ff;
 
         border: 1px solid #dbeafe;
@@ -413,10 +508,13 @@
         padding: 25px;
 
         margin: 30px 0 40px;
+
+        overflow: hidden;
       }
 
       .takeaways h3 {
         color: #1e3a8a;
+
         margin-top: 0;
       }
 
@@ -425,10 +523,13 @@
       }
 
       /* =====================================================
-           HIGHLIGHT
-        ===================================================== */
+     HIGHLIGHT
+  ===================================================== */
 
       .highlight {
+        width: 100%;
+        max-width: 100%;
+
         background: #f8fafc;
 
         border: 1px solid #e5e7eb;
@@ -438,11 +539,13 @@
         padding: 24px;
 
         margin: 25px 0;
+
+        overflow: hidden;
       }
 
       /* =====================================================
-           CODE
-        ===================================================== */
+     CODE
+  ===================================================== */
 
       .code-title {
         color: #6b7280;
@@ -456,6 +559,9 @@
       }
 
       pre {
+        width: 100%;
+        max-width: 100%;
+
         background: #0f172a;
 
         color: #e2e8f0;
@@ -465,6 +571,7 @@
         padding: 22px;
 
         overflow-x: auto;
+        overflow-y: hidden;
 
         font-size: 14px;
 
@@ -473,17 +580,25 @@
         margin-bottom: 25px;
 
         border: 1px solid #1e293b;
+
+        white-space: pre;
       }
 
       code {
         font-family: Consolas, "Courier New", monospace;
+
+        overflow-wrap: normal;
+        word-break: normal;
       }
 
       /* =====================================================
-           QUOTE
-        ===================================================== */
+     QUOTE
+  ===================================================== */
 
       blockquote {
+        width: 100%;
+        max-width: 100%;
+
         background: #f8fafc;
 
         border-left: 5px solid #2563eb;
@@ -499,15 +614,24 @@
         font-style: italic;
 
         font-size: 17px;
+
+        overflow: hidden;
       }
 
       /* =====================================================
-           TABLE
-        ===================================================== */
+     TABLE
+  ===================================================== */
 
       .table-wrapper {
+        width: 100%;
+        max-width: 100%;
+
         overflow-x: auto;
+        overflow-y: hidden;
+
         margin: 25px 0;
+
+        -webkit-overflow-scrolling: touch;
       }
 
       table {
@@ -525,6 +649,8 @@
         text-align: left;
 
         border-bottom: 1px solid #e5e7eb;
+
+        white-space: nowrap;
       }
 
       th {
@@ -546,13 +672,16 @@
       }
 
       /* =====================================================
-           ROADMAP
-        ===================================================== */
+     ROADMAP
+  ===================================================== */
 
       .roadmap {
+        width: 100%;
+        max-width: 100%;
+
         display: grid;
 
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
         gap: 14px;
 
@@ -560,6 +689,8 @@
       }
 
       .roadmap-item {
+        min-width: 0;
+
         background: #f8fafc;
 
         border: 1px solid #e5e7eb;
@@ -569,6 +700,8 @@
         border-radius: 12px;
 
         transition: 0.25s;
+
+        overflow: hidden;
       }
 
       .roadmap-item:hover {
@@ -594,10 +727,13 @@
       }
 
       /* =====================================================
-           TAGS
-        ===================================================== */
+     TAGS
+  ===================================================== */
 
       .tags {
+        width: 100%;
+        max-width: 100%;
+
         border-top: 1px solid #e5e7eb;
 
         margin-top: 50px;
@@ -621,13 +757,18 @@
         font-weight: 600;
 
         margin: 4px 3px 4px 0;
+
+        max-width: 100%;
       }
 
       /* =====================================================
-           AUTHOR
-        ===================================================== */
+     AUTHOR
+  ===================================================== */
 
       .author-card {
+        width: 100%;
+        max-width: 100%;
+
         margin-top: 45px;
 
         padding: 28px;
@@ -637,6 +778,8 @@
         border-radius: 16px;
 
         color: white;
+
+        overflow: hidden;
       }
 
       .author-card h3 {
@@ -659,6 +802,8 @@
         flex-wrap: wrap;
 
         gap: 10px;
+
+        max-width: 100%;
       }
 
       .author-button {
@@ -675,6 +820,8 @@
         font-size: 13px;
 
         transition: 0.25s;
+
+        max-width: 100%;
       }
 
       .author-button:hover {
@@ -684,10 +831,12 @@
       }
 
       /* =====================================================
-           BACK
-        ===================================================== */
+     BACK BUTTON
+  ===================================================== */
 
       .back-section {
+        width: 100%;
+
         margin-top: 40px;
 
         text-align: center;
@@ -709,6 +858,8 @@
         font-weight: 600;
 
         transition: 0.25s;
+
+        max-width: 100%;
       }
 
       .back-button:hover {
@@ -718,10 +869,13 @@
       }
 
       /* =====================================================
-           FOOTER
-        ===================================================== */
+     FOOTER
+  ===================================================== */
 
       footer {
+        width: 100%;
+        max-width: 100%;
+
         background: #111827;
 
         color: #9ca3af;
@@ -731,15 +885,19 @@
         padding: 30px 20px;
 
         font-size: 13px;
+
+        overflow: hidden;
       }
 
       /* =====================================================
-           RESPONSIVE
-        ===================================================== */
+     TABLET
+  ===================================================== */
 
       @media (max-width: 950px) {
         .page-layout {
           grid-template-columns: 1fr;
+
+          width: 100%;
         }
 
         .sidebar {
@@ -757,68 +915,413 @@
         .nav-links a:not(.nav-cta) {
           display: none;
         }
+
+        .article {
+          width: 100%;
+          min-width: 0;
+        }
       }
 
+      /* =====================================================
+     MOBILE
+  ===================================================== */
+
       @media (max-width: 700px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        .navbar {
+          width: 100%;
+          padding: 13px 18px;
+        }
+
+        .nav-container {
+          width: 100%;
+        }
+
+        .logo {
+          font-size: 20px;
+        }
+
+        .nav-links {
+          gap: 8px;
+        }
+
+        .nav-cta {
+          padding: 7px 12px;
+          font-size: 12px;
+        }
+
+        /* HERO */
+
         .hero {
+          width: 100%;
+
           margin-top: 25px;
+
+          padding: 0 15px;
         }
 
         .hero-card {
+          width: 100%;
+
           padding: 42px 28px;
 
           border-radius: 18px;
         }
 
-        .hero-description {
-          font-size: 16px;
+        .hero-card::after {
+          width: 180px;
+          height: 180px;
+
+          right: -90px;
+          top: -90px;
         }
 
+        .hero-card::before {
+          width: 120px;
+          height: 120px;
+
+          right: 20px;
+          bottom: -60px;
+        }
+
+        .hero-content {
+          width: 100%;
+          max-width: 100%;
+        }
+
+        .hero h1 {
+          font-size: clamp(30px, 9vw, 42px);
+
+          line-height: 1.15;
+
+          letter-spacing: -0.8px;
+
+          word-break: normal;
+        }
+
+        .hero-description {
+          font-size: 16px;
+
+          line-height: 1.7;
+
+          max-width: 100%;
+        }
+
+        .hero-meta {
+          flex-direction: column;
+
+          gap: 6px;
+
+          font-size: 13px;
+        }
+
+        /* PAGE */
+
+        .page-layout {
+          width: 100%;
+
+          margin: 25px auto 60px;
+
+          padding: 0 15px;
+
+          display: block;
+        }
+
+        /* ARTICLE */
+
         .article {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+
           padding: 30px 22px;
 
           border-radius: 16px;
         }
 
+        .article p {
+          font-size: 15px;
+
+          line-height: 1.8;
+
+          margin-bottom: 18px;
+        }
+
         .article h2 {
           font-size: 26px;
 
+          line-height: 1.35;
+
           margin-top: 42px;
+
+          margin-bottom: 16px;
         }
+
+        .article h3 {
+          font-size: 19px;
+
+          line-height: 1.4;
+
+          margin-top: 27px;
+        }
+
+        .article ul,
+        .article ol {
+          margin-left: 20px;
+
+          padding-right: 0;
+        }
+
+        .article li {
+          font-size: 15px;
+
+          line-height: 1.7;
+        }
+
+        /* TAKEAWAYS */
+
+        .takeaways {
+          padding: 20px 18px;
+
+          margin: 25px 0 32px;
+        }
+
+        /* HIGHLIGHT */
+
+        .highlight {
+          padding: 20px 18px;
+        }
+
+        /* CODE */
+
+        pre {
+          width: 100%;
+
+          padding: 16px;
+
+          font-size: 12px;
+
+          line-height: 1.6;
+
+          border-radius: 10px;
+
+          overflow-x: auto;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+          width: 100%;
+
+          overflow-x: auto;
+
+          margin: 20px 0;
+        }
+
+        table {
+          min-width: 550px;
+        }
+
+        /* ROADMAP */
 
         .roadmap {
+          width: 100%;
+
           grid-template-columns: 1fr;
+
+          gap: 12px;
         }
 
-        .page-layout {
-          padding: 0 15px;
+        .roadmap-item {
+          width: 100%;
+
+          padding: 16px;
         }
 
-        .hero {
-          padding: 0 15px;
+        /* QUOTE */
+
+        blockquote {
+          padding: 18px;
+
+          font-size: 15px;
+        }
+
+        /* AUTHOR */
+
+        .author-card {
+          padding: 22px 18px;
+
+          margin-top: 35px;
+        }
+
+        .author-buttons {
+          flex-direction: column;
+
+          align-items: stretch;
+        }
+
+        .author-button {
+          text-align: center;
+
+          width: 100%;
+        }
+
+        /* TAGS */
+
+        .tags {
+          margin-top: 35px;
         }
       }
 
+      /* =====================================================
+     SMALL MOBILE
+  ===================================================== */
+
       @media (max-width: 450px) {
         .navbar {
-          padding: 13px 18px;
+          padding: 12px 14px;
+        }
+
+        .logo {
+          font-size: 19px;
+        }
+
+        .nav-cta {
+          padding: 7px 10px;
+
+          font-size: 11px;
+        }
+
+        .hero {
+          padding: 0 12px;
+
+          margin-top: 20px;
+        }
+
+        .hero-card {
+          padding: 34px 20px;
+
+          border-radius: 16px;
+        }
+
+        .category {
+          font-size: 11px;
+
+          padding: 5px 10px;
         }
 
         .hero h1 {
-          font-size: 34px;
+          font-size: 32px;
+
+          letter-spacing: -0.5px;
         }
 
-        .hero-meta {
-          flex-direction: column;
-          gap: 6px;
+        .hero-description {
+          font-size: 15px;
+        }
+
+        .page-layout {
+          padding: 0 12px;
+
+          margin-top: 20px;
         }
 
         .article {
-          padding: 25px 18px;
+          padding: 24px 17px;
+
+          border-radius: 14px;
         }
 
         .article p {
-          font-size: 15px;
+          font-size: 14.5px;
+
+          line-height: 1.75;
+        }
+
+        .article h2 {
+          font-size: 24px;
+
+          margin-top: 38px;
+        }
+
+        .article h3 {
+          font-size: 18px;
+        }
+
+        .article ul,
+        .article ol {
+          margin-left: 18px;
+        }
+
+        .article li {
+          font-size: 14.5px;
+        }
+
+        .takeaways {
+          padding: 18px 15px;
+        }
+
+        .highlight {
+          padding: 18px 15px;
+        }
+
+        pre {
+          padding: 14px;
+
+          font-size: 11.5px;
+        }
+
+        .author-card {
+          padding: 20px 15px;
+        }
+
+        .back-button {
+          width: 100%;
+
+          padding: 10px 15px;
+        }
+      }
+
+      /* =====================================================
+     VERY SMALL DEVICES
+  ===================================================== */
+
+      @media (max-width: 360px) {
+        .logo {
+          font-size: 18px;
+        }
+
+        .nav-cta {
+          font-size: 10px;
+
+          padding: 6px 8px;
+        }
+
+        .hero-card {
+          padding: 30px 17px;
+        }
+
+        .hero h1 {
+          font-size: 29px;
+        }
+
+        .article {
+          padding: 22px 14px;
+        }
+
+        .article h2 {
+          font-size: 22px;
+        }
+
+        .article p,
+        .article li {
+          font-size: 14px;
         }
       }
     </style>
