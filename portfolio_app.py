@@ -641,7 +641,31 @@ FROM analytics
     unique_visitors=unique_visitors,
     total_messages=total_messages
 )
+# ================= RESET TEST DATA =================
 
+@app.route('/reset-test-data')
+def reset_test_data():
+
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    # Delete all contact messages
+    cursor.execute("DELETE FROM contacts")
+
+    # Delete all visitor/analytics data
+    cursor.execute("DELETE FROM analytics")
+
+    conn.commit()
+    conn.close()
+
+    return """
+    <h2>✅ Test Data Reset Successfully</h2>
+    <p>All visits and contact messages have been deleted.</p>
+    <a href="/analytics">Go to Analytics</a>
+"""
 # ================= RUN APP =================
 if __name__ == "__main__":
     app.run(debug=False)
