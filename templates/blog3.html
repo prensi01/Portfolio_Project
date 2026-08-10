@@ -1,56 +1,1799 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Blog 3</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SQL Queries Every Data Analyst Should Know | Prensi</title>
+
+    <meta
+      name="description"
+      content="A beginner-friendly SQL learning journey covering SELECT, WHERE, GROUP BY, ORDER BY, aggregate functions and JOINs for Data Analytics."
+    />
+
+    <meta
+      name="keywords"
+      content="SQL, SQL for Data Analysts, Data Analytics, SELECT, JOIN, GROUP BY, ORDER BY, SQL Queries, Database"
+    />
+
+    <meta name="author" content="Prensi" />
 
     <style>
-        body{
-            font-family:Arial;
-            background:#081b29;
-            color:white;
-            text-align:center;
-            padding:40px;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+
+        background: #f5f7fb;
+        color: #1f2937;
+        line-height: 1.8;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* ================= NAVBAR ================= */
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(12px);
+
+        border-bottom: 1px solid #e5e7eb;
+
+        padding: 15px 7%;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 800;
+        color: #111827;
+      }
+
+      .logo span {
+        color: #2563eb;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+      }
+
+      .nav-links a {
+        color: #4b5563;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #2563eb;
+      }
+
+      .nav-cta {
+        background: #111827;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 8px;
+      }
+
+      .nav-cta:hover {
+        background: #2563eb;
+      }
+
+      /* ================= HERO ================= */
+
+      .hero {
+        max-width: 1200px;
+        margin: 55px auto 30px;
+        padding: 0 25px;
+      }
+
+      .hero-card {
+        position: relative;
+        overflow: hidden;
+
+        background: linear-gradient(
+          135deg,
+          #111827 0%,
+          #172554 55%,
+          #1e3a8a 100%
+        );
+
+        color: white;
+
+        border-radius: 24px;
+        padding: 65px 60px;
+
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+      }
+
+      .hero-card::after {
+        content: "";
+
+        position: absolute;
+
+        width: 270px;
+        height: 270px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        right: -90px;
+        top: -90px;
+      }
+
+      .hero-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        right: 80px;
+        bottom: -90px;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+
+        max-width: 900px;
+      }
+
+      .category {
+        display: inline-block;
+
+        background: rgba(255, 255, 255, 0.12);
+
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        padding: 6px 14px;
+
+        border-radius: 30px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 5vw, 58px);
+
+        line-height: 1.12;
+
+        letter-spacing: -1.5px;
+
+        margin-bottom: 22px;
+      }
+
+      .hero-description {
+        color: #dbeafe;
+
+        font-size: 18px;
+
+        max-width: 800px;
+
+        margin-bottom: 28px;
+      }
+
+      .hero-meta {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 20px;
+
+        color: #cbd5e1;
+
+        font-size: 14px;
+      }
+
+      /* ================= PAGE ================= */
+
+      .page-layout {
+        max-width: 1200px;
+
+        margin: 30px auto 80px;
+
+        padding: 0 25px;
+
+        display: grid;
+
+        grid-template-columns: 260px minmax(0, 1fr);
+
+        gap: 30px;
+
+        align-items: start;
+      }
+
+      /* ================= SIDEBAR ================= */
+
+      .sidebar {
+        position: sticky;
+        top: 90px;
+      }
+
+      .sidebar-card {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 16px;
+
+        padding: 22px;
+
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+      }
+
+      .sidebar-title {
+        font-size: 14px;
+
+        font-weight: 800;
+
+        color: #111827;
+
+        margin-bottom: 15px;
+      }
+
+      .toc {
+        list-style: none;
+      }
+
+      .toc li {
+        margin-bottom: 9px;
+      }
+
+      .toc a {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .toc a:hover {
+        color: #2563eb;
+      }
+
+      .sidebar-divider {
+        height: 1px;
+
+        background: #e5e7eb;
+
+        margin: 22px 0;
+      }
+
+      .profile-mini {
+        display: flex;
+
+        gap: 12px;
+
+        align-items: center;
+      }
+
+      .profile-avatar {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 50%;
+
+        background: #dbeafe;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        color: #2563eb;
+
+        font-weight: 800;
+      }
+
+      .profile-mini strong {
+        display: block;
+
+        color: #111827;
+
+        font-size: 14px;
+      }
+
+      .profile-mini span {
+        color: #6b7280;
+
+        font-size: 12px;
+      }
+
+      /* ================= ARTICLE ================= */
+
+      .article {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 20px;
+
+        padding: 55px;
+
+        box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+      }
+
+      .article p {
+        color: #4b5563;
+
+        font-size: 16px;
+
+        margin-bottom: 20px;
+      }
+
+      .article h2 {
+        color: #111827;
+
+        font-size: 30px;
+
+        line-height: 1.3;
+
+        margin-top: 55px;
+
+        margin-bottom: 18px;
+      }
+
+      .article h3 {
+        color: #1f2937;
+
+        font-size: 21px;
+
+        margin-top: 30px;
+
+        margin-bottom: 10px;
+      }
+
+      .article ul,
+      .article ol {
+        margin: 15px 0 25px 25px;
+
+        color: #4b5563;
+      }
+
+      .article li {
+        margin-bottom: 7px;
+      }
+
+      strong {
+        color: #111827;
+      }
+
+      /* ================= TAKEAWAYS ================= */
+
+      .takeaways {
+        background: #eff6ff;
+
+        border: 1px solid #dbeafe;
+
+        border-left: 5px solid #2563eb;
+
+        border-radius: 12px;
+
+        padding: 25px;
+
+        margin: 30px 0 40px;
+      }
+
+      .takeaways h3 {
+        color: #1e3a8a;
+
+        margin-top: 0;
+      }
+
+      .takeaways ul {
+        margin-bottom: 0;
+      }
+
+      /* ================= HIGHLIGHT ================= */
+
+      .highlight {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        padding: 24px;
+
+        margin: 25px 0;
+      }
+
+      /* ================= SQL CODE ================= */
+
+      .code-title {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        margin-top: 22px;
+
+        margin-bottom: 7px;
+      }
+
+      pre {
+        background: #0f172a;
+
+        color: #e2e8f0;
+
+        border-radius: 12px;
+
+        padding: 22px;
+
+        overflow-x: auto;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        margin-bottom: 25px;
+
+        border: 1px solid #1e293b;
+      }
+
+      code {
+        font-family: Consolas, "Courier New", monospace;
+      }
+
+      /* ================= QUOTE ================= */
+
+      blockquote {
+        background: #f8fafc;
+
+        border-left: 5px solid #2563eb;
+
+        padding: 20px 25px;
+
+        border-radius: 8px;
+
+        margin: 25px 0;
+
+        color: #374151;
+
+        font-style: italic;
+
+        font-size: 17px;
+      }
+
+      /* ================= TABLE ================= */
+
+      .table-wrapper {
+        overflow-x: auto;
+
+        margin: 25px 0;
+      }
+
+      table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 550px;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+
+        text-align: left;
+
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      th {
+        background: #111827;
+
+        color: white;
+
+        font-size: 14px;
+      }
+
+      td {
+        color: #4b5563;
+
+        font-size: 14px;
+      }
+
+      tr:nth-child(even) td {
+        background: #f8fafc;
+      }
+
+      /* ================= SQL FLOW ================= */
+
+      .sql-flow {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 14px;
+
+        margin: 25px 0;
+      }
+
+      .sql-item {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        padding: 18px;
+
+        border-radius: 12px;
+
+        transition: 0.25s;
+      }
+
+      .sql-item:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+      }
+
+      .sql-number {
+        color: #2563eb;
+
+        font-size: 12px;
+
+        font-weight: 800;
+      }
+
+      .sql-item strong {
+        display: block;
+
+        margin-top: 4px;
+
+        font-size: 15px;
+      }
+
+      /* ================= TAGS ================= */
+
+      .tags {
+        border-top: 1px solid #e5e7eb;
+
+        margin-top: 50px;
+
+        padding-top: 25px;
+      }
+
+      .tag {
+        display: inline-block;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        margin: 4px 3px 4px 0;
+      }
+
+      /* ================= AUTHOR ================= */
+
+      .author-card {
+        margin-top: 45px;
+
+        padding: 28px;
+
+        background: linear-gradient(135deg, #111827, #1e3a8a);
+
+        border-radius: 16px;
+
+        color: white;
+      }
+
+      .author-card h3 {
+        color: white;
+
+        margin-top: 0;
+
+        margin-bottom: 8px;
+      }
+
+      .author-card p {
+        color: #dbeafe;
+
+        margin-bottom: 18px;
+      }
+
+      .author-buttons {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+      }
+
+      .author-button {
+        display: inline-block;
+
+        padding: 8px 15px;
+
+        border-radius: 8px;
+
+        border: 1px solid rgba(255, 255, 255, 0.25);
+
+        color: white;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .author-button:hover {
+        background: white;
+
+        color: #111827;
+      }
+
+      /* ================= BACK BUTTON ================= */
+
+      .back-section {
+        margin-top: 40px;
+
+        text-align: center;
+      }
+
+      .back-button {
+        display: inline-block;
+
+        background: #111827;
+
+        color: white;
+
+        padding: 11px 22px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.25s;
+      }
+
+      .back-button:hover {
+        background: #2563eb;
+
+        transform: translateY(-1px);
+      }
+
+      /* ================= FOOTER ================= */
+
+      footer {
+        background: #111827;
+
+        color: #9ca3af;
+
+        text-align: center;
+
+        padding: 30px 20px;
+
+        font-size: 13px;
+      }
+
+      /* ================= RESPONSIVE ================= */
+
+      @media (max-width: 950px) {
+        .page-layout {
+          grid-template-columns: 1fr;
         }
 
-        h1{
-            color:#00abf0;
+        .sidebar {
+          position: static;
         }
 
-        p{
-            max-width:800px;
-            margin:auto;
-            line-height:1.6;
-            color:#ccc;
+        .sidebar-card {
+          display: none;
         }
 
-        .btn{
-            display:inline-block;
-            margin-top:30px;
-            padding:12px 25px;
-            background:#00abf0;
-            color:white;
-            text-decoration:none;
-            border-radius:8px;
+        .nav-links {
+          gap: 14px;
         }
 
-        .btn:hover{
-            background:transparent;
-            border:2px solid #00abf0;
-            color:#00abf0;
+        .nav-links a:not(.nav-cta) {
+          display: none;
         }
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          margin-top: 25px;
+        }
+
+        .hero-card {
+          padding: 42px 28px;
+
+          border-radius: 18px;
+        }
+
+        .hero-description {
+          font-size: 16px;
+        }
+
+        .article {
+          padding: 30px 22px;
+
+          border-radius: 16px;
+        }
+
+        .article h2 {
+          font-size: 26px;
+
+          margin-top: 42px;
+        }
+
+        .sql-flow {
+          grid-template-columns: 1fr;
+        }
+
+        .page-layout {
+          padding: 0 15px;
+        }
+
+        .hero {
+          padding: 0 15px;
+        }
+      }
+
+      @media (max-width: 450px) {
+        .navbar {
+          padding: 13px 18px;
+        }
+
+        .hero h1 {
+          font-size: 34px;
+        }
+
+        .hero-meta {
+          flex-direction: column;
+
+          gap: 6px;
+        }
+
+        .article {
+          padding: 25px 18px;
+        }
+
+        .article p {
+          font-size: 15px;
+        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- ================= NAVBAR ================= -->
 
-<h1>Frontend Developer Roadmap</h1>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo"> Prensi<span>.</span> </a>
 
-<p>
-To become a frontend developer you must learn HTML, CSS, JavaScript and then frameworks like React.
-Practice daily projects to improve your skills.
-</p>
+        <div class="nav-links">
+          <a href="/">Home</a>
 
-<a href="/" class="btn">⬅ Back to Home</a>
+          <a href="/#about">About</a>
 
-</body>
+          <a href="/#skills">Skills</a>
+
+          <a href="/#projects">Projects</a>
+
+          <a href="/#blog">Blog</a>
+
+          <a href="/#contact" class="nav-cta"> Contact </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-content">
+          <span class="category"> SQL • Data Analytics </span>
+
+          <h1>SQL Queries Every Data Analyst Should Know</h1>
+
+          <p class="hero-description">
+            A beginner-friendly introduction to the SQL concepts I learned while
+            building my foundation for Data Analytics.
+          </p>
+
+          <div class="hero-meta">
+            <span>📅 August 2026</span>
+
+            <span>👩‍💻 Prensi</span>
+
+            <span>⏱ 9 min read</span>
+
+            <span>🗄️ Beginner Guide</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="page-layout">
+      <!-- SIDEBAR -->
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">On This Page</div>
+
+          <ul class="toc">
+            <li>
+              <a href="#journey"> My SQL Learning Journey </a>
+            </li>
+
+            <li>
+              <a href="#what-is"> What Is SQL? </a>
+            </li>
+
+            <li>
+              <a href="#select"> SELECT </a>
+            </li>
+
+            <li>
+              <a href="#where"> WHERE </a>
+            </li>
+
+            <li>
+              <a href="#order"> ORDER BY </a>
+            </li>
+
+            <li>
+              <a href="#aggregate"> Aggregate Functions </a>
+            </li>
+
+            <li>
+              <a href="#group"> GROUP BY </a>
+            </li>
+
+            <li>
+              <a href="#having"> HAVING </a>
+            </li>
+
+            <li>
+              <a href="#joins"> JOINs </a>
+            </li>
+
+            <li>
+              <a href="#case"> CASE </a>
+            </li>
+
+            <li>
+              <a href="#subquery"> Subqueries </a>
+            </li>
+
+            <li>
+              <a href="#workflow"> SQL Workflow </a>
+            </li>
+
+            <li>
+              <a href="#learning"> What I Learned </a>
+            </li>
+
+            <li>
+              <a href="#next"> What's Next </a>
+            </li>
+
+            <li>
+              <a href="#conclusion"> Final Thoughts </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="profile-mini">
+            <div class="profile-avatar">P</div>
+
+            <div>
+              <strong> Prensi </strong>
+
+              <span> BCA • Aspiring Data Analyst </span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ================= ARTICLE ================= -->
+
+      <article class="article">
+        <p>
+          SQL is one of the most important skills I have been learning as part
+          of my journey toward becoming a Data Analyst.
+        </p>
+
+        <p>
+          I started learning <strong>SQL in October 2025</strong>
+          and continued learning it until
+          <strong>January 2026</strong>. During this period, I focused on
+          understanding databases, writing queries, filtering data, performing
+          calculations, combining tables, and extracting useful information.
+        </p>
+
+        <p>
+          SQL initially felt challenging because there were many new concepts to
+          understand. With regular practice, I gradually became more comfortable
+          writing queries and thinking about data in a structured way.
+        </p>
+
+        <!-- TAKEAWAYS -->
+
+        <div class="takeaways">
+          <h3>🎯 Key Takeaways</h3>
+
+          <ul>
+            <li>SQL is used to communicate with relational databases.</li>
+
+            <li>SELECT is the foundation of retrieving data.</li>
+
+            <li>WHERE helps filter records based on conditions.</li>
+
+            <li>GROUP BY and aggregate functions help summarize data.</li>
+
+            <li>
+              JOINs allow information from multiple tables to be combined.
+            </li>
+
+            <li>
+              Good SQL is not just about syntax; it is about asking the right
+              questions of the data.
+            </li>
+          </ul>
+        </div>
+
+        <!-- JOURNEY -->
+
+        <h2 id="journey">📚 My SQL Learning Journey</h2>
+
+        <p>
+          When I started learning SQL in
+          <strong>October 2025</strong>, I wanted to understand how Data
+          Analysts work with structured data stored in databases.
+        </p>
+
+        <p>
+          I started with basic database concepts and gradually moved toward
+          writing SQL queries.
+        </p>
+
+        <p>
+          From <strong>October 2025 to January 2026</strong>, my learning
+          focused on building a strong SQL foundation.
+        </p>
+
+        <h3>Topics I Practiced</h3>
+
+        <ul>
+          <li>Databases and tables</li>
+
+          <li>SQL data types</li>
+
+          <li>Primary and foreign keys</li>
+
+          <li>SELECT statements</li>
+
+          <li>WHERE conditions</li>
+
+          <li>ORDER BY</li>
+
+          <li>DISTINCT</li>
+
+          <li>Aggregate functions</li>
+
+          <li>GROUP BY</li>
+
+          <li>HAVING</li>
+
+          <li>JOINs</li>
+
+          <li>Subqueries</li>
+
+          <li>CASE expressions</li>
+
+          <li>Basic data analysis using SQL</li>
+        </ul>
+
+        <!-- WHAT IS SQL -->
+
+        <h2 id="what-is">🗄️ What Is SQL?</h2>
+
+        <p>SQL stands for <strong>Structured Query Language</strong>.</p>
+
+        <p>It is commonly used to interact with relational databases.</p>
+
+        <p>
+          A Data Analyst can use SQL to retrieve, filter, summarize, and combine
+          data to answer business questions.
+        </p>
+
+        <p>A simple SQL workflow can look like this:</p>
+
+        <pre><code>Business Question
+        ↓
+Find the Required Data
+        ↓
+Write SQL Query
+        ↓
+Filter / Transform Data
+        ↓
+Analyze Results
+        ↓
+Generate Insight</code></pre>
+
+        <!-- SELECT -->
+
+        <h2 id="select">🔎 SELECT — Retrieving Data</h2>
+
+        <p>
+          The <strong>SELECT</strong> statement is one of the first SQL commands
+          a beginner learns.
+        </p>
+
+        <p>It is used to retrieve data from one or more columns.</p>
+
+        <div class="code-title">Example</div>
+
+        <pre><code>SELECT
+    CustomerName,
+    City
+FROM Customers;</code></pre>
+
+        <p>
+          Instead of selecting every column, selecting only the required columns
+          can make a query easier to read and more efficient.
+        </p>
+
+        <div class="code-title">Selecting all columns</div>
+
+        <pre><code>SELECT *
+FROM Customers;</code></pre>
+
+        <!-- DISTINCT -->
+
+        <h2>🔹 DISTINCT — Finding Unique Values</h2>
+
+        <p>
+          <strong>DISTINCT</strong> can be used when we want unique values
+          instead of repeated values.
+        </p>
+
+        <pre><code>SELECT DISTINCT City
+FROM Customers;</code></pre>
+
+        <p>
+          This can be useful when exploring a dataset and understanding which
+          unique categories or locations are present.
+        </p>
+
+        <!-- WHERE -->
+
+        <h2 id="where">🎯 WHERE — Filtering Data</h2>
+
+        <p>
+          The <strong>WHERE</strong> clause is used to filter records based on a
+          condition.
+        </p>
+
+        <pre><code>SELECT *
+FROM Customers
+WHERE City = 'Delhi';</code></pre>
+
+        <p>We can also use comparison operators such as:</p>
+
+        <ul>
+          <li><code>=</code></li>
+
+          <li><code>&gt;</code></li>
+
+          <li><code>&lt;</code></li>
+
+          <li><code>&gt;=</code></li>
+
+          <li><code>&lt;=</code></li>
+
+          <li><code>&lt;&gt;</code></li>
+        </ul>
+
+        <p>
+          Multiple conditions can also be combined using
+          <strong>AND</strong> and <strong>OR</strong>.
+        </p>
+
+        <pre><code>SELECT *
+FROM Sales
+WHERE SalesAmount > 10000
+AND Region = 'North';</code></pre>
+
+        <!-- ORDER BY -->
+
+        <h2 id="order">📊 ORDER BY — Sorting Data</h2>
+
+        <p><strong>ORDER BY</strong> is used to sort query results.</p>
+
+        <p>Data can be sorted in ascending or descending order.</p>
+
+        <pre><code>SELECT
+    ProductName,
+    SalesAmount
+FROM Sales
+ORDER BY SalesAmount DESC;</code></pre>
+
+        <p>Here, the products with the highest sales appear first.</p>
+
+        <!-- AGGREGATES -->
+
+        <h2 id="aggregate">🧮 Aggregate Functions</h2>
+
+        <p>
+          Aggregate functions are extremely useful for Data Analysts because
+          they allow us to summarize large amounts of data.
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Function</th>
+
+                <th>Purpose</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>
+                  <strong>COUNT()</strong>
+                </td>
+
+                <td>Counts records</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>SUM()</strong>
+                </td>
+
+                <td>Calculates total</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>AVG()</strong>
+                </td>
+
+                <td>Calculates average</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>MIN()</strong>
+                </td>
+
+                <td>Finds minimum value</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>MAX()</strong>
+                </td>
+
+                <td>Finds maximum value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-title">Example</div>
+
+        <pre><code>SELECT
+    COUNT(*) AS TotalOrders,
+    SUM(SalesAmount) AS TotalSales,
+    AVG(SalesAmount) AS AverageSales,
+    MIN(SalesAmount) AS MinimumSale,
+    MAX(SalesAmount) AS MaximumSale
+FROM Sales;</code></pre>
+
+        <!-- GROUP BY -->
+
+        <h2 id="group">📦 GROUP BY — Summarizing Categories</h2>
+
+        <p>
+          <strong>GROUP BY</strong> is used to group rows that have the same
+          value in one or more columns.
+        </p>
+
+        <p>It is especially useful with aggregate functions.</p>
+
+        <pre><code>SELECT
+    Region,
+    SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY Region;</code></pre>
+
+        <p>This query can help answer a business question such as:</p>
+
+        <blockquote>How much sales did each region generate?</blockquote>
+
+        <!-- HAVING -->
+
+        <h2 id="having">🔍 HAVING — Filtering Groups</h2>
+
+        <p>
+          <strong>HAVING</strong> is commonly used with GROUP BY when we want to
+          filter grouped results.
+        </p>
+
+        <pre><code>SELECT
+    Region,
+    SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY Region
+HAVING SUM(SalesAmount) > 100000;</code></pre>
+
+        <p>
+          This query returns only the regions whose total sales are greater than
+          100,000.
+        </p>
+
+        <div class="highlight">
+          <strong>
+            WHERE filters individual rows, while HAVING filters grouped results.
+          </strong>
+        </div>
+
+        <!-- JOINS -->
+
+        <h2 id="joins">🔗 JOIN — Combining Multiple Tables</h2>
+
+        <p>
+          Real-world databases often contain information across multiple tables.
+        </p>
+
+        <p>JOINs allow us to combine related data from these tables.</p>
+
+        <h3>INNER JOIN</h3>
+
+        <p>
+          An INNER JOIN returns records that have matching values in both
+          tables.
+        </p>
+
+        <pre><code>SELECT
+    Customers.CustomerName,
+    Orders.OrderID,
+    Orders.OrderAmount
+FROM Customers
+INNER JOIN Orders
+    ON Customers.CustomerID = Orders.CustomerID;</code></pre>
+
+        <h3>LEFT JOIN</h3>
+
+        <p>
+          A LEFT JOIN keeps all records from the left table and adds matching
+          information from the right table.
+        </p>
+
+        <pre><code>SELECT
+    Customers.CustomerName,
+    Orders.OrderID
+FROM Customers
+LEFT JOIN Orders
+    ON Customers.CustomerID = Orders.CustomerID;</code></pre>
+
+        <p>
+          Understanding JOINs was an important part of my SQL learning because
+          analytics projects often require information from multiple tables.
+        </p>
+
+        <!-- CASE -->
+
+        <h2 id="case">⚙️ CASE — Creating Conditional Logic</h2>
+
+        <p>
+          The <strong>CASE</strong> expression can be used to create conditional
+          logic inside a query.
+        </p>
+
+        <pre><code>SELECT
+    CustomerName,
+    SalesAmount,
+
+    CASE
+        WHEN SalesAmount >= 10000
+            THEN 'High'
+        WHEN SalesAmount >= 5000
+            THEN 'Medium'
+        ELSE 'Low'
+    END AS SalesCategory
+
+FROM Sales;</code></pre>
+
+        <p>
+          This can be useful when creating categories or business-friendly
+          labels from raw data.
+        </p>
+
+        <!-- SUBQUERY -->
+
+        <h2 id="subquery">🔄 Subqueries</h2>
+
+        <p>A subquery is a query written inside another query.</p>
+
+        <p>
+          Subqueries can be useful when one query depends on the result of
+          another query.
+        </p>
+
+        <pre><code>SELECT
+    ProductName,
+    SalesAmount
+FROM Sales
+WHERE SalesAmount >
+(
+    SELECT AVG(SalesAmount)
+    FROM Sales
+);</code></pre>
+
+        <p>
+          This example finds sales records whose amount is greater than the
+          overall average.
+        </p>
+
+        <!-- BUSINESS QUESTIONS -->
+
+        <h2>💼 SQL and Business Questions</h2>
+
+        <p>
+          Learning SQL became more meaningful when I started thinking about it
+          from a Data Analyst's perspective.
+        </p>
+
+        <p>Instead of asking only:</p>
+
+        <blockquote>What SQL query should I write?</blockquote>
+
+        <p>I started thinking:</p>
+
+        <blockquote>What business question am I trying to answer?</blockquote>
+
+        <p>For example:</p>
+
+        <ul>
+          <li>Which products generate the most revenue?</li>
+
+          <li>Which region has the highest sales?</li>
+
+          <li>What is the average order value?</li>
+
+          <li>How many customers placed an order?</li>
+
+          <li>Which customers have not purchased recently?</li>
+
+          <li>Which month had the highest revenue?</li>
+        </ul>
+
+        <p>These questions help determine which SQL concepts should be used.</p>
+
+        <!-- WORKFLOW -->
+
+        <h2 id="workflow">🛠️ My SQL Analysis Workflow</h2>
+
+        <div class="sql-flow">
+          <div class="sql-item">
+            <span class="sql-number"> STEP 01 </span>
+
+            <strong> Understand the Question </strong>
+
+            Identify the business problem.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 02 </span>
+
+            <strong> Understand the Tables </strong>
+
+            Identify relevant columns and relationships.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 03 </span>
+
+            <strong> Retrieve Data </strong>
+
+            Use SELECT to get required columns.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 04 </span>
+
+            <strong> Filter Data </strong>
+
+            Use WHERE when conditions are required.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 05 </span>
+
+            <strong> Summarize </strong>
+
+            Use aggregate functions and GROUP BY.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 06 </span>
+
+            <strong> Combine Tables </strong>
+
+            Use JOINs when data is stored separately.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 07 </span>
+
+            <strong> Analyze Results </strong>
+
+            Look for patterns and meaningful insights.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> STEP 08 </span>
+
+            <strong> Communicate </strong>
+
+            Present the findings clearly.
+          </div>
+        </div>
+
+        <!-- SQL + OTHER TOOLS -->
+
+        <h2>🔄 SQL in the Data Analytics Workflow</h2>
+
+        <p>
+          SQL is one part of a larger Data Analytics workflow. Data Analysts
+          often combine SQL with tools such as Excel, Power BI, and Python.
+        </p>
+
+        <pre><code>Database
+   ↓
+SQL
+   ↓
+Extract & Analyze Data
+   ↓
+Excel / Python
+   ↓
+Power BI
+   ↓
+Dashboard
+   ↓
+Business Insights</code></pre>
+
+        <p>
+          Understanding how these tools work together is one of my goals as I
+          continue developing my Data Analytics skills.
+        </p>
+
+        <!-- WHAT LEARNED -->
+
+        <h2 id="learning">🌱 What I Learned From SQL</h2>
+
+        <h3>1. SQL Requires Logical Thinking</h3>
+
+        <p>
+          Writing a query requires understanding the problem and breaking it
+          into smaller steps.
+        </p>
+
+        <h3>2. Data Structure Matters</h3>
+
+        <p>
+          Understanding tables, keys, and relationships makes it easier to write
+          correct queries.
+        </p>
+
+        <h3>3. Practice Is Essential</h3>
+
+        <p>
+          SQL becomes easier when you solve different problems instead of only
+          memorizing commands.
+        </p>
+
+        <h3>4. Business Questions Come First</h3>
+
+        <p>
+          A query is useful only when it helps answer a meaningful question.
+        </p>
+
+        <h3>5. Accuracy Matters</h3>
+
+        <p>
+          A technically valid query can still produce a misleading result if the
+          data model or logic is misunderstood.
+        </p>
+
+        <!-- CURRENT STAGE -->
+
+        <h2>🚀 My Current Learning Stage</h2>
+
+        <p>
+          I studied SQL from
+          <strong>October 2025 to January 2026</strong>, focusing mainly on
+          building a strong foundation in querying and relational databases.
+        </p>
+
+        <p>
+          I am continuing to strengthen my SQL skills by practicing queries and
+          applying them to Data Analytics problems.
+        </p>
+
+        <p>
+          My goal is not just to remember SQL syntax. I want to become
+          comfortable using SQL to explore data and answer real business
+          questions.
+        </p>
+
+        <!-- NEXT -->
+
+        <h2 id="next">🎯 What I Want to Improve Next</h2>
+
+        <div class="sql-flow">
+          <div class="sql-item">
+            <span class="sql-number"> 01 </span>
+
+            <strong> Advanced JOINs </strong>
+
+            Practice more complex multi-table queries.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> 02 </span>
+
+            <strong> Window Functions </strong>
+
+            Learn ranking and analytical calculations.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> 03 </span>
+
+            <strong> CTEs </strong>
+
+            Improve query organization and readability.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> 04 </span>
+
+            <strong> Query Optimization </strong>
+
+            Understand how to write more efficient queries.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> 05 </span>
+
+            <strong> Real Datasets </strong>
+
+            Solve practical business problems using SQL.
+          </div>
+
+          <div class="sql-item">
+            <span class="sql-number"> 06 </span>
+
+            <strong> SQL Projects </strong>
+
+            Build portfolio projects using real-world data.
+          </div>
+        </div>
+
+        <!-- BEGINNER ADVICE -->
+
+        <h2>💡 Advice for SQL Beginners</h2>
+
+        <p>
+          If you are starting SQL for Data Analytics, don't try to memorize
+          every command at once.
+        </p>
+
+        <p>Start with a simple progression:</p>
+
+        <pre><code>Database Basics
+      ↓
+SELECT
+      ↓
+WHERE
+      ↓
+ORDER BY
+      ↓
+Aggregate Functions
+      ↓
+GROUP BY
+      ↓
+HAVING
+      ↓
+JOINs
+      ↓
+CASE
+      ↓
+Subqueries
+      ↓
+CTEs
+      ↓
+Window Functions
+      ↓
+Real-World Projects</code></pre>
+
+        <p>Most importantly, practice writing queries yourself.</p>
+
+        <blockquote>
+          Don't just learn what a SQL command does. Learn when and why you would
+          use it.
+        </blockquote>
+
+        <!-- CONCLUSION -->
+
+        <h2 id="conclusion">📝 Final Thoughts</h2>
+
+        <p>
+          I started learning SQL in
+          <strong>October 2025</strong> and continued learning it until
+          <strong>January 2026</strong>.
+        </p>
+
+        <p>
+          During this journey, I learned that SQL is much more than a collection
+          of commands.
+        </p>
+
+        <p>
+          It is a way to communicate with data and find answers to meaningful
+          questions.
+        </p>
+
+        <p>
+          Concepts such as SELECT, WHERE, GROUP BY, aggregate functions, JOINs,
+          CASE, and subqueries helped me build a foundation for working with
+          relational data.
+        </p>
+
+        <p>
+          I am still improving my SQL skills, but this foundation has become an
+          important part of my Data Analytics journey.
+        </p>
+
+        <blockquote>
+          Good SQL is not about writing the longest query. It is about getting
+          the right answer from the data.
+        </blockquote>
+
+        <p>
+          My next step is to practice SQL with real-world datasets and use it
+          together with Excel, Power BI, and Python to build practical Data
+          Analytics projects.
+        </p>
+
+        <p>
+          <strong>
+            This is another important step in my journey toward becoming a Data
+            Analyst. 🚀
+          </strong>
+        </p>
+
+        <!-- TAGS -->
+
+        <div class="tags">
+          <strong> 🔖 Tags </strong>
+
+          <br />
+
+          <span class="tag"> SQL </span>
+
+          <span class="tag"> Data Analytics </span>
+
+          <span class="tag"> Data Analyst </span>
+
+          <span class="tag"> SQL Queries </span>
+
+          <span class="tag"> Database </span>
+
+          <span class="tag"> JOIN </span>
+
+          <span class="tag"> GROUP BY </span>
+
+          <span class="tag"> Data Analysis </span>
+
+          <span class="tag"> Business Intelligence </span>
+        </div>
+
+        <!-- AUTHOR -->
+
+        <div class="author-card">
+          <h3>👩‍💻 About the Author</h3>
+
+          <p>
+            I am a BCA student interested in
+            <strong>Data Analytics and Data Science</strong>. I am developing my
+            skills in Python, SQL, Excel, Power BI, data cleaning, data
+            visualization, and dashboard development while building practical
+            projects for my portfolio.
+          </p>
+
+          <div class="author-buttons">
+            <a
+              href="https://www.linkedin.com/in/prensi-6b0433383/"
+              target="_blank"
+              class="author-button"
+            >
+              LinkedIn →
+            </a>
+
+            <a
+              href="https://github.com/prensi01"
+              target="_blank"
+              class="author-button"
+            >
+              GitHub →
+            </a>
+          </div>
+        </div>
+
+        <!-- BACK -->
+
+        <div class="back-section">
+          <a href="/#blog" class="back-button"> ← Back to Blog </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>© 2026 Prensi · Data Analytics Portfolio</footer>
+  </body>
 </html>

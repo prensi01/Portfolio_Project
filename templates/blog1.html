@@ -1,56 +1,1772 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Blog 1</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Excel for Data Analytics | Prensi</title>
+
+    <meta
+      name="description"
+      content="A beginner-friendly Excel learning journey covering data cleaning, formulas, Pivot Tables, charts, lookup functions and data analysis for aspiring Data Analysts."
+    />
+
+    <meta
+      name="keywords"
+      content="Excel, Excel for Data Analysts, Data Analytics, Pivot Tables, VLOOKUP, XLOOKUP, Excel Charts, Data Cleaning"
+    />
+
+    <meta name="author" content="Prensi" />
 
     <style>
-        body{
-            font-family:Arial;
-            background:#081b29;
-            color:white;
-            text-align:center;
-            padding:40px;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+
+        background: #f5f7fb;
+
+        color: #1f2937;
+
+        line-height: 1.8;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* ================= NAVBAR ================= */
+
+      .navbar {
+        position: sticky;
+
+        top: 0;
+
+        z-index: 1000;
+
+        background: rgba(255, 255, 255, 0.94);
+
+        backdrop-filter: blur(12px);
+
+        border-bottom: 1px solid #e5e7eb;
+
+        padding: 15px 7%;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+
+        margin: auto;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 22px;
+
+        font-weight: 800;
+
+        color: #111827;
+      }
+
+      .logo span {
+        color: #16a34a;
+      }
+
+      .nav-links {
+        display: flex;
+
+        align-items: center;
+
+        gap: 25px;
+      }
+
+      .nav-links a {
+        color: #4b5563;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #16a34a;
+      }
+
+      .nav-cta {
+        background: #111827;
+
+        color: white !important;
+
+        padding: 8px 16px;
+
+        border-radius: 8px;
+      }
+
+      .nav-cta:hover {
+        background: #16a34a;
+      }
+
+      /* ================= HERO ================= */
+
+      .hero {
+        max-width: 1200px;
+
+        margin: 55px auto 30px;
+
+        padding: 0 25px;
+      }
+
+      .hero-card {
+        position: relative;
+
+        overflow: hidden;
+
+        background: linear-gradient(
+          135deg,
+          #111827 0%,
+          #14532d 55%,
+          #166534 100%
+        );
+
+        color: white;
+
+        border-radius: 24px;
+
+        padding: 65px 60px;
+
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+      }
+
+      .hero-card::after {
+        content: "";
+
+        position: absolute;
+
+        width: 280px;
+
+        height: 280px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        right: -90px;
+
+        top: -90px;
+      }
+
+      .hero-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+
+        height: 180px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        right: 80px;
+
+        bottom: -90px;
+      }
+
+      .hero-content {
+        position: relative;
+
+        z-index: 2;
+
+        max-width: 900px;
+      }
+
+      .category {
+        display: inline-block;
+
+        background: rgba(255, 255, 255, 0.12);
+
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        padding: 6px 14px;
+
+        border-radius: 30px;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 5vw, 58px);
+
+        line-height: 1.12;
+
+        letter-spacing: -1.5px;
+
+        margin-bottom: 22px;
+      }
+
+      .hero-description {
+        color: #dcfce7;
+
+        font-size: 18px;
+
+        max-width: 800px;
+
+        margin-bottom: 28px;
+      }
+
+      .hero-meta {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 20px;
+
+        color: #d1fae5;
+
+        font-size: 14px;
+      }
+
+      /* ================= PAGE ================= */
+
+      .page-layout {
+        max-width: 1200px;
+
+        margin: 30px auto 80px;
+
+        padding: 0 25px;
+
+        display: grid;
+
+        grid-template-columns: 260px minmax(0, 1fr);
+
+        gap: 30px;
+
+        align-items: start;
+      }
+
+      /* ================= SIDEBAR ================= */
+
+      .sidebar {
+        position: sticky;
+
+        top: 90px;
+      }
+
+      .sidebar-card {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 16px;
+
+        padding: 22px;
+
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+      }
+
+      .sidebar-title {
+        font-size: 14px;
+
+        font-weight: 800;
+
+        color: #111827;
+
+        margin-bottom: 15px;
+      }
+
+      .toc {
+        list-style: none;
+      }
+
+      .toc li {
+        margin-bottom: 9px;
+      }
+
+      .toc a {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .toc a:hover {
+        color: #16a34a;
+      }
+
+      .sidebar-divider {
+        height: 1px;
+
+        background: #e5e7eb;
+
+        margin: 22px 0;
+      }
+
+      .profile-mini {
+        display: flex;
+
+        gap: 12px;
+
+        align-items: center;
+      }
+
+      .profile-avatar {
+        width: 42px;
+
+        height: 42px;
+
+        border-radius: 50%;
+
+        background: #dcfce7;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: #15803d;
+
+        font-weight: 800;
+      }
+
+      .profile-mini strong {
+        display: block;
+
+        color: #111827;
+
+        font-size: 14px;
+      }
+
+      .profile-mini span {
+        color: #6b7280;
+
+        font-size: 12px;
+      }
+
+      /* ================= ARTICLE ================= */
+
+      .article {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 20px;
+
+        padding: 55px;
+
+        box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+      }
+
+      .article p {
+        color: #4b5563;
+
+        font-size: 16px;
+
+        margin-bottom: 20px;
+      }
+
+      .article h2 {
+        color: #111827;
+
+        font-size: 30px;
+
+        line-height: 1.3;
+
+        margin-top: 55px;
+
+        margin-bottom: 18px;
+      }
+
+      .article h3 {
+        color: #1f2937;
+
+        font-size: 21px;
+
+        margin-top: 30px;
+
+        margin-bottom: 10px;
+      }
+
+      .article ul,
+      .article ol {
+        margin: 15px 0 25px 25px;
+
+        color: #4b5563;
+      }
+
+      .article li {
+        margin-bottom: 7px;
+      }
+
+      strong {
+        color: #111827;
+      }
+
+      /* ================= TAKEAWAYS ================= */
+
+      .takeaways {
+        background: #f0fdf4;
+
+        border: 1px solid #dcfce7;
+
+        border-left: 5px solid #16a34a;
+
+        border-radius: 12px;
+
+        padding: 25px;
+
+        margin: 30px 0 40px;
+      }
+
+      .takeaways h3 {
+        color: #166534;
+
+        margin-top: 0;
+      }
+
+      .takeaways ul {
+        margin-bottom: 0;
+      }
+
+      /* ================= HIGHLIGHT ================= */
+
+      .highlight {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        padding: 24px;
+
+        margin: 25px 0;
+      }
+
+      /* ================= EXCEL FORMULA ================= */
+
+      .formula-title {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        margin-top: 22px;
+
+        margin-bottom: 7px;
+      }
+
+      pre {
+        background: #0f172a;
+
+        color: #e2e8f0;
+
+        border-radius: 12px;
+
+        padding: 22px;
+
+        overflow-x: auto;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        margin-bottom: 25px;
+
+        border: 1px solid #1e293b;
+      }
+
+      code {
+        font-family: Consolas, "Courier New", monospace;
+      }
+
+      /* ================= QUOTE ================= */
+
+      blockquote {
+        background: #f8fafc;
+
+        border-left: 5px solid #16a34a;
+
+        padding: 20px 25px;
+
+        border-radius: 8px;
+
+        margin: 25px 0;
+
+        color: #374151;
+
+        font-style: italic;
+
+        font-size: 17px;
+      }
+
+      /* ================= TABLE ================= */
+
+      .table-wrapper {
+        overflow-x: auto;
+
+        margin: 25px 0;
+      }
+
+      table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 550px;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+
+        text-align: left;
+
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      th {
+        background: #111827;
+
+        color: white;
+
+        font-size: 14px;
+      }
+
+      td {
+        color: #4b5563;
+
+        font-size: 14px;
+      }
+
+      tr:nth-child(even) td {
+        background: #f8fafc;
+      }
+
+      /* ================= SKILL GRID ================= */
+
+      .excel-grid {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 14px;
+
+        margin: 25px 0;
+      }
+
+      .excel-item {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        padding: 18px;
+
+        border-radius: 12px;
+
+        transition: 0.25s;
+      }
+
+      .excel-item:hover {
+        transform: translateY(-2px);
+
+        border-color: #bbf7d0;
+      }
+
+      .excel-number {
+        color: #16a34a;
+
+        font-size: 12px;
+
+        font-weight: 800;
+      }
+
+      .excel-item strong {
+        display: block;
+
+        margin-top: 4px;
+
+        font-size: 15px;
+      }
+
+      /* ================= TAGS ================= */
+
+      .tags {
+        border-top: 1px solid #e5e7eb;
+
+        margin-top: 50px;
+
+        padding-top: 25px;
+      }
+
+      .tag {
+        display: inline-block;
+
+        background: #f0fdf4;
+
+        color: #15803d;
+
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        margin: 4px 3px 4px 0;
+      }
+
+      /* ================= AUTHOR ================= */
+
+      .author-card {
+        margin-top: 45px;
+
+        padding: 28px;
+
+        background: linear-gradient(135deg, #111827, #14532d);
+
+        border-radius: 16px;
+
+        color: white;
+      }
+
+      .author-card h3 {
+        color: white;
+
+        margin-top: 0;
+
+        margin-bottom: 8px;
+      }
+
+      .author-card p {
+        color: #dcfce7;
+
+        margin-bottom: 18px;
+      }
+
+      .author-buttons {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+      }
+
+      .author-button {
+        display: inline-block;
+
+        padding: 8px 15px;
+
+        border-radius: 8px;
+
+        border: 1px solid rgba(255, 255, 255, 0.25);
+
+        color: white;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .author-button:hover {
+        background: white;
+
+        color: #111827;
+      }
+
+      /* ================= BACK BUTTON ================= */
+
+      .back-section {
+        margin-top: 40px;
+
+        text-align: center;
+      }
+
+      .back-button {
+        display: inline-block;
+
+        background: #111827;
+
+        color: white;
+
+        padding: 11px 22px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.25s;
+      }
+
+      .back-button:hover {
+        background: #16a34a;
+
+        transform: translateY(-1px);
+      }
+
+      /* ================= FOOTER ================= */
+
+      footer {
+        background: #111827;
+
+        color: #9ca3af;
+
+        text-align: center;
+
+        padding: 30px 20px;
+
+        font-size: 13px;
+      }
+
+      /* ================= RESPONSIVE ================= */
+
+      @media (max-width: 950px) {
+        .page-layout {
+          grid-template-columns: 1fr;
         }
 
-        h1{
-            color:#00abf0;
+        .sidebar {
+          position: static;
         }
 
-        p{
-            max-width:800px;
-            margin:auto;
-            line-height:1.6;
-            color:#ccc;
+        .sidebar-card {
+          display: none;
         }
 
-        .btn{
-            display:inline-block;
-            margin-top:30px;
-            padding:12px 25px;
-            background:#00abf0;
-            color:white;
-            text-decoration:none;
-            border-radius:8px;
+        .nav-links {
+          gap: 14px;
         }
 
-        .btn:hover{
-            background:transparent;
-            border:2px solid #00abf0;
-            color:#00abf0;
+        .nav-links a:not(.nav-cta) {
+          display: none;
         }
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          margin-top: 25px;
+        }
+
+        .hero-card {
+          padding: 42px 28px;
+
+          border-radius: 18px;
+        }
+
+        .hero-description {
+          font-size: 16px;
+        }
+
+        .article {
+          padding: 30px 22px;
+
+          border-radius: 16px;
+        }
+
+        .article h2 {
+          font-size: 26px;
+
+          margin-top: 42px;
+        }
+
+        .excel-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .page-layout {
+          padding: 0 15px;
+        }
+
+        .hero {
+          padding: 0 15px;
+        }
+      }
+
+      @media (max-width: 450px) {
+        .navbar {
+          padding: 13px 18px;
+        }
+
+        .hero h1 {
+          font-size: 34px;
+        }
+
+        .hero-meta {
+          flex-direction: column;
+
+          gap: 6px;
+        }
+
+        .article {
+          padding: 25px 18px;
+        }
+
+        .article p {
+          font-size: 15px;
+        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- ================= NAVBAR ================= -->
 
-<h1>How I Started Web Development</h1>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo"> Prensi<span>.</span> </a>
 
-<p>
-I started my journey with HTML and slowly learned CSS, JavaScript and Flask.
-Now I can build full portfolio websites and backend projects using Python.
-</p>
+        <div class="nav-links">
+          <a href="/">Home</a>
 
-<a href="/" class="btn">⬅ Back to Home</a>
+          <a href="/#about">About</a>
 
-</body>
+          <a href="/#skills">Skills</a>
+
+          <a href="/#projects">Projects</a>
+
+          <a href="/#blog">Blog</a>
+
+          <a href="/#contact" class="nav-cta"> Contact </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-content">
+          <span class="category"> Excel • Data Analytics </span>
+
+          <h1>Excel for Data Analytics</h1>
+
+          <p class="hero-description">
+            A beginner-friendly look at how I learned Excel and developed a
+            foundation for data cleaning, analysis, reporting, and
+            visualization.
+          </p>
+
+          <div class="hero-meta">
+            <span>📅 August 2026</span>
+
+            <span>👩‍💻 Prensi</span>
+
+            <span>⏱ 9 min read</span>
+
+            <span>📊 Beginner Guide</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="page-layout">
+      <!-- ================= SIDEBAR ================= -->
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">On This Page</div>
+
+          <ul class="toc">
+            <li>
+              <a href="#journey"> My Excel Learning Journey </a>
+            </li>
+
+            <li>
+              <a href="#what-is"> Why Excel? </a>
+            </li>
+
+            <li>
+              <a href="#data"> Working With Data </a>
+            </li>
+
+            <li>
+              <a href="#formulas"> Excel Formulas </a>
+            </li>
+
+            <li>
+              <a href="#lookup"> Lookup Functions </a>
+            </li>
+
+            <li>
+              <a href="#cleaning"> Data Cleaning </a>
+            </li>
+
+            <li>
+              <a href="#pivot"> Pivot Tables </a>
+            </li>
+
+            <li>
+              <a href="#charts"> Charts & Visualization </a>
+            </li>
+
+            <li>
+              <a href="#conditional"> Conditional Formatting </a>
+            </li>
+
+            <li>
+              <a href="#workflow"> Excel Analytics Workflow </a>
+            </li>
+
+            <li>
+              <a href="#learning"> What I Learned </a>
+            </li>
+
+            <li>
+              <a href="#next"> What's Next </a>
+            </li>
+
+            <li>
+              <a href="#conclusion"> Final Thoughts </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="profile-mini">
+            <div class="profile-avatar">P</div>
+
+            <div>
+              <strong> Prensi </strong>
+
+              <span> BCA • Aspiring Data Analyst </span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ================= ARTICLE ================= -->
+
+      <article class="article">
+        <p>
+          Excel was one of the first important tools I learned while building my
+          foundation for Data Analytics.
+        </p>
+
+        <p>
+          I started learning <strong>Excel in August 2024</strong>
+          and continued learning and practicing it until
+          <strong>March 2025</strong>.
+        </p>
+
+        <p>
+          During this period, I gradually learned how spreadsheets can be used
+          to organize, clean, analyze, summarize, and visualize data.
+        </p>
+
+        <p>
+          At the beginning, Excel was mainly a spreadsheet tool for me. As I
+          learned more, I started understanding how useful it can be for
+          answering questions from data.
+        </p>
+
+        <!-- ================= TAKEAWAYS ================= -->
+
+        <div class="takeaways">
+          <h3>🎯 Key Takeaways</h3>
+
+          <ul>
+            <li>
+              Excel is a practical tool for organizing and analyzing data.
+            </li>
+
+            <li>Formulas can automate calculations and reduce manual work.</li>
+
+            <li>Pivot Tables are useful for summarizing large datasets.</li>
+
+            <li>Lookup functions help connect information across tables.</li>
+
+            <li>Charts make data easier to understand and communicate.</li>
+
+            <li>Data cleaning is an important part of reliable analysis.</li>
+          </ul>
+        </div>
+
+        <!-- ================= JOURNEY ================= -->
+
+        <h2 id="journey">📚 My Excel Learning Journey</h2>
+
+        <p>
+          I started learning Excel in
+          <strong>August 2024</strong>. At first, I focused on understanding the
+          Excel interface, worksheets, rows, columns, cells, and basic
+          operations.
+        </p>
+
+        <p>
+          As I became more comfortable, I started learning formulas, functions,
+          data cleaning techniques, Pivot Tables, charts, and other features
+          that are useful for data analysis.
+        </p>
+
+        <p>
+          My learning journey continued until
+          <strong>March 2025</strong>.
+        </p>
+
+        <h3>Topics I Practiced</h3>
+
+        <ul>
+          <li>Excel fundamentals</li>
+
+          <li>Data entry and formatting</li>
+
+          <li>Basic formulas and functions</li>
+
+          <li>IF and logical functions</li>
+
+          <li>SUM, COUNT, AVERAGE, MIN and MAX</li>
+
+          <li>Sorting and filtering</li>
+
+          <li>Lookup functions</li>
+
+          <li>Data cleaning</li>
+
+          <li>Conditional formatting</li>
+
+          <li>Pivot Tables</li>
+
+          <li>Charts and data visualization</li>
+
+          <li>Basic reporting</li>
+        </ul>
+
+        <!-- ================= WHY EXCEL ================= -->
+
+        <h2 id="what-is">📊 Why Is Excel Important for Data Analysts?</h2>
+
+        <p>
+          Data Analysts often work with structured datasets. Excel provides an
+          accessible environment for exploring and analyzing this data.
+        </p>
+
+        <p>Excel can be used for tasks such as:</p>
+
+        <ul>
+          <li>Organizing datasets</li>
+
+          <li>Cleaning inconsistent data</li>
+
+          <li>Calculating metrics</li>
+
+          <li>Finding patterns</li>
+
+          <li>Creating summaries</li>
+
+          <li>Building reports</li>
+
+          <li>Creating charts</li>
+
+          <li>Exploring business data</li>
+        </ul>
+
+        <p>
+          For beginners, Excel is also a useful way to develop an understanding
+          of data before moving into more advanced analytics tools.
+        </p>
+
+        <!-- ================= DATA ================= -->
+
+        <h2 id="data">🗂️ Working With Data in Excel</h2>
+
+        <p>
+          One of the first things I learned was how data is structured inside a
+          spreadsheet.
+        </p>
+
+        <p>A typical dataset can contain columns such as:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+
+                <th>Product</th>
+
+                <th>Region</th>
+
+                <th>Sales</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>C001</td>
+
+                <td>Laptop</td>
+
+                <td>North</td>
+
+                <td>₹50,000</td>
+              </tr>
+
+              <tr>
+                <td>C002</td>
+
+                <td>Monitor</td>
+
+                <td>South</td>
+
+                <td>₹25,000</td>
+              </tr>
+
+              <tr>
+                <td>C003</td>
+
+                <td>Keyboard</td>
+
+                <td>West</td>
+
+                <td>₹5,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Understanding how rows and columns represent records and attributes
+          helped me understand structured data better.
+        </p>
+
+        <!-- ================= FORMULAS ================= -->
+
+        <h2 id="formulas">🧮 Excel Formulas and Functions</h2>
+
+        <p>
+          Formulas became an important part of my Excel learning. They allow
+          calculations to be performed automatically.
+        </p>
+
+        <h3>SUM</h3>
+
+        <p>SUM can be used to calculate the total of a range.</p>
+
+        <pre><code>=SUM(D2:D100)</code></pre>
+
+        <h3>AVERAGE</h3>
+
+        <pre><code>=AVERAGE(D2:D100)</code></pre>
+
+        <h3>COUNT</h3>
+
+        <pre><code>=COUNT(D2:D100)</code></pre>
+
+        <h3>IF</h3>
+
+        <p>IF can be used when we need conditional logic.</p>
+
+        <pre><code>=IF(D2>=10000,"High","Low")</code></pre>
+
+        <div class="highlight">
+          <strong>
+            Learning formulas helped me move from simply storing data to
+            actually analyzing it.
+          </strong>
+        </div>
+
+        <!-- ================= LOOKUP ================= -->
+
+        <h2 id="lookup">🔎 Lookup Functions</h2>
+
+        <p>
+          Lookup functions are useful when information needs to be retrieved
+          from another table or range.
+        </p>
+
+        <h3>VLOOKUP</h3>
+
+        <pre><code>=VLOOKUP(A2,Products!A:D,4,FALSE)</code></pre>
+
+        <h3>XLOOKUP</h3>
+
+        <pre><code>=XLOOKUP(A2,Products!A:A,Products!D:D)</code></pre>
+
+        <p>
+          Understanding lookup functions helped me understand how different
+          datasets can be connected inside Excel.
+        </p>
+
+        <!-- ================= CLEANING ================= -->
+
+        <h2 id="cleaning">🧹 Data Cleaning in Excel</h2>
+
+        <p>
+          Before analyzing data, it is important to make sure the dataset is
+          consistent and usable.
+        </p>
+
+        <p>Some common cleaning tasks I learned include:</p>
+
+        <ul>
+          <li>Identifying duplicate records</li>
+
+          <li>Finding blank or missing values</li>
+
+          <li>Correcting inconsistent formatting</li>
+
+          <li>Cleaning text values</li>
+
+          <li>Removing unnecessary spaces</li>
+
+          <li>Standardizing categories</li>
+
+          <li>Checking data types</li>
+        </ul>
+
+        <p>
+          Functions such as
+          <strong>TRIM, LEFT, RIGHT, MID</strong>
+          and text-related functions can be useful for cleaning and transforming
+          data.
+        </p>
+
+        <!-- ================= CONDITIONAL FORMATTING ================= -->
+
+        <h2 id="conditional">🎨 Conditional Formatting</h2>
+
+        <p>
+          Conditional Formatting allows important values or patterns to be
+          highlighted automatically.
+        </p>
+
+        <p>For example, we can highlight:</p>
+
+        <ul>
+          <li>High sales</li>
+
+          <li>Low sales</li>
+
+          <li>Duplicate values</li>
+
+          <li>Negative values</li>
+
+          <li>Important dates</li>
+        </ul>
+
+        <p>This makes large datasets easier to scan and understand.</p>
+
+        <!-- ================= PIVOT TABLE ================= -->
+
+        <h2 id="pivot">📌 Pivot Tables</h2>
+
+        <p>
+          Pivot Tables became one of the most useful Excel features I learned
+          for data analysis.
+        </p>
+
+        <p>
+          They allow large datasets to be summarized without manually writing
+          many formulas.
+        </p>
+
+        <p>For example, a sales dataset can be summarized by:</p>
+
+        <ul>
+          <li>Region</li>
+
+          <li>Product</li>
+
+          <li>Month</li>
+
+          <li>Salesperson</li>
+        </ul>
+
+        <p>A Pivot Table can help answer questions such as:</p>
+
+        <blockquote>Which region generated the highest total sales?</blockquote>
+
+        <p>Or:</p>
+
+        <blockquote>
+          Which product category has the highest number of orders?
+        </blockquote>
+
+        <p>
+          This made Pivot Tables especially useful for exploratory analysis and
+          reporting.
+        </p>
+
+        <!-- ================= CHARTS ================= -->
+
+        <h2 id="charts">📈 Charts and Data Visualization</h2>
+
+        <p>
+          Numbers are useful, but visualizations can make patterns easier to
+          understand.
+        </p>
+
+        <p>During my Excel learning, I explored different types of charts.</p>
+
+        <div class="excel-grid">
+          <div class="excel-item">
+            <span class="excel-number"> 01 </span>
+
+            <strong> Column Chart </strong>
+
+            Useful for comparing categories.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 02 </span>
+
+            <strong> Bar Chart </strong>
+
+            Useful for comparing values.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 03 </span>
+
+            <strong> Line Chart </strong>
+
+            Useful for showing trends over time.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 04 </span>
+
+            <strong> Pie Chart </strong>
+
+            Useful for simple proportion comparisons.
+          </div>
+        </div>
+
+        <p>
+          Choosing the right chart is important because a visualization should
+          make the data easier to understand, not more confusing.
+        </p>
+
+        <!-- ================= BUSINESS QUESTIONS ================= -->
+
+        <h2>💼 Excel and Business Questions</h2>
+
+        <p>
+          As I learned Excel, I started looking beyond formulas and thinking
+          about the questions that data can answer.
+        </p>
+
+        <p>For example:</p>
+
+        <ul>
+          <li>Which product generated the highest revenue?</li>
+
+          <li>Which region performed best?</li>
+
+          <li>What is the average order value?</li>
+
+          <li>Which month had the highest sales?</li>
+
+          <li>Which products are underperforming?</li>
+
+          <li>Are there duplicate or missing records?</li>
+        </ul>
+
+        <p>
+          These questions helped me understand that Data Analytics is not only
+          about using tools. It is about finding useful answers from data.
+        </p>
+
+        <!-- ================= WORKFLOW ================= -->
+
+        <h2 id="workflow">🛠️ My Excel Data Analysis Workflow</h2>
+
+        <div class="excel-grid">
+          <div class="excel-item">
+            <span class="excel-number"> STEP 01 </span>
+
+            <strong> Understand the Data </strong>
+
+            Identify columns, records, and business context.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 02 </span>
+
+            <strong> Clean the Dataset </strong>
+
+            Check duplicates, blanks, and inconsistent values.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 03 </span>
+
+            <strong> Apply Formulas </strong>
+
+            Calculate required metrics.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 04 </span>
+
+            <strong> Analyze </strong>
+
+            Filter, sort, group, and summarize information.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 05 </span>
+
+            <strong> Create Pivot Tables </strong>
+
+            Build useful summaries from the dataset.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 06 </span>
+
+            <strong> Visualize </strong>
+
+            Create charts that communicate key patterns.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 07 </span>
+
+            <strong> Find Insights </strong>
+
+            Identify important trends and observations.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> STEP 08 </span>
+
+            <strong> Communicate Results </strong>
+
+            Present findings clearly for decision-making.
+          </div>
+        </div>
+
+        <!-- ================= EXCEL + OTHER TOOLS ================= -->
+
+        <h2>🔄 Excel in the Data Analytics Workflow</h2>
+
+        <p>
+          Excel is one part of a larger Data Analytics toolkit. As I continue
+          developing my skills, I am learning how Excel works together with SQL,
+          Power BI, and Python.
+        </p>
+
+        <pre><code>Raw Data
+   ↓
+Excel
+   ↓
+Clean & Explore
+   ↓
+SQL
+   ↓
+Analyze
+   ↓
+Power BI
+   ↓
+Dashboard
+   ↓
+Business Insights</code></pre>
+
+        <p>
+          Understanding this workflow helps me see how different tools can work
+          together instead of treating each tool as a separate skill.
+        </p>
+
+        <!-- ================= WHAT I LEARNED ================= -->
+
+        <h2 id="learning">🌱 What I Learned From Excel</h2>
+
+        <h3>1. Data Organization Matters</h3>
+
+        <p>Clean and well-structured data makes analysis much easier.</p>
+
+        <h3>2. Formulas Reduce Manual Work</h3>
+
+        <p>
+          Functions can automate repetitive calculations and improve
+          consistency.
+        </p>
+
+        <h3>3. Pivot Tables Are Powerful</h3>
+
+        <p>
+          Pivot Tables make it easier to summarize and explore large datasets.
+        </p>
+
+        <h3>4. Visualization Improves Communication</h3>
+
+        <p>
+          Charts can make trends and comparisons easier for others to
+          understand.
+        </p>
+
+        <h3>5. Analysis Starts With Questions</h3>
+
+        <p>
+          A good analyst does not simply calculate numbers. They try to
+          understand what those numbers mean.
+        </p>
+
+        <!-- ================= CURRENT STAGE ================= -->
+
+        <h2>🚀 My Current Learning Stage</h2>
+
+        <p>
+          I studied and practiced Excel from
+          <strong>August 2024 to March 2025</strong>.
+        </p>
+
+        <p>
+          This learning period helped me develop a foundation in spreadsheets,
+          formulas, data cleaning, Pivot Tables, visualization, and basic
+          reporting.
+        </p>
+
+        <p>
+          I am continuing to strengthen these skills by applying them to
+          practical Data Analytics projects.
+        </p>
+
+        <!-- ================= NEXT ================= -->
+
+        <h2 id="next">🎯 What I Want to Improve Next</h2>
+
+        <div class="excel-grid">
+          <div class="excel-item">
+            <span class="excel-number"> 01 </span>
+
+            <strong> Advanced Excel </strong>
+
+            Improve advanced formulas and analytical techniques.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 02 </span>
+
+            <strong> Power Query </strong>
+
+            Learn better data transformation and preparation.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 03 </span>
+
+            <strong> Advanced Pivot Tables </strong>
+
+            Create more detailed summaries and reports.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 04 </span>
+
+            <strong> Excel Dashboards </strong>
+
+            Build professional interactive reports.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 05 </span>
+
+            <strong> Real-World Datasets </strong>
+
+            Practice analysis with practical business data.
+          </div>
+
+          <div class="excel-item">
+            <span class="excel-number"> 06 </span>
+
+            <strong> Data Analytics Projects </strong>
+
+            Combine Excel with SQL and Power BI.
+          </div>
+        </div>
+
+        <!-- ================= BEGINNER ADVICE ================= -->
+
+        <h2>💡 Advice for Beginners</h2>
+
+        <p>
+          If you are learning Excel for Data Analytics, don't try to memorize
+          every formula at once.
+        </p>
+
+        <p>Start with the fundamentals and gradually build your skills.</p>
+
+        <pre><code>Excel Basics
+      ↓
+Formulas & Functions
+      ↓
+Sorting & Filtering
+      ↓
+Data Cleaning
+      ↓
+Lookup Functions
+      ↓
+Pivot Tables
+      ↓
+Charts
+      ↓
+Dashboards
+      ↓
+Real-World Projects</code></pre>
+
+        <p>
+          The most important thing is to practice with actual datasets rather
+          than only watching tutorials.
+        </p>
+
+        <blockquote>
+          Excel becomes powerful when you use it to answer real questions from
+          real data.
+        </blockquote>
+
+        <!-- ================= CONCLUSION ================= -->
+
+        <h2 id="conclusion">📝 Final Thoughts</h2>
+
+        <p>
+          My Excel learning journey started in
+          <strong>August 2024</strong> and continued until
+          <strong>March 2025</strong>.
+        </p>
+
+        <p>
+          During this period, I learned that Excel is much more than a
+          spreadsheet application.
+        </p>
+
+        <p>
+          It can be used to clean data, perform calculations, summarize
+          information, identify patterns, create visualizations, and communicate
+          insights.
+        </p>
+
+        <p>
+          Learning Excel also helped me develop a better understanding of how
+          Data Analysts approach data.
+        </p>
+
+        <p>
+          I am still improving my Excel skills, but the foundation I built
+          during this journey has become an important part of my Data Analytics
+          toolkit.
+        </p>
+
+        <blockquote>
+          Good analysis is not about making a spreadsheet look complicated. It
+          is about making data easier to understand.
+        </blockquote>
+
+        <p>
+          My next step is to continue combining Excel with SQL, Power BI, and
+          Python to build practical Data Analytics projects.
+        </p>
+
+        <p>
+          <strong>
+            This is another important step in my journey toward becoming a Data
+            Analyst. 🚀
+          </strong>
+        </p>
+
+        <!-- ================= TAGS ================= -->
+
+        <div class="tags">
+          <strong> 🔖 Tags </strong>
+
+          <br />
+
+          <span class="tag"> Excel </span>
+
+          <span class="tag"> Data Analytics </span>
+
+          <span class="tag"> Data Analyst </span>
+
+          <span class="tag"> Pivot Tables </span>
+
+          <span class="tag"> Data Cleaning </span>
+
+          <span class="tag"> VLOOKUP </span>
+
+          <span class="tag"> XLOOKUP </span>
+
+          <span class="tag"> Data Visualization </span>
+
+          <span class="tag"> Excel Dashboard </span>
+
+          <span class="tag"> Business Intelligence </span>
+        </div>
+
+        <!-- ================= AUTHOR ================= -->
+
+        <div class="author-card">
+          <h3>👩‍💻 About the Author</h3>
+
+          <p>
+            I am a BCA student interested in
+            <strong>Data Analytics and Data Science</strong>. I am developing my
+            skills in Excel, SQL, Python, Power BI, data cleaning, data
+            visualization, and dashboard development while building practical
+            projects for my portfolio.
+          </p>
+
+          <div class="author-buttons">
+            <a
+              href="https://www.linkedin.com/in/prensi-6b0433383/"
+              target="_blank"
+              class="author-button"
+            >
+              LinkedIn →
+            </a>
+
+            <a
+              href="https://github.com/prensi01"
+              target="_blank"
+              class="author-button"
+            >
+              GitHub →
+            </a>
+          </div>
+        </div>
+
+        <!-- ================= BACK ================= -->
+
+        <div class="back-section">
+          <a href="/#blog" class="back-button"> ← Back to Blog </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>© 2026 Prensi · Data Analytics Portfolio</footer>
+  </body>
 </html>

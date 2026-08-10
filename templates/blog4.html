@@ -1,0 +1,1882 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Power BI Dashboard for Beginners | Prensi</title>
+
+    <meta
+      name="description"
+      content="A beginner-friendly Power BI learning journey by Prensi, covering dashboards, KPIs, Power Query, data modeling, DAX and visualization."
+    />
+
+    <meta
+      name="keywords"
+      content="Power BI, Power BI Dashboard, Data Analytics, Data Analyst, DAX, Power Query, Data Visualization, Business Intelligence"
+    />
+
+    <meta name="author" content="Prensi" />
+
+    <style>
+      /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+
+        background: #f5f7fb;
+        color: #1f2937;
+        line-height: 1.8;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(12px);
+
+        border-bottom: 1px solid #e5e7eb;
+
+        padding: 15px 7%;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 800;
+        color: #111827;
+      }
+
+      .logo span {
+        color: #2563eb;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+      }
+
+      .nav-links a {
+        color: #4b5563;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #2563eb;
+      }
+
+      .nav-cta {
+        background: #111827;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 8px;
+      }
+
+      .nav-cta:hover {
+        background: #2563eb;
+      }
+
+      /* =====================================================
+           HERO
+        ===================================================== */
+
+      .hero {
+        max-width: 1200px;
+        margin: 55px auto 30px;
+        padding: 0 25px;
+      }
+
+      .hero-card {
+        position: relative;
+        overflow: hidden;
+
+        background: linear-gradient(
+          135deg,
+          #111827 0%,
+          #172554 55%,
+          #1e3a8a 100%
+        );
+
+        color: white;
+
+        border-radius: 24px;
+        padding: 65px 60px;
+
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+      }
+
+      .hero-card::after {
+        content: "";
+        position: absolute;
+
+        width: 260px;
+        height: 260px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        right: -80px;
+        top: -80px;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        right: 80px;
+        bottom: -90px;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 850px;
+      }
+
+      .category {
+        display: inline-block;
+
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        padding: 6px 14px;
+
+        border-radius: 30px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 5vw, 60px);
+        line-height: 1.12;
+
+        margin-bottom: 22px;
+
+        letter-spacing: -1.5px;
+      }
+
+      .hero-description {
+        color: #dbeafe;
+        font-size: 18px;
+
+        max-width: 760px;
+
+        margin-bottom: 28px;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        color: #cbd5e1;
+        font-size: 14px;
+      }
+
+      /* =====================================================
+           PAGE LAYOUT
+        ===================================================== */
+
+      .page-layout {
+        max-width: 1200px;
+
+        margin: 30px auto 80px;
+
+        padding: 0 25px;
+
+        display: grid;
+
+        grid-template-columns: 260px minmax(0, 1fr);
+
+        gap: 30px;
+
+        align-items: start;
+      }
+
+      /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+      .sidebar {
+        position: sticky;
+        top: 90px;
+      }
+
+      .sidebar-card {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 16px;
+
+        padding: 22px;
+
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+      }
+
+      .sidebar-title {
+        font-size: 14px;
+        font-weight: 800;
+
+        color: #111827;
+
+        margin-bottom: 15px;
+      }
+
+      .toc {
+        list-style: none;
+      }
+
+      .toc li {
+        margin-bottom: 9px;
+      }
+
+      .toc a {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .toc a:hover {
+        color: #2563eb;
+      }
+
+      .sidebar-divider {
+        height: 1px;
+
+        background: #e5e7eb;
+
+        margin: 22px 0;
+      }
+
+      .profile-mini {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .profile-avatar {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 50%;
+
+        background: #dbeafe;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #2563eb;
+
+        font-weight: 800;
+      }
+
+      .profile-mini strong {
+        display: block;
+
+        color: #111827;
+
+        font-size: 14px;
+      }
+
+      .profile-mini span {
+        color: #6b7280;
+
+        font-size: 12px;
+      }
+
+      /* =====================================================
+           ARTICLE
+        ===================================================== */
+
+      .article {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 20px;
+
+        padding: 55px;
+
+        box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+      }
+
+      .article p {
+        color: #4b5563;
+
+        font-size: 16px;
+
+        margin-bottom: 20px;
+      }
+
+      .article h2 {
+        color: #111827;
+
+        font-size: 30px;
+
+        line-height: 1.3;
+
+        margin-top: 55px;
+        margin-bottom: 18px;
+      }
+
+      .article h3 {
+        color: #1f2937;
+
+        font-size: 21px;
+
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+
+      .article ul,
+      .article ol {
+        margin: 15px 0 25px 25px;
+
+        color: #4b5563;
+      }
+
+      .article li {
+        margin-bottom: 7px;
+      }
+
+      strong {
+        color: #111827;
+      }
+
+      /* =====================================================
+           KEY TAKEAWAYS
+        ===================================================== */
+
+      .takeaways {
+        background: #eff6ff;
+
+        border: 1px solid #dbeafe;
+
+        border-left: 5px solid #2563eb;
+
+        border-radius: 12px;
+
+        padding: 25px;
+
+        margin: 30px 0 40px;
+      }
+
+      .takeaways h3 {
+        color: #1e3a8a;
+        margin-top: 0;
+      }
+
+      .takeaways ul {
+        margin-bottom: 0;
+      }
+
+      /* =====================================================
+           HIGHLIGHT
+        ===================================================== */
+
+      .highlight {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        padding: 24px;
+
+        margin: 25px 0;
+      }
+
+      /* =====================================================
+           CODE
+        ===================================================== */
+
+      .code-title {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        margin-top: 20px;
+        margin-bottom: 7px;
+      }
+
+      pre {
+        background: #0f172a;
+
+        color: #e2e8f0;
+
+        border-radius: 12px;
+
+        padding: 22px;
+
+        overflow-x: auto;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        margin-bottom: 25px;
+
+        border: 1px solid #1e293b;
+      }
+
+      code {
+        font-family: Consolas, "Courier New", monospace;
+      }
+
+      /* =====================================================
+           QUOTE
+        ===================================================== */
+
+      blockquote {
+        background: #f8fafc;
+
+        border-left: 5px solid #2563eb;
+
+        padding: 20px 25px;
+
+        border-radius: 8px;
+
+        margin: 25px 0;
+
+        color: #374151;
+
+        font-style: italic;
+
+        font-size: 17px;
+      }
+
+      /* =====================================================
+           TABLE
+        ===================================================== */
+
+      .table-wrapper {
+        overflow-x: auto;
+        margin: 25px 0;
+      }
+
+      table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 550px;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+
+        text-align: left;
+
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      th {
+        background: #111827;
+
+        color: white;
+
+        font-size: 14px;
+      }
+
+      td {
+        color: #4b5563;
+
+        font-size: 14px;
+      }
+
+      tr:nth-child(even) td {
+        background: #f8fafc;
+      }
+
+      /* =====================================================
+           ROADMAP
+        ===================================================== */
+
+      .roadmap {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 14px;
+
+        margin: 25px 0;
+      }
+
+      .roadmap-item {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        padding: 18px;
+
+        border-radius: 12px;
+
+        transition: 0.25s;
+      }
+
+      .roadmap-item:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+      }
+
+      .roadmap-number {
+        color: #2563eb;
+
+        font-size: 12px;
+
+        font-weight: 800;
+      }
+
+      .roadmap-item strong {
+        display: block;
+
+        margin-top: 4px;
+
+        font-size: 15px;
+      }
+
+      /* =====================================================
+           TAGS
+        ===================================================== */
+
+      .tags {
+        border-top: 1px solid #e5e7eb;
+
+        margin-top: 50px;
+
+        padding-top: 25px;
+      }
+
+      .tag {
+        display: inline-block;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        margin: 4px 3px 4px 0;
+      }
+
+      /* =====================================================
+           AUTHOR
+        ===================================================== */
+
+      .author-card {
+        margin-top: 45px;
+
+        padding: 28px;
+
+        background: linear-gradient(135deg, #111827, #1e3a8a);
+
+        border-radius: 16px;
+
+        color: white;
+      }
+
+      .author-card h3 {
+        color: white;
+
+        margin-top: 0;
+
+        margin-bottom: 8px;
+      }
+
+      .author-card p {
+        color: #dbeafe;
+
+        margin-bottom: 18px;
+      }
+
+      .author-buttons {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+      }
+
+      .author-button {
+        display: inline-block;
+
+        padding: 8px 15px;
+
+        border-radius: 8px;
+
+        border: 1px solid rgba(255, 255, 255, 0.25);
+
+        color: white;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .author-button:hover {
+        background: white;
+
+        color: #111827;
+      }
+
+      /* =====================================================
+           BACK
+        ===================================================== */
+
+      .back-section {
+        margin-top: 40px;
+
+        text-align: center;
+      }
+
+      .back-button {
+        display: inline-block;
+
+        background: #111827;
+
+        color: white;
+
+        padding: 11px 22px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.25s;
+      }
+
+      .back-button:hover {
+        background: #2563eb;
+
+        transform: translateY(-1px);
+      }
+
+      /* =====================================================
+           FOOTER
+        ===================================================== */
+
+      footer {
+        background: #111827;
+
+        color: #9ca3af;
+
+        text-align: center;
+
+        padding: 30px 20px;
+
+        font-size: 13px;
+      }
+
+      /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+      @media (max-width: 950px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+        }
+
+        .sidebar-card {
+          display: none;
+        }
+
+        .nav-links {
+          gap: 14px;
+        }
+
+        .nav-links a:not(.nav-cta) {
+          display: none;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          margin-top: 25px;
+        }
+
+        .hero-card {
+          padding: 42px 28px;
+
+          border-radius: 18px;
+        }
+
+        .hero-description {
+          font-size: 16px;
+        }
+
+        .article {
+          padding: 30px 22px;
+
+          border-radius: 16px;
+        }
+
+        .article h2 {
+          font-size: 26px;
+
+          margin-top: 42px;
+        }
+
+        .roadmap {
+          grid-template-columns: 1fr;
+        }
+
+        .page-layout {
+          padding: 0 15px;
+        }
+
+        .hero {
+          padding: 0 15px;
+        }
+      }
+
+      @media (max-width: 450px) {
+        .navbar {
+          padding: 13px 18px;
+        }
+
+        .hero h1 {
+          font-size: 34px;
+        }
+
+        .hero-meta {
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .article {
+          padding: 25px 18px;
+        }
+
+        .article p {
+          font-size: 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo"> Prensi<span>.</span> </a>
+
+        <div class="nav-links">
+          <a href="/">Home</a>
+
+          <a href="/#about">About</a>
+
+          <a href="/#skills">Skills</a>
+
+          <a href="/#projects">Projects</a>
+
+          <a href="/#blog">Blog</a>
+
+          <a href="/#contact" class="nav-cta"> Contact </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-content">
+          <span class="category"> Power BI • Data Analytics </span>
+
+          <h1>Power BI Dashboard for Beginners</h1>
+
+          <p class="hero-description">
+            My beginner-friendly Power BI learning journey, covering dashboards,
+            KPIs, data preparation, modeling, DAX, visualization, and reporting.
+          </p>
+
+          <div class="hero-meta">
+            <span>📅 August 2026</span>
+
+            <span>👩‍💻 Prensi</span>
+
+            <span>⏱ 8 min read</span>
+
+            <span>📊 Beginner Guide</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+     MAIN LAYOUT
+====================================================== -->
+
+    <div class="page-layout">
+      <!-- SIDEBAR -->
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">On This Page</div>
+
+          <ul class="toc">
+            <li>
+              <a href="#journey"> My Power BI Journey </a>
+            </li>
+
+            <li>
+              <a href="#what-is"> What Is Power BI? </a>
+            </li>
+
+            <li>
+              <a href="#why-powerbi"> Why Power BI? </a>
+            </li>
+
+            <li>
+              <a href="#preparation"> Data Preparation </a>
+            </li>
+
+            <li>
+              <a href="#modeling"> Data Modeling </a>
+            </li>
+
+            <li>
+              <a href="#kpis"> KPIs </a>
+            </li>
+
+            <li>
+              <a href="#visuals"> Visualizations </a>
+            </li>
+
+            <li>
+              <a href="#dax"> DAX </a>
+            </li>
+
+            <li>
+              <a href="#process"> Dashboard Process </a>
+            </li>
+
+            <li>
+              <a href="#design"> Dashboard Design </a>
+            </li>
+
+            <li>
+              <a href="#learning"> What I Learned </a>
+            </li>
+
+            <li>
+              <a href="#next"> What's Next </a>
+            </li>
+
+            <li>
+              <a href="#conclusion"> Final Thoughts </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="profile-mini">
+            <div class="profile-avatar">P</div>
+
+            <div>
+              <strong> Prensi </strong>
+
+              <span> BCA • Aspiring Data Analyst </span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- =================================================
+         ARTICLE
+    ================================================== -->
+
+      <article class="article">
+        <p>
+          Power BI is one of the tools I have been learning as part of my
+          journey toward becoming a Data Analyst. It helps transform raw data
+          into interactive reports and dashboards that make business information
+          easier to understand.
+        </p>
+
+        <p>
+          I started learning
+          <strong>Power BI in January 2026</strong>
+          and continued learning it until
+          <strong>April 2026</strong>. During these months, I focused on
+          understanding the basics of Power BI, importing and preparing data,
+          creating relationships, working with visuals, and building interactive
+          dashboards.
+        </p>
+
+        <p>
+          I am still improving my Power BI skills, but learning this tool helped
+          me understand how data can be transformed into meaningful visual
+          reports.
+        </p>
+
+        <!-- KEY TAKEAWAYS -->
+
+        <div class="takeaways">
+          <h3>🎯 Key Takeaways</h3>
+
+          <ul>
+            <li>Power BI can transform raw data into interactive reports.</li>
+
+            <li>
+              Dashboards can communicate important business information
+              visually.
+            </li>
+
+            <li>KPIs provide quick insights into important metrics.</li>
+
+            <li>
+              Data modeling and relationships are important for accurate
+              reporting.
+            </li>
+
+            <li>
+              Good dashboard design is about clarity, not simply adding more
+              charts.
+            </li>
+
+            <li>Real datasets provide valuable practice.</li>
+          </ul>
+        </div>
+
+        <!-- JOURNEY -->
+
+        <h2 id="journey">📊 My Power BI Learning Journey</h2>
+
+        <p>
+          When I started learning Power BI in
+          <strong>January 2026</strong>, I was mainly interested in
+          understanding how Data Analysts turn raw data into dashboards and
+          reports.
+        </p>
+
+        <p>
+          At first, Power BI had many new concepts for me. I had to understand
+          how data is imported, how tables are connected, how visuals work, and
+          how calculations can be used to create meaningful reports.
+        </p>
+
+        <p>
+          During my learning period from
+          <strong>January to April 2026</strong>, I gradually became more
+          comfortable with the Power BI interface and its basic workflow.
+        </p>
+
+        <h3>Areas I Focused On</h3>
+
+        <ul>
+          <li>Power BI Desktop</li>
+
+          <li>Importing data</li>
+
+          <li>Power Query</li>
+
+          <li>Data cleaning and transformation</li>
+
+          <li>Creating relationships</li>
+
+          <li>Data modeling</li>
+
+          <li>Charts and visuals</li>
+
+          <li>Cards and KPIs</li>
+
+          <li>Filters and slicers</li>
+
+          <li>Basic DAX concepts</li>
+
+          <li>Dashboard design</li>
+
+          <li>Interactive reports</li>
+        </ul>
+
+        <!-- WHAT IS POWER BI -->
+
+        <h2 id="what-is">💡 What Is Power BI?</h2>
+
+        <p>
+          Power BI is a business intelligence and data visualization tool that
+          can be used to connect to data, transform it, analyze it, and present
+          the results through interactive reports and dashboards.
+        </p>
+
+        <p>A simple Power BI workflow can look like this:</p>
+
+        <pre><code>Raw Data
+   ↓
+Power Query
+   ↓
+Data Model
+   ↓
+DAX / Calculations
+   ↓
+Visualizations
+   ↓
+Interactive Dashboard</code></pre>
+
+        <p>
+          This workflow helped me understand that creating a dashboard is not
+          simply about adding charts. The quality of the final dashboard depends
+          heavily on the quality and structure of the underlying data.
+        </p>
+
+        <!-- WHY POWER BI -->
+
+        <h2 id="why-powerbi">📈 Why Is Power BI Useful for Data Analysts?</h2>
+
+        <p>A Data Analyst often needs to communicate information clearly.</p>
+
+        <p>
+          A dataset may contain thousands of rows, but a manager may only want
+          answers to questions such as:
+        </p>
+
+        <ul>
+          <li>How much revenue was generated?</li>
+
+          <li>Which category performed best?</li>
+
+          <li>Which month had the highest sales?</li>
+
+          <li>What is the current performance?</li>
+
+          <li>Which region needs attention?</li>
+
+          <li>How are important KPIs changing?</li>
+        </ul>
+
+        <p>Power BI can help turn these questions into interactive reports.</p>
+
+        <div class="highlight">
+          <strong>
+            The goal of a dashboard is not simply to display data.
+          </strong>
+
+          <br />
+
+          It should help users understand the information and make better
+          decisions.
+        </div>
+
+        <!-- DATA PREPARATION -->
+
+        <h2 id="preparation">🧹 Understanding Data Preparation</h2>
+
+        <p>
+          One of the most important things I learned is that visualization
+          should not always be the first step.
+        </p>
+
+        <p>
+          Before creating a dashboard, the data needs to be understood and
+          prepared.
+        </p>
+
+        <p>A dataset may contain:</p>
+
+        <ul>
+          <li>Missing values</li>
+
+          <li>Duplicate records</li>
+
+          <li>Incorrect data types</li>
+
+          <li>Inconsistent names</li>
+
+          <li>Unnecessary columns</li>
+
+          <li>Incorrect date formats</li>
+        </ul>
+
+        <p>
+          Power Query can be used for many data transformation and cleaning
+          tasks before the data is used in a report.
+        </p>
+
+        <blockquote>
+          A beautiful dashboard cannot fix incorrect data.
+        </blockquote>
+
+        <!-- DATA MODELING -->
+
+        <h2 id="modeling">🔗 Data Modeling and Relationships</h2>
+
+        <p>
+          Another important concept I learned was
+          <strong>data modeling</strong>.
+        </p>
+
+        <p>
+          Real-world analytics projects can contain multiple tables that need to
+          work together.
+        </p>
+
+        <h3>Example</h3>
+
+        <pre><code>Customers
+ ├── CustomerID
+ ├── CustomerName
+ └── City
+
+
+Sales
+ ├── SaleID
+ ├── CustomerID
+ ├── ProductID
+ ├── SalesAmount
+ └── Date
+
+
+Products
+ ├── ProductID
+ ├── ProductName
+ └── Category</code></pre>
+
+        <p>
+          These tables can be connected using common fields such as
+          <strong>CustomerID</strong> or <strong>ProductID</strong>.
+        </p>
+
+        <pre><code>Customers
+     |
+     |
+     ↓
+   Sales
+     ↑
+     |
+  Products</code></pre>
+
+        <p>
+          Understanding relationships is important because incorrect
+          relationships can produce incorrect calculations and misleading
+          reports.
+        </p>
+
+        <!-- KPIs -->
+
+        <h2 id="kpis">🎯 What Are KPIs?</h2>
+
+        <p>KPI stands for <strong>Key Performance Indicator</strong>.</p>
+
+        <p>
+          KPIs are important metrics used to quickly understand performance.
+        </p>
+
+        <p>For example, a sales dashboard might show:</p>
+
+        <ul>
+          <li>Total Sales</li>
+
+          <li>Total Orders</li>
+
+          <li>Average Order Value</li>
+
+          <li>Profit</li>
+
+          <li>Profit Margin</li>
+
+          <li>Number of Customers</li>
+        </ul>
+
+        <p>
+          KPI cards allow users to see important numbers quickly without
+          searching through multiple charts.
+        </p>
+
+        <pre><code>---------------------------------------------
+| Total Sales | Orders | Profit | Customers |
+---------------------------------------------
+|  ₹25.4 L    | 1,240  | ₹5.8 L |    860    |
+---------------------------------------------</code></pre>
+
+        <!-- VISUALS -->
+
+        <h2 id="visuals">📊 Choosing the Right Visual</h2>
+
+        <p>
+          One thing I learned while working with dashboards is that
+          <strong
+            >more visuals do not necessarily mean a better dashboard.</strong
+          >
+        </p>
+
+        <h3>Bar Chart</h3>
+
+        <p>Useful for comparing categories.</p>
+
+        <pre><code>Product A  █████████████
+Product B  █████████
+Product C  ██████</code></pre>
+
+        <h3>Line Chart</h3>
+
+        <p>
+          Useful for understanding trends over time, such as monthly sales or
+          revenue.
+        </p>
+
+        <h3>Pie or Donut Chart</h3>
+
+        <p>
+          Can be useful for showing a simple part-to-whole relationship when
+          there are only a few categories.
+        </p>
+
+        <h3>Card</h3>
+
+        <p>Useful for displaying a single important KPI.</p>
+
+        <h3>Table or Matrix</h3>
+
+        <p>Useful when users need detailed values.</p>
+
+        <div class="highlight">
+          <strong> A useful question to ask before adding a visual: </strong>
+
+          <br /><br />
+
+          What do I want the user to understand from this visual?
+        </div>
+
+        <!-- SLICERS -->
+
+        <h2>🎛️ Filters and Slicers</h2>
+
+        <p>
+          Interactive dashboards allow users to explore data instead of only
+          viewing a static report.
+        </p>
+
+        <p>For example, a dashboard can contain slicers for:</p>
+
+        <ul>
+          <li>Year</li>
+
+          <li>Month</li>
+
+          <li>Region</li>
+
+          <li>Category</li>
+
+          <li>Product</li>
+        </ul>
+
+        <p>
+          A user could select a specific year or region and the dashboard
+          visuals can update according to that selection.
+        </p>
+
+        <p>
+          This interactivity is one of the features that makes Power BI useful
+          for business reporting.
+        </p>
+
+        <!-- DAX -->
+
+        <h2 id="dax">🧮 Learning DAX</h2>
+
+        <p>
+          DAX stands for
+          <strong>Data Analysis Expressions</strong>.
+        </p>
+
+        <p>
+          It is a formula language used in Power BI for creating calculations
+          and measures.
+        </p>
+
+        <p>For example, a simple measure can calculate total sales:</p>
+
+        <div class="code-title">Basic DAX Measure</div>
+
+        <pre><code>Total Sales =
+SUM(Sales[SalesAmount])</code></pre>
+
+        <p>Another example could calculate average sales:</p>
+
+        <pre><code>Average Sales =
+AVERAGE(Sales[SalesAmount])</code></pre>
+
+        <p>
+          When I started learning Power BI, DAX was one of the areas that
+          required more practice.
+        </p>
+
+        <p>
+          I learned that understanding the data model first makes it easier to
+          understand DAX calculations.
+        </p>
+
+        <!-- PROCESS -->
+
+        <h2 id="process">🛠️ My Dashboard-Building Process</h2>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 01 </span>
+
+            <strong> Understand the Data </strong>
+
+            Identify what the dataset contains.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 02 </span>
+
+            <strong> Identify Questions </strong>
+
+            Decide what the dashboard should answer.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 03 </span>
+
+            <strong> Prepare Data </strong>
+
+            Clean and transform the data.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 04 </span>
+
+            <strong> Build Model </strong>
+
+            Create relationships between tables.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 05 </span>
+
+            <strong> Create Measures </strong>
+
+            Use calculations where required.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 06 </span>
+
+            <strong> Select Visuals </strong>
+
+            Choose visuals based on the question.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 07 </span>
+
+            <strong> Add Interactivity </strong>
+
+            Use filters and slicers where useful.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 08 </span>
+
+            <strong> Review </strong>
+
+            Check the dashboard for clarity and accuracy.
+          </div>
+        </div>
+
+        <!-- DASHBOARD EXAMPLE -->
+
+        <h2>🖥️ Example of a Sales Dashboard</h2>
+
+        <p>
+          A basic sales dashboard could contain important metrics, trends,
+          category comparisons, and filters.
+        </p>
+
+        <pre><code>------------------------------------------------
+                 SALES DASHBOARD
+------------------------------------------------
+
+ Total Sales       Total Orders       Profit
+ ₹25.4 L           1,240              ₹5.8 L
+
+------------------------------------------------
+
+ Sales Trend
+
+  │
+  │       ╭────╮
+  │   ╭───╯    ╰───╮
+  │───╯             ╰────
+  └────────────────────────
+     Jan Feb Mar Apr May
+
+------------------------------------------------
+
+ Sales by Category
+
+ Electronics   ███████████████
+ Furniture     ███████████
+ Clothing      ████████
+
+------------------------------------------------
+
+ Region        Sales
+
+ North         ₹8.2 L
+ South         ₹6.5 L
+ West          ₹5.9 L
+ East          ₹4.8 L
+
+------------------------------------------------
+
+ Year:     [ 2026 ▼ ]
+ Region:   [ All  ▼ ]
+ Category: [ All  ▼ ]
+
+------------------------------------------------</code></pre>
+
+        <p>
+          The purpose is not to fill the page with visuals. The purpose is to
+          make important information easy to find and understand.
+        </p>
+
+        <!-- DESIGN -->
+
+        <h2 id="design">🎨 Dashboard Design Principles</h2>
+
+        <p>A professional dashboard should be easy to understand.</p>
+
+        <h3>Keep It Simple</h3>
+
+        <p>Avoid unnecessary visuals and decoration.</p>
+
+        <h3>Create Visual Hierarchy</h3>
+
+        <p>Important KPIs should be easy to find.</p>
+
+        <h3>Use Consistent Formatting</h3>
+
+        <p>
+          Numbers, dates, labels, and titles should follow consistent
+          formatting.
+        </p>
+
+        <h3>Avoid Too Many Colors</h3>
+
+        <p>
+          Colors should help communicate information rather than distract the
+          user.
+        </p>
+
+        <h3>Give Every Visual a Purpose</h3>
+
+        <p>Before adding a chart, ask:</p>
+
+        <blockquote>What question does this chart answer?</blockquote>
+
+        <!-- TOOLS -->
+
+        <h2>🆚 Power BI, Excel, SQL and Python</h2>
+
+        <p>
+          Power BI is not a replacement for every other Data Analytics tool.
+          Different tools solve different problems.
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tool</th>
+
+                <th>Common Use</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Excel</strong>
+                </td>
+
+                <td>Calculations, spreadsheets, and basic analysis</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>SQL</strong>
+                </td>
+
+                <td>Querying and working with databases</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>Power BI</strong>
+                </td>
+
+                <td>Dashboards, reporting, and visualization</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>Python</strong>
+                </td>
+
+                <td>Data analysis, automation, and programming</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- LEARNING -->
+
+        <h2 id="learning">🌱 What I Learned From Power BI</h2>
+
+        <h3>1. Data Comes First</h3>
+
+        <p>A dashboard is only as reliable as the data behind it.</p>
+
+        <h3>2. Business Questions Matter</h3>
+
+        <p>
+          A dashboard should answer a real question instead of simply displaying
+          random charts.
+        </p>
+
+        <h3>3. Data Modeling Is Important</h3>
+
+        <p>
+          Understanding relationships between tables is essential for accurate
+          reporting.
+        </p>
+
+        <h3>4. Visualization Is Communication</h3>
+
+        <p>
+          A good visualization should make information easier to understand.
+        </p>
+
+        <h3>5. Practice Builds Confidence</h3>
+
+        <p>
+          Working with different datasets helps me understand which analysis and
+          visuals are useful in different situations.
+        </p>
+
+        <!-- CURRENT STAGE -->
+
+        <h2>🚀 My Current Learning Stage</h2>
+
+        <p>
+          I studied Power BI from
+          <strong>January 2026 to April 2026</strong>, focusing on fundamentals
+          and practical dashboard-building concepts.
+        </p>
+
+        <p>
+          I am still improving my Power BI skills and learning how to create
+          better dashboards using real-world datasets.
+        </p>
+
+        <p>
+          My goal is not simply to know where different buttons are in Power BI.
+        </p>
+
+        <p>I want to understand:</p>
+
+        <ul>
+          <li>What data should I use?</li>
+
+          <li>How should I prepare it?</li>
+
+          <li>What relationships are required?</li>
+
+          <li>Which KPI matters?</li>
+
+          <li>Which visual communicates the insight best?</li>
+
+          <li>How can the dashboard support a decision?</li>
+        </ul>
+
+        <!-- NEXT -->
+
+        <h2 id="next">🎯 What I Want to Improve Next</h2>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 01 </span>
+
+            <strong> Power Query </strong>
+
+            Strengthen data transformation skills.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 02 </span>
+
+            <strong> Data Modeling </strong>
+
+            Practice models with multiple tables.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 03 </span>
+
+            <strong> DAX </strong>
+
+            Improve measures and calculations.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 04 </span>
+
+            <strong> Dashboard Storytelling </strong>
+
+            Improve how insights are presented.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 05 </span>
+
+            <strong> Real Datasets </strong>
+
+            Build dashboards using practical datasets.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 06 </span>
+
+            <strong> Portfolio Projects </strong>
+
+            Create projects that demonstrate practical analysis.
+          </div>
+        </div>
+
+        <!-- BEGINNER ADVICE -->
+
+        <h2>💡 Advice for Beginners</h2>
+
+        <p>
+          If you are also starting Power BI, don't try to learn every feature at
+          once.
+        </p>
+
+        <p>Start with the fundamentals:</p>
+
+        <pre><code>Power BI Interface
+        ↓
+Import Data
+        ↓
+Power Query
+        ↓
+Data Modeling
+        ↓
+Relationships
+        ↓
+Basic DAX
+        ↓
+Visualizations
+        ↓
+KPIs
+        ↓
+Filters & Slicers
+        ↓
+Dashboard
+        ↓
+Real-World Project</code></pre>
+
+        <p>Most importantly, don't only watch tutorials.</p>
+
+        <blockquote>
+          Build dashboards yourself. Practice is what turns knowledge into
+          skill.
+        </blockquote>
+
+        <!-- CONCLUSION -->
+
+        <h2 id="conclusion">📝 Final Thoughts</h2>
+
+        <p>
+          I started learning Power BI in
+          <strong>January 2026</strong> and continued learning it until
+          <strong>April 2026</strong>.
+        </p>
+
+        <p>
+          During this journey, I learned that building a dashboard is much more
+          than placing charts on a page.
+        </p>
+
+        <p>
+          It involves understanding the data, preparing it correctly, creating
+          relationships, selecting meaningful metrics, choosing appropriate
+          visuals, and presenting information in a way that helps people
+          understand it.
+        </p>
+
+        <p>
+          I am still learning and improving, but Power BI has become an
+          important part of my Data Analytics journey.
+        </p>
+
+        <blockquote>
+          A dashboard should not only look good. It should communicate something
+          useful.
+        </blockquote>
+
+        <p>
+          For anyone starting Power BI, my advice is simple: start with the
+          fundamentals, practice with real datasets, and focus on answering
+          business questions rather than simply creating attractive charts.
+        </p>
+
+        <p>
+          <strong>
+            This is another step in my journey toward becoming a Data Analyst.
+            🚀
+          </strong>
+        </p>
+
+        <!-- TAGS -->
+
+        <div class="tags">
+          <strong> 🔖 Tags </strong>
+
+          <br />
+
+          <span class="tag"> Power BI </span>
+
+          <span class="tag"> Data Analytics </span>
+
+          <span class="tag"> Data Visualization </span>
+
+          <span class="tag"> Dashboard </span>
+
+          <span class="tag"> Business Intelligence </span>
+
+          <span class="tag"> Data Analyst </span>
+
+          <span class="tag"> DAX </span>
+
+          <span class="tag"> Power Query </span>
+
+          <span class="tag"> Data Modeling </span>
+        </div>
+
+        <!-- AUTHOR -->
+
+        <div class="author-card">
+          <h3>👩‍💻 About the Author</h3>
+
+          <p>
+            I am a BCA student interested in
+            <strong>Data Analytics and Data Science</strong>. I am developing my
+            skills in Python, SQL, Excel, Power BI, data cleaning, data
+            visualization, and dashboard development while building practical
+            projects for my portfolio.
+          </p>
+
+          <div class="author-buttons">
+            <a
+              href="https://www.linkedin.com/in/prensi-6b0433383/"
+              target="_blank"
+              class="author-button"
+            >
+              LinkedIn →
+            </a>
+
+            <a
+              href="https://github.com/prensi01"
+              target="_blank"
+              class="author-button"
+            >
+              GitHub →
+            </a>
+          </div>
+        </div>
+
+        <!-- BACK TO BLOG -->
+
+        <div class="back-section">
+          <a href="/#blog" class="back-button"> ← Back to Blog </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer>© 2026 Prensi · Data Analytics Portfolio</footer>
+  </body>
+</html>

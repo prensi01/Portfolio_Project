@@ -1,56 +1,1644 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Blog 2</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Why Learn Python for Data Analytics? | Prensi</title>
+
+    <meta
+      name="description"
+      content="A beginner-friendly Python learning journey by Prensi, exploring Python fundamentals and its role in Data Analytics."
+    />
+
+    <meta
+      name="keywords"
+      content="Python, Data Analytics, Data Analyst, Python for Data Analytics, Pandas, NumPy, Power BI, SQL"
+    />
+
+    <meta name="author" content="Prensi" />
 
     <style>
-        body{
-            font-family:Arial;
-            background:#081b29;
-            color:white;
-            text-align:center;
-            padding:40px;
+      /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+
+        background: #f5f7fb;
+        color: #1f2937;
+        line-height: 1.8;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        width: 100%;
+
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(12px);
+
+        border-bottom: 1px solid #e5e7eb;
+
+        padding: 15px 7%;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 800;
+        color: #111827;
+      }
+
+      .logo span {
+        color: #2563eb;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: #4b5563;
+        font-size: 14px;
+        font-weight: 600;
+
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #2563eb;
+      }
+
+      .nav-cta {
+        background: #111827;
+        color: white !important;
+
+        padding: 8px 16px;
+        border-radius: 8px;
+      }
+
+      .nav-cta:hover {
+        background: #2563eb;
+      }
+
+      /* =====================================================
+           HERO
+        ===================================================== */
+
+      .hero {
+        max-width: 1200px;
+        margin: 55px auto 30px;
+        padding: 0 25px;
+      }
+
+      .hero-card {
+        position: relative;
+        overflow: hidden;
+
+        background: linear-gradient(
+          135deg,
+          #111827 0%,
+          #172554 55%,
+          #1e3a8a 100%
+        );
+
+        color: white;
+
+        border-radius: 24px;
+        padding: 65px 60px;
+
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+      }
+
+      .hero-card::after {
+        content: "";
+        position: absolute;
+
+        width: 260px;
+        height: 260px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        right: -80px;
+        top: -80px;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        right: 80px;
+        bottom: -90px;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+
+        max-width: 850px;
+      }
+
+      .category {
+        display: inline-block;
+
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        padding: 6px 14px;
+
+        border-radius: 30px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 5vw, 60px);
+        line-height: 1.12;
+
+        margin-bottom: 22px;
+
+        letter-spacing: -1.5px;
+      }
+
+      .hero-description {
+        color: #dbeafe;
+
+        font-size: 18px;
+
+        max-width: 760px;
+
+        margin-bottom: 28px;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+
+        color: #cbd5e1;
+
+        font-size: 14px;
+      }
+
+      /* =====================================================
+           MAIN LAYOUT
+        ===================================================== */
+
+      .page-layout {
+        max-width: 1200px;
+
+        margin: 30px auto 80px;
+
+        padding: 0 25px;
+
+        display: grid;
+
+        grid-template-columns: 260px minmax(0, 1fr);
+
+        gap: 30px;
+
+        align-items: start;
+      }
+
+      /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+      .sidebar {
+        position: sticky;
+        top: 90px;
+      }
+
+      .sidebar-card {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 16px;
+
+        padding: 22px;
+
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+      }
+
+      .sidebar-title {
+        font-size: 14px;
+        font-weight: 800;
+
+        color: #111827;
+
+        margin-bottom: 15px;
+      }
+
+      .toc {
+        list-style: none;
+      }
+
+      .toc li {
+        margin-bottom: 9px;
+      }
+
+      .toc a {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .toc a:hover {
+        color: #2563eb;
+      }
+
+      .sidebar-divider {
+        height: 1px;
+
+        background: #e5e7eb;
+
+        margin: 22px 0;
+      }
+
+      .profile-mini {
+        display: flex;
+        gap: 12px;
+
+        align-items: center;
+      }
+
+      .profile-avatar {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 50%;
+
+        background: #dbeafe;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #2563eb;
+
+        font-weight: 800;
+      }
+
+      .profile-mini strong {
+        display: block;
+
+        color: #111827;
+
+        font-size: 14px;
+      }
+
+      .profile-mini span {
+        color: #6b7280;
+
+        font-size: 12px;
+      }
+
+      /* =====================================================
+           ARTICLE
+        ===================================================== */
+
+      .article {
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 20px;
+
+        padding: 55px;
+
+        box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+      }
+
+      .article p {
+        color: #4b5563;
+
+        font-size: 16px;
+
+        margin-bottom: 20px;
+      }
+
+      .article h2 {
+        color: #111827;
+
+        font-size: 30px;
+
+        line-height: 1.3;
+
+        margin-top: 55px;
+        margin-bottom: 18px;
+      }
+
+      .article h3 {
+        color: #1f2937;
+
+        font-size: 21px;
+
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+
+      .article ul,
+      .article ol {
+        margin: 15px 0 25px 25px;
+
+        color: #4b5563;
+      }
+
+      .article li {
+        margin-bottom: 7px;
+      }
+
+      strong {
+        color: #111827;
+      }
+
+      /* =====================================================
+           KEY TAKEAWAYS
+        ===================================================== */
+
+      .takeaways {
+        background: #eff6ff;
+
+        border: 1px solid #dbeafe;
+
+        border-left: 5px solid #2563eb;
+
+        border-radius: 12px;
+
+        padding: 25px;
+
+        margin: 30px 0 40px;
+      }
+
+      .takeaways h3 {
+        color: #1e3a8a;
+
+        margin-top: 0;
+      }
+
+      .takeaways ul {
+        margin-bottom: 0;
+      }
+
+      /* =====================================================
+           HIGHLIGHT BOX
+        ===================================================== */
+
+      .highlight {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        padding: 24px;
+
+        margin: 25px 0;
+      }
+
+      /* =====================================================
+           CODE
+        ===================================================== */
+
+      .code-title {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        margin-top: 20px;
+        margin-bottom: 7px;
+      }
+
+      pre {
+        background: #0f172a;
+
+        color: #e2e8f0;
+
+        border-radius: 12px;
+
+        padding: 22px;
+
+        overflow-x: auto;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        margin-bottom: 25px;
+
+        border: 1px solid #1e293b;
+      }
+
+      code {
+        font-family: Consolas, "Courier New", monospace;
+      }
+
+      /* =====================================================
+           QUOTE
+        ===================================================== */
+
+      blockquote {
+        background: #f8fafc;
+
+        border-left: 5px solid #2563eb;
+
+        padding: 20px 25px;
+
+        border-radius: 8px;
+
+        margin: 25px 0;
+
+        color: #374151;
+
+        font-style: italic;
+
+        font-size: 17px;
+      }
+
+      /* =====================================================
+           TABLE
+        ===================================================== */
+
+      .table-wrapper {
+        overflow-x: auto;
+
+        margin: 25px 0;
+      }
+
+      table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 550px;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+
+        text-align: left;
+
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      th {
+        background: #111827;
+
+        color: white;
+
+        font-size: 14px;
+      }
+
+      td {
+        color: #4b5563;
+
+        font-size: 14px;
+      }
+
+      tr:nth-child(even) td {
+        background: #f8fafc;
+      }
+
+      /* =====================================================
+           ROADMAP
+        ===================================================== */
+
+      .roadmap {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 14px;
+
+        margin: 25px 0;
+      }
+
+      .roadmap-item {
+        background: #f8fafc;
+
+        border: 1px solid #e5e7eb;
+
+        padding: 18px;
+
+        border-radius: 12px;
+
+        transition: 0.25s;
+      }
+
+      .roadmap-item:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+      }
+
+      .roadmap-number {
+        color: #2563eb;
+
+        font-size: 12px;
+
+        font-weight: 800;
+      }
+
+      .roadmap-item strong {
+        display: block;
+
+        margin-top: 4px;
+
+        font-size: 15px;
+      }
+
+      /* =====================================================
+           TAGS
+        ===================================================== */
+
+      .tags {
+        border-top: 1px solid #e5e7eb;
+
+        margin-top: 50px;
+
+        padding-top: 25px;
+      }
+
+      .tag {
+        display: inline-block;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        margin: 4px 3px 4px 0;
+      }
+
+      /* =====================================================
+           AUTHOR CARD
+        ===================================================== */
+
+      .author-card {
+        margin-top: 45px;
+
+        padding: 28px;
+
+        background: linear-gradient(135deg, #111827, #1e3a8a);
+
+        border-radius: 16px;
+
+        color: white;
+      }
+
+      .author-card h3 {
+        color: white;
+
+        margin-top: 0;
+
+        margin-bottom: 8px;
+      }
+
+      .author-card p {
+        color: #dbeafe;
+
+        margin-bottom: 18px;
+      }
+
+      .author-buttons {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+      }
+
+      .author-button {
+        display: inline-block;
+
+        padding: 8px 15px;
+
+        border-radius: 8px;
+
+        border: 1px solid rgba(255, 255, 255, 0.25);
+
+        color: white;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+      }
+
+      .author-button:hover {
+        background: white;
+
+        color: #111827;
+      }
+
+      /* =====================================================
+           BACK TO BLOG
+        ===================================================== */
+
+      .back-section {
+        margin-top: 40px;
+
+        text-align: center;
+      }
+
+      .back-button {
+        display: inline-block;
+
+        background: #111827;
+
+        color: white;
+
+        padding: 11px 22px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.25s;
+      }
+
+      .back-button:hover {
+        background: #2563eb;
+
+        transform: translateY(-1px);
+      }
+
+      /* =====================================================
+           FOOTER
+        ===================================================== */
+
+      footer {
+        background: #111827;
+
+        color: #9ca3af;
+
+        text-align: center;
+
+        padding: 30px 20px;
+
+        font-size: 13px;
+      }
+
+      /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+      @media (max-width: 950px) {
+        .page-layout {
+          grid-template-columns: 1fr;
         }
 
-        h1{
-            color:#00abf0;
+        .sidebar {
+          position: static;
         }
 
-        p{
-            max-width:800px;
-            margin:auto;
-            line-height:1.6;
-            color:#ccc;
+        .sidebar-card {
+          display: none;
         }
 
-        .btn{
-            display:inline-block;
-            margin-top:30px;
-            padding:12px 25px;
-            background:#00abf0;
-            color:white;
-            text-decoration:none;
-            border-radius:8px;
+        .nav-links {
+          gap: 14px;
         }
 
-        .btn:hover{
-            background:transparent;
-            border:2px solid #00abf0;
-            color:#00abf0;
+        .nav-links a:not(.nav-cta) {
+          display: none;
         }
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          margin-top: 25px;
+        }
+
+        .hero-card {
+          padding: 42px 28px;
+
+          border-radius: 18px;
+        }
+
+        .hero-description {
+          font-size: 16px;
+        }
+
+        .article {
+          padding: 30px 22px;
+
+          border-radius: 16px;
+        }
+
+        .article h2 {
+          font-size: 26px;
+
+          margin-top: 42px;
+        }
+
+        .roadmap {
+          grid-template-columns: 1fr;
+        }
+
+        .page-layout {
+          padding: 0 15px;
+        }
+
+        .hero {
+          padding: 0 15px;
+        }
+      }
+
+      @media (max-width: 450px) {
+        .navbar {
+          padding: 13px 18px;
+        }
+
+        .hero h1 {
+          font-size: 34px;
+        }
+
+        .hero-meta {
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .article {
+          padding: 25px 18px;
+        }
+
+        .article p {
+          font-size: 15px;
+        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- =====================================================
+     NAVIGATION
+====================================================== -->
 
-<h1>Why Learn Python for Data Analysis</h1>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo"> Prensi<span>.</span> </a>
 
-<p>
-Python is very powerful for data analysis, machine learning and automation.
-Libraries like Pandas and NumPy make it easy to work with data.
-</p>
+        <div class="nav-links">
+          <a href="/">Home</a>
 
-<a href="/" class="btn">⬅ Back to Home</a>
+          <a href="/#about">About</a>
 
-</body>
+          <a href="/#skills">Skills</a>
+
+          <a href="/#projects">Projects</a>
+
+          <a href="/#blog">Blog</a>
+
+          <a href="/#contact" class="nav-cta"> Contact </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-content">
+          <span class="category"> Python • Data Analytics </span>
+
+          <h1>Why Learn Python for Data Analytics?</h1>
+
+          <p class="hero-description">
+            A beginner-friendly look at my Python learning journey, why Python
+            matters in Data Analytics, and the skills I plan to develop next.
+          </p>
+
+          <div class="hero-meta">
+            <span>📅 August 2026</span>
+
+            <span>👩‍💻 Prensi</span>
+
+            <span>⏱ 8 min read</span>
+
+            <span>📚 Beginner Guide</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+     PAGE LAYOUT
+====================================================== -->
+
+    <div class="page-layout">
+      <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">On This Page</div>
+
+          <ul class="toc">
+            <li>
+              <a href="#journey"> My Python Journey </a>
+            </li>
+
+            <li>
+              <a href="#why-python"> Why Python? </a>
+            </li>
+
+            <li>
+              <a href="#workflow"> Analytics Workflow </a>
+            </li>
+
+            <li>
+              <a href="#example"> Python Example </a>
+            </li>
+
+            <li>
+              <a href="#libraries"> Python Libraries </a>
+            </li>
+
+            <li>
+              <a href="#tools"> Python vs Other Tools </a>
+            </li>
+
+            <li>
+              <a href="#learning"> What I Learned </a>
+            </li>
+
+            <li>
+              <a href="#next"> What's Next </a>
+            </li>
+
+            <li>
+              <a href="#advice"> Beginner Advice </a>
+            </li>
+
+            <li>
+              <a href="#conclusion"> Final Thoughts </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="profile-mini">
+            <div class="profile-avatar">P</div>
+
+            <div>
+              <strong> Prensi </strong>
+
+              <span> BCA • Aspiring Data Analyst </span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- =================================================
+         ARTICLE
+    ================================================== -->
+
+      <article class="article">
+        <!-- INTRODUCTION -->
+
+        <p>
+          Python is one of the most popular programming languages for working
+          with data. It is relatively easy to learn, beginner-friendly, and
+          widely used in Data Analytics, Data Science, automation, and many
+          other technology fields.
+        </p>
+
+        <p>
+          I started learning Python in
+          <strong>July 2025</strong> and continued learning it until
+          <strong>September 2025</strong>. During this period, my main focus was
+          understanding Python fundamentals and building a strong programming
+          foundation.
+        </p>
+
+        <p>
+          I am still learning Python for Data Analytics, but this journey has
+          helped me understand why Python is such a useful skill for anyone
+          interested in working with data.
+        </p>
+
+        <!-- KEY TAKEAWAYS -->
+
+        <div class="takeaways">
+          <h3>🎯 Key Takeaways</h3>
+
+          <ul>
+            <li>
+              Python fundamentals are an important foundation for Data
+              Analytics.
+            </li>
+
+            <li>
+              Python can support data cleaning, analysis, visualization, and
+              automation.
+            </li>
+
+            <li>
+              Libraries such as Pandas, NumPy, Matplotlib, and Seaborn extend
+              Python's capabilities.
+            </li>
+
+            <li>
+              Learning should happen gradually through practice and real-world
+              projects.
+            </li>
+          </ul>
+        </div>
+
+        <!-- JOURNEY -->
+
+        <h2 id="journey">🐍 My Python Learning Journey</h2>
+
+        <p>
+          When I started Python in
+          <strong>July 2025</strong>, I was a beginner.
+        </p>
+
+        <p>
+          At first, programming concepts such as variables, loops, functions,
+          lists, dictionaries, and conditional statements felt new. I had to
+          understand not only the syntax but also the logic behind writing a
+          program.
+        </p>
+
+        <p>
+          With practice, I gradually became more comfortable with Python and
+          started understanding how a problem can be divided into smaller steps
+          and solved using code.
+        </p>
+
+        <p>
+          During my initial learning period from
+          <strong>July to September 2025</strong>, I focused mainly on Python
+          fundamentals.
+        </p>
+
+        <h3>Topics I Learned</h3>
+
+        <ul>
+          <li>Variables and data types</li>
+          <li>Conditional statements</li>
+          <li>Loops</li>
+          <li>Functions</li>
+          <li>Strings</li>
+          <li>Lists</li>
+          <li>Tuples</li>
+          <li>Sets</li>
+          <li>Dictionaries</li>
+          <li>Basic input and output</li>
+          <li>File handling</li>
+          <li>Exception handling</li>
+          <li>Basic problem-solving</li>
+        </ul>
+
+        <!-- WHY PYTHON -->
+
+        <h2 id="why-python">📊 Why Is Python Useful for Data Analytics?</h2>
+
+        <p>
+          Data Analytics is about examining data to find useful information,
+          patterns, and insights that can support better decision-making.
+        </p>
+
+        <p>A Data Analyst may need to:</p>
+
+        <ul>
+          <li>Collect data</li>
+          <li>Understand datasets</li>
+          <li>Clean data</li>
+          <li>Handle missing or incorrect values</li>
+          <li>Filter and transform data</li>
+          <li>Perform calculations</li>
+          <li>Find patterns and trends</li>
+          <li>Create visualizations</li>
+          <li>Automate repetitive tasks</li>
+          <li>Communicate insights</li>
+        </ul>
+
+        <p>Python can help with many of these tasks.</p>
+
+        <div class="highlight">
+          <strong> Important: </strong>
+
+          Python is the programming language. Libraries such as Pandas, NumPy,
+          Matplotlib, and Seaborn provide specialized tools that make
+          data-related work easier.
+        </div>
+
+        <!-- WORKFLOW -->
+
+        <h2 id="workflow">🧩 Python in the Data Analytics Workflow</h2>
+
+        <h3>1. Import Data</h3>
+
+        <p>
+          Data may come from CSV files, Excel files, databases, APIs, and other
+          sources. Python can help load this data into a form that can be
+          analyzed.
+        </p>
+
+        <h3>2. Clean Data</h3>
+
+        <p>
+          Real-world datasets are often not perfect. They may contain missing
+          values, duplicate records, incorrect data types, or inconsistent
+          values.
+        </p>
+
+        <h3>3. Analyze Data</h3>
+
+        <p>
+          Once the data is cleaned, we can analyze it to find trends, patterns,
+          relationships, summary statistics, and useful business insights.
+        </p>
+
+        <h3>4. Visualize Data</h3>
+
+        <p>
+          Data visualization makes information easier to understand. Python can
+          be used to create different types of charts and graphs.
+        </p>
+
+        <h3>5. Automate Tasks</h3>
+
+        <p>
+          Some repetitive data-related tasks can also be automated using Python.
+          This can save time and reduce manual work.
+        </p>
+
+        <!-- EXAMPLE -->
+
+        <h2 id="example">💻 A Simple Python Example</h2>
+
+        <p>
+          Before working with advanced data-analysis libraries, it is important
+          to understand Python basics.
+        </p>
+
+        <div class="code-title">Python Example</div>
+
+        <pre><code>sales = [1200, 1500, 1800, 1300, 2000]
+
+total_sales = sum(sales)
+
+print("Total Sales:", total_sales)</code></pre>
+
+        <p>The output would be:</p>
+
+        <pre><code>Total Sales: 7800</code></pre>
+
+        <p>This is a simple example, but it demonstrates an important idea:</p>
+
+        <blockquote>
+          We can use Python to process data and obtain useful information.
+        </blockquote>
+
+        <!-- LIBRARIES -->
+
+        <h2 id="libraries">📚 Python Libraries for Data Analytics</h2>
+
+        <p>
+          Python has a large ecosystem of libraries that make data analysis
+          easier.
+        </p>
+
+        <p>
+          I am currently learning about these libraries and plan to develop my
+          skills with them through practice and projects.
+        </p>
+
+        <h3>🐼 Pandas</h3>
+
+        <p>
+          <strong>Pandas</strong> is commonly used for working with structured
+          data such as tables and CSV files.
+        </p>
+
+        <ul>
+          <li>Reading CSV and Excel files</li>
+          <li>Working with tables</li>
+          <li>Filtering data</li>
+          <li>Cleaning data</li>
+          <li>Grouping data</li>
+          <li>Performing calculations</li>
+          <li>Handling missing values</li>
+        </ul>
+
+        <h3>🔢 NumPy</h3>
+
+        <p>
+          <strong>NumPy</strong> is mainly used for numerical computing in
+          Python. It provides useful tools for working with arrays and
+          mathematical operations.
+        </p>
+
+        <h3>📈 Matplotlib</h3>
+
+        <p>
+          <strong>Matplotlib</strong> is a Python library used for creating
+          visualizations such as line charts, bar charts, histograms, and
+          scatter plots.
+        </p>
+
+        <h3>📊 Seaborn</h3>
+
+        <p>
+          <strong>Seaborn</strong> is another Python visualization library. It
+          is built on top of Matplotlib and provides convenient ways to create
+          statistical visualizations.
+        </p>
+
+        <!-- TOOLS -->
+
+        <h2 id="tools">🆚 Python, Excel, SQL and Power BI</h2>
+
+        <p>
+          Python does not necessarily replace tools such as Excel, SQL, or Power
+          BI. Each tool has its own strengths.
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tool</th>
+                <th>Common Use</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Excel</strong>
+                </td>
+
+                <td>Data entry, calculations, basic analysis, and reporting</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>SQL</strong>
+                </td>
+
+                <td>Working with data stored in databases</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>Power BI</strong>
+                </td>
+
+                <td>Interactive dashboards and business reporting</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>Python</strong>
+                </td>
+
+                <td>
+                  Programming, data analysis, automation, and data processing
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          A Data Analyst can use these tools together rather than depending on
+          only one tool.
+        </p>
+
+        <div class="highlight">
+          <pre><code>SQL
+  ↓
+Get the data
+
+  ↓
+
+Python
+  ↓
+Clean and analyze the data
+
+  ↓
+
+Power BI
+  ↓
+Build an interactive dashboard</code></pre>
+        </div>
+
+        <!-- PROBLEM SOLVING -->
+
+        <h2>🧠 Python Is More Than Just Coding</h2>
+
+        <p>
+          One of the things I like about learning Python is that it develops
+          problem-solving skills.
+        </p>
+
+        <p>
+          Instead of only memorizing syntax, Python encourages us to think
+          logically.
+        </p>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 01 </span>
+
+            <strong> Identify </strong>
+
+            What is the problem?
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 02 </span>
+
+            <strong> Understand </strong>
+
+            What information do I have?
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 03 </span>
+
+            <strong> Plan </strong>
+
+            What steps are required?
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> 04 </span>
+
+            <strong> Code </strong>
+
+            How can I represent those steps?
+          </div>
+        </div>
+
+        <!-- LEARNING -->
+
+        <h2 id="learning">🌱 What I Learned From My Python Journey</h2>
+
+        <h3>1. Fundamentals Matter</h3>
+
+        <p>
+          Before jumping into advanced libraries, it is important to understand
+          basic programming concepts.
+        </p>
+
+        <h3>2. Practice Is Important</h3>
+
+        <p>
+          Simply watching tutorials is not enough. Writing code and solving
+          small problems helps build confidence.
+        </p>
+
+        <h3>3. Mistakes Are Part of Learning</h3>
+
+        <p>
+          Errors are normal when learning programming. Understanding why an
+          error occurs is often more valuable than simply fixing it.
+        </p>
+
+        <h3>4. You Don't Need to Learn Everything at Once</h3>
+
+        <p>
+          Python is a large ecosystem. For Data Analytics, it is better to focus
+          on the skills relevant to your goal instead of trying to learn every
+          Python feature.
+        </p>
+
+        <!-- CURRENT STAGE -->
+
+        <h2>🚀 My Current Learning Stage</h2>
+
+        <p>
+          I have already worked on Python fundamentals, but I am still
+          developing my Python skills for Data Analytics.
+        </p>
+
+        <p>
+          I have not mastered all the Python libraries yet, and that is
+          completely okay.
+        </p>
+
+        <p>
+          My current goal is to gradually move from Python fundamentals toward
+          practical data analysis.
+        </p>
+
+        <p>
+          Instead of trying to learn everything at once, I want to learn one
+          concept at a time and apply it through real datasets and projects.
+        </p>
+
+        <!-- NEXT -->
+
+        <h2 id="next">🎯 What I Want to Learn Next</h2>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <span class="roadmap-number">01</span>
+            <strong>Python Fundamentals</strong>
+            Strengthen my programming foundation.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number">02</span>
+            <strong>Pandas</strong>
+            Learn practical data manipulation.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number">03</span>
+            <strong>NumPy</strong>
+            Develop numerical computing skills.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number">04</span>
+            <strong>Data Visualization</strong>
+            Learn Matplotlib and Seaborn.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number">05</span>
+            <strong>Data Cleaning</strong>
+            Practice with real datasets.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number">06</span>
+            <strong>Projects</strong>
+            Build practical Data Analytics projects.
+          </div>
+        </div>
+
+        <p>
+          My goal is not just to learn these libraries theoretically, but to
+          understand <strong>when and why to use them.</strong>
+        </p>
+
+        <!-- PRACTICE PLAN -->
+
+        <h2>🛠️ My Practice Approach</h2>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 1 </span>
+
+            <strong> Learn </strong>
+
+            Understand the concept.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 2 </span>
+
+            <strong> Practice </strong>
+
+            Write programs and solve problems.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 3 </span>
+
+            <strong> Apply </strong>
+
+            Use the concept on real data.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 4 </span>
+
+            <strong> Build </strong>
+
+            Create a practical project.
+          </div>
+
+          <div class="roadmap-item">
+            <span class="roadmap-number"> STEP 5 </span>
+
+            <strong> Share </strong>
+
+            Document the project in my portfolio.
+          </div>
+        </div>
+
+        <!-- ADVICE -->
+
+        <h2 id="advice">💡 Advice for Beginners</h2>
+
+        <p>
+          If you are also starting Python for Data Analytics, don't feel
+          overwhelmed by the number of libraries and tools available.
+        </p>
+
+        <p>You don't need to learn everything in one month.</p>
+
+        <pre><code>Python Fundamentals
+        ↓
+Data Structures
+        ↓
+Functions & Problem Solving
+        ↓
+Pandas
+        ↓
+NumPy
+        ↓
+Data Visualization
+        ↓
+Real Datasets
+        ↓
+Projects</code></pre>
+
+        <p>
+          Most importantly,
+          <strong>practice consistently.</strong>
+        </p>
+
+        <p>
+          Even a small program that you write yourself can teach you more than
+          simply watching another tutorial.
+        </p>
+
+        <!-- CONCLUSION -->
+
+        <h2 id="conclusion">📝 Final Thoughts</h2>
+
+        <p>
+          My Python journey started in
+          <strong>July 2025</strong>, and from July to September, I focused
+          mainly on learning Python fundamentals.
+        </p>
+
+        <p>
+          I am still learning and improving my skills, especially in the area of
+          Python for Data Analytics.
+        </p>
+
+        <p>
+          This journey has helped me understand that Python is not just a
+          programming language. It is also a tool for solving problems, working
+          with data, automating tasks, and building practical solutions.
+        </p>
+
+        <blockquote>
+          Don't try to learn everything at once. Build strong fundamentals,
+          practice regularly, and gradually apply your knowledge to real-world
+          problems.
+        </blockquote>
+
+        <p>
+          There is still a lot for me to learn, especially Python's
+          data-analysis libraries. But every new concept brings me one step
+          closer to becoming a better Data Analyst.
+        </p>
+
+        <p>
+          <strong>
+            This is not the end of my Python journey — it is just the beginning.
+            🚀
+          </strong>
+        </p>
+
+        <!-- TAGS -->
+
+        <div class="tags">
+          <strong> 🔖 Tags </strong>
+
+          <br />
+
+          <span class="tag"> Python </span>
+
+          <span class="tag"> Data Analytics </span>
+
+          <span class="tag"> Data Science </span>
+
+          <span class="tag"> Pandas </span>
+
+          <span class="tag"> NumPy </span>
+
+          <span class="tag"> Data Visualization </span>
+
+          <span class="tag"> Beginner Python </span>
+
+          <span class="tag"> Learning Journey </span>
+        </div>
+
+        <!-- AUTHOR -->
+
+        <div class="author-card">
+          <h3>👩‍💻 About the Author</h3>
+
+          <p>
+            I am a BCA student interested in
+            <strong>Data Analytics and Data Science</strong>. I am currently
+            developing my skills in Python, SQL, Excel, Power BI, and data
+            visualization while building practical projects for my portfolio.
+          </p>
+
+          <div class="author-buttons">
+            <!-- Apna actual LinkedIn URL yahan rakho -->
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              class="author-button"
+            >
+              LinkedIn →
+            </a>
+
+            <!-- Apna actual GitHub URL yahan rakho -->
+            <a href="https://github.com/" target="_blank" class="author-button">
+              GitHub →
+            </a>
+          </div>
+        </div>
+
+        <!-- BACK -->
+
+        <div class="back-section">
+          <a href="/#blog" class="back-button"> ← Back to Blog </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer>© 2026 Prensi · Data Analytics Portfolio</footer>
+  </body>
 </html>

@@ -288,6 +288,10 @@ def blog2():
 def blog3():
     return render_template("blog3.html")
 
+@app.route("/blog4")
+def blog4():
+    return render_template("blog4.html")
+
 @app.route('/delete-id/<int:id>', methods=['POST'])
 def delete_id(id):
 
