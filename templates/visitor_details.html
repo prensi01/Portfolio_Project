@@ -105,6 +105,19 @@
                 padding: 10px;
             }
         }
+        .delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+       .delete-btn:hover {
+    background: #b02a37;
+}
     </style>
 </head>
 
@@ -146,6 +159,7 @@
                         <th>Subject</th>
                         <th>Message</th>
                         <th>Received At (IST)</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -163,14 +177,33 @@
                         <td class="message-cell">
                             {{ msg[5] }}
                         </td>
+                        
 
                         <td>{{ msg[6] }}</td>
+                
+
+<td>
+    <form action="{{ url_for('delete_id', id=msg[0]) }}"
+          method="POST"
+          onsubmit="return confirm('Are you sure you want to delete this message?');">
+
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <button type="submit" class="delete-btn">
+            Delete
+        </button>
+    </form>
+</td>
+
+                        
                     </tr>
 
                     {% else %}
 
                     <tr>
-                        <td colspan="7" class="empty">
+                        <td colspan="8" class="empty">
                             No contact messages found.
                         </td>
                     </tr>
@@ -199,6 +232,8 @@
                         <th>Browser</th>
                         <th>Page</th>
                         <th>Visit Time (IST)</th>
+                        <th>Action</th>
+
                     </tr>
                 </thead>
 
@@ -223,16 +258,47 @@
                         <td>{{ visitor.browser }}</td>
                         <td>{{ visitor.page }}</td>
                         <td>{{ visitor.visit_time }}</td>
+                        
+<td>
+    {% if unique_mode|default(false) %}
+
+        <form action="{{ url_for('delete_unique_visitor', visitor_id=visitor.visitor_id) }}"
+              method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this visitor and all their visits?');">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <button type="submit" class="delete-btn">
+                Delete
+            </button>
+        </form>
+
+    {% else %}
+
+        <form action="{{ url_for('delete_visitor', id=visitor.id) }}"
+              method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this visit record?');">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <button type="submit" class="delete-btn">
+                Delete
+            </button>
+        </form>
+
+    {% endif %}
+</td>
+
                     </tr>
 
                     {% else %}
 
                     <tr>
-                        {% if unique_mode|default(false) %}
-                            <td colspan="9" class="empty">
-                        {% else %}
-                            <td colspan="8" class="empty">
-                        {% endif %}
+                         {% if unique_mode|default(false) %}
+                         <td colspan="10" class="empty">
+                         {% else %}
+                        <td colspan="9" class="empty">
+                         {% endif %}
 
                             No visitor records found.
 

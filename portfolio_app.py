@@ -584,8 +584,55 @@ def delete_id(id):
 
     conn.commit()
     conn.close()
+    return redirect(url_for('contact_messages'))
 
-    return redirect(url_for('admin'))
+# ================= DELETE VISITOR RECORD =================
+
+@app.route('/delete-visitor/<int:id>', methods=['POST'])
+def delete_visitor(id):
+
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM analytics WHERE id = ?",
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    flash("Visitor record deleted successfully!", "success")
+
+    return redirect(url_for('visitor_details'))
+
+
+# ================= DELETE UNIQUE VISITOR =================
+
+@app.route('/delete-unique-visitor/<visitor_id>', methods=['POST'])
+def delete_unique_visitor(visitor_id):
+
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM analytics WHERE visitor_id = ?",
+        (visitor_id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    flash("Unique visitor and visit history deleted!", "success")
+
+    return redirect(url_for('unique_visitors'))
+
 # ================= ADMIN PANEL =================
 @app.route('/admin')
 def admin():
