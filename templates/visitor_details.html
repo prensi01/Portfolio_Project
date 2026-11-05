@@ -5,7 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Visitor Details</title>
+    <title>
+        {% if page_mode|default('visits') == 'messages' %}
+            Contact Messages
+        {% elif unique_mode|default(false) %}
+            Unique Visitor Details
+        {% else %}
+            Visitor Details
+        {% endif %}
+    </title>
 
     <style>
         body {
@@ -39,6 +47,7 @@
             padding: 14px;
             text-align: left;
             border-bottom: 1px solid #345064;
+            vertical-align: top;
         }
 
         th {
@@ -55,6 +64,13 @@
             overflow-wrap: anywhere;
         }
 
+        .message-cell {
+            min-width: 250px;
+            max-width: 450px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
         .back-btn {
             display: inline-block;
             margin-top: 25px;
@@ -63,79 +79,178 @@
             color: white;
             text-decoration: none;
             border-radius: 6px;
+            transition: 0.3s;
         }
 
         .back-btn:hover {
             background: #008ac4;
+            transform: scale(1.05);
         }
 
         .empty {
             text-align: center;
             padding: 30px;
         }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .table-container {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>Portfolio Visitor Details</h1>
+    <!-- PAGE HEADING -->
+
+    {% if page_mode|default('visits') == 'messages' %}
+
+        <h1>Contact Messages</h1>
+
+    {% elif unique_mode|default(false) %}
+
+        <h1>Unique Visitor Details</h1>
+
+    {% else %}
+
+        <h1>Portfolio Visitor Details</h1>
+
+    {% endif %}
+
+
+    <!-- TABLE CONTAINER -->
 
     <div class="table-container">
 
         <table>
 
-            <thead>
-                <tr>
-                    <th>Visit ID</th>
-                    <th>Visitor ID</th>
-                    <th>IP Address</th>
-                    <th>Device</th>
-                    <th>Operating System</th>
-                    <th>Browser</th>
-                    <th>Page</th>
-                    <th>Visit Time (IST)</th>
-                </tr>
-            </thead>
+            <!-- CONTACT MESSAGES TABLE -->
 
-            <tbody>
+            {% if page_mode|default('visits') == 'messages' %}
 
-                {% for visitor in visitors %}
+                <thead>
+                    <tr>
+                        <th>Message ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Received At (IST)</th>
+                    </tr>
+                </thead>
 
-                <tr>
-                    <td>{{ visitor.id }}</td>
+                <tbody>
 
-                    <td class="visitor-id">
-                        {{ visitor.visitor_id }}
-                    </td>
+                    {% for msg in messages %}
 
-                    <td>{{ visitor.ip }}</td>
+                    <tr>
+                        <td>{{ msg[0] }}</td>
+                        <td>{{ msg[1] }}</td>
+                        <td>{{ msg[2] }}</td>
+                        <td>{{ msg[3] or 'Not Provided' }}</td>
+                        <td>{{ msg[4] or 'No Subject' }}</td>
 
-                    <td>{{ visitor.device }}</td>
+                        <td class="message-cell">
+                            {{ msg[5] }}
+                        </td>
 
-                    <td>{{ visitor.os }}</td>
+                        <td>{{ msg[6] }}</td>
+                    </tr>
 
-                    <td>{{ visitor.browser }}</td>
+                    {% else %}
 
-                    <td>{{ visitor.page }}</td>
+                    <tr>
+                        <td colspan="7" class="empty">
+                            No contact messages found.
+                        </td>
+                    </tr>
 
-                    <td>{{ visitor.visit_time }}</td>
-                </tr>
+                    {% endfor %}
 
-                {% else %}
+                </tbody>
 
-                <tr>
-                    <td colspan="8" class="empty">
-                        No visitor records found.
-                    </td>
-                </tr>
 
-                {% endfor %}
+            <!-- VISITOR DETAILS TABLE -->
 
-            </tbody>
+            {% else %}
+
+                <thead>
+                    <tr>
+                        <th>Visit ID</th>
+                        <th>Visitor ID</th>
+
+                        {% if unique_mode|default(false) %}
+                            <th>Total Visits</th>
+                        {% endif %}
+
+                        <th>IP Address</th>
+                        <th>Device</th>
+                        <th>Operating System</th>
+                        <th>Browser</th>
+                        <th>Page</th>
+                        <th>Visit Time (IST)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for visitor in visitors %}
+
+                    <tr>
+                        <td>{{ visitor.id }}</td>
+
+                        <td class="visitor-id">
+                            {{ visitor.visitor_id }}
+                        </td>
+
+                        {% if unique_mode|default(false) %}
+                            <td>{{ visitor.total_visits }}</td>
+                        {% endif %}
+
+                        <td>{{ visitor.ip }}</td>
+                        <td>{{ visitor.device }}</td>
+                        <td>{{ visitor.os }}</td>
+                        <td>{{ visitor.browser }}</td>
+                        <td>{{ visitor.page }}</td>
+                        <td>{{ visitor.visit_time }}</td>
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        {% if unique_mode|default(false) %}
+                            <td colspan="9" class="empty">
+                        {% else %}
+                            <td colspan="8" class="empty">
+                        {% endif %}
+
+                            No visitor records found.
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            {% endif %}
 
         </table>
 
     </div>
+
+
+    <!-- BACK BUTTON -->
 
     <a href="{{ url_for('analytics') }}" class="back-btn">
         Back to Analytics
@@ -143,4 +258,3 @@
 
 </body>
 </html>
-

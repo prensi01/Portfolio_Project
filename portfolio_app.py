@@ -614,6 +614,42 @@ def admin():
         "admin.html",
         messages=data
     )
+# ================= CONTACT MESSAGES =================
+# ================= CONTACT MESSAGES =================
+
+@app.route('/contact-messages')
+def contact_messages():
+
+    # Admin login check
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            fullname,
+            email,
+            mobile,
+            subject,
+            message,
+            datetime(created_at, '+5 hours', '+30 minutes') AS created_at
+        FROM contacts
+        ORDER BY id DESC
+    """)
+
+    data = cursor.fetchall()
+    conn.close()
+
+    return render_template(
+    "visitor_details.html",
+    messages=data,
+    page_mode="messages",
+    unique_mode=False,
+    visitors=[]
+)
 @app.route('/analytics')
 def analytics():
 
@@ -642,7 +678,6 @@ FROM analytics
     unique_visitors=unique_visitors,
     total_messages=total_messages
 )
-
 
 # ================= VISITOR DETAILS =================
 
@@ -720,9 +755,100 @@ def visitor_details():
             "visit_time": row[5]
         })
 
+    # IMPORTANT: return loop ke bahar hona chahiye
     return render_template(
         "visitor_details.html",
-        visitors=visitors
+        visitors=visitors,
+        unique_mode=False
+    )
+
+# ================= UNIQUE VISITORS =================
+
+@app.route('/unique-visitors')
+def unique_visitors():
+
+    # Admin login check
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            a.id,
+            a.visitor_id,
+            a.ip,
+            a.user_agent,
+            a.page,
+            datetime(a.visit_time, '+5 hours', '+30 minutes')
+                AS visit_time,
+            v.total_visits
+
+        FROM analytics a
+
+        JOIN (
+            SELECT
+                visitor_id,
+                MAX(id) AS latest_id,
+                COUNT(*) AS total_visits
+            FROM analytics
+            GROUP BY visitor_id
+        ) v
+
+        ON a.id = v.latest_id
+
+        ORDER BY a.id DESC
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    visitors = []
+
+    for row in rows:
+
+        user_agent_string = row[3] or ""
+
+        try:
+            ua = parse(user_agent_string)
+
+            os_name = ua.os.family or "Unknown"
+            browser = ua.browser.family or "Unknown"
+
+            if ua.is_mobile:
+                device_type = "Mobile"
+
+            elif ua.is_tablet:
+                device_type = "Tablet"
+
+            elif ua.is_pc:
+                device_type = "Desktop"
+
+            else:
+                device_type = "Unknown"
+
+        except Exception:
+            device_type = "Unknown"
+            os_name = "Unknown"
+            browser = "Unknown"
+
+        visitors.append({
+            "id": row[0],
+            "visitor_id": row[1],
+            "ip": row[2],
+            "device": device_type,
+            "os": os_name,
+            "browser": browser,
+            "page": row[4],
+            "visit_time": row[5],
+            "total_visits": row[6]
+        })
+
+    return render_template(
+        "visitor_details.html",
+        visitors=visitors,
+        unique_mode=True
     )
 
 # ================= RUN APP =================
