@@ -47,6 +47,10 @@ app.config.update(
 
 # ================= DATABASE INIT =================
 def init_db():
+    
+
+    print("DATABASE PATH:", DB_PATH)
+    print("DATABASE EXISTS:", os.path.exists(DB_PATH))
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
