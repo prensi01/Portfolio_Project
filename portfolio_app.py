@@ -6,6 +6,7 @@ import requests
 import threading 
 from flask import session
 from dotenv import load_dotenv
+from user_agents import parse
 load_dotenv()
 from email.mime.text import MIMEText
 from flask import Flask, render_template, request, redirect, session, url_for, flash
@@ -641,6 +642,88 @@ FROM analytics
     unique_visitors=unique_visitors,
     total_messages=total_messages
 )
+
+
+# ================= VISITOR DETAILS =================
+
+@app.route('/visitor-details')
+def visitor_details():
+
+    # Admin login check
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            visitor_id,
+            ip,
+            user_agent,
+            page,
+            datetime(visit_time, '+5 hours', '+30 minutes')
+                AS visit_time
+        FROM analytics
+        ORDER BY id DESC
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    visitors = []
+
+    for row in rows:
+
+        user_agent_string = row[3] or ""
+
+        try:
+            ua = parse(user_agent_string)
+
+            device = ua.device.family or "Unknown"
+            os_name = ua.os.family or "Unknown"
+            browser = ua.browser.family or "Unknown"
+
+            # Device Type
+            if ua.is_mobile:
+                device_type = "Mobile"
+
+            elif ua.is_tablet:
+                device_type = "Tablet"
+
+            elif ua.is_pc:
+                device_type = "Desktop"
+
+            else:
+                device_type = "Unknown"
+
+            # Device Model
+            if device == "Other":
+                device = "Unknown"
+
+        except Exception:
+            device = "Unknown"
+            device_type = "Unknown"
+            os_name = "Unknown"
+            browser = "Unknown"
+
+        visitors.append({
+            "id": row[0],
+            "visitor_id": row[1],
+            "ip": row[2],
+            "device": device_type,
+            "device_model": device,
+            "os": os_name,
+            "browser": browser,
+            "page": row[4],
+            "visit_time": row[5]
+        })
+
+    return render_template(
+        "visitor_details.html",
+        visitors=visitors
+    )
 
 # ================= RUN APP =================
 if __name__ == "__main__":

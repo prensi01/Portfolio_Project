@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Visitor Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #081b29;
+            color: white;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #00abf0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: #112e42;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #345064;
+        }
+
+        th {
+            color: #00abf0;
+            background: #081b29;
+        }
+
+        tr:hover {
+            background: #183b52;
+        }
+
+        .visitor-id {
+            max-width: 180px;
+            overflow-wrap: anywhere;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #00abf0;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-btn:hover {
+            background: #008ac4;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Portfolio Visitor Details</h1>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Visit ID</th>
+                    <th>Visitor ID</th>
+                    <th>IP Address</th>
+                    <th>Device</th>
+                    <th>Operating System</th>
+                    <th>Browser</th>
+                    <th>Page</th>
+                    <th>Visit Time (IST)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for visitor in visitors %}
+
+                <tr>
+                    <td>{{ visitor.id }}</td>
+
+                    <td class="visitor-id">
+                        {{ visitor.visitor_id }}
+                    </td>
+
+                    <td>{{ visitor.ip }}</td>
+
+                    <td>{{ visitor.device }}</td>
+
+                    <td>{{ visitor.os }}</td>
+
+                    <td>{{ visitor.browser }}</td>
+
+                    <td>{{ visitor.page }}</td>
+
+                    <td>{{ visitor.visit_time }}</td>
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="8" class="empty">
+                        No visitor records found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <a href="{{ url_for('analytics') }}" class="back-btn">
+        Back to Analytics
+    </a>
+
+</body>
+</html>
+
