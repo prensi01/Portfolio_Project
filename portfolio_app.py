@@ -605,7 +605,7 @@ def delete_visitor(id):
     conn.commit()
     conn.close()
 
-    flash("Visitor record deleted successfully!", "success")
+     
 
     return redirect(url_for('visitor_details'))
 
@@ -628,8 +628,7 @@ def delete_unique_visitor(visitor_id):
 
     conn.commit()
     conn.close()
-
-    flash("Unique visitor and visit history deleted!", "success")
+ 
 
     return redirect(url_for('unique_visitors'))
 
