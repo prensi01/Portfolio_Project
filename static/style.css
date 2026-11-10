@@ -928,6 +928,7 @@ html,body{
   position: relative;
   overflow: hidden;
   transition: 0.3s;
+  font-size: 12px;
 }
 .project-links1 {
   display: inline-block;
@@ -942,9 +943,11 @@ html,body{
 }
 .tech {
   color: #b0b7d1;
+  font-size: 11px;
 }
 .desc {
   color: #b0b7d1;
+  font-size: 11px;
 }
 h3 {
   color: white;
@@ -1010,7 +1013,7 @@ body {
 }
 h2 {
   margin: 15px 0 10px;
-  font-size: 18px;
+  font-size: 14px;
 }
 .tech {
   margin-top: 3px;
